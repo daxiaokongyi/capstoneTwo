@@ -1,25 +1,28 @@
-INSERT INTO users (username, first_name, last_name, email, is_admin) 
+INSERT INTO users (username, password, first_name, last_name, email, is_admin) 
 VALUES ('jj',
+        '123',
         'Jason',
         'Jin',
         'jj@gmail.com',
         TRUE
         ),
         ('th',
+         '123',
          'Tom',
          'Hanks',
          'th@gmail.com',
          FALSE
         ), (
         'jb',
+        '123',
         'James',
         'Blunt',
-        'jb@gmail.com'
+        'jb@gmail.com',
         FALSE
-);
+        );
 
 INSERT INTO songs (id)
-VALUES ("79029766"), ("1119072024"), ("538749492"), ("311325738"), ("1517801028");
+VALUES ('79029766'), ('1119072024'), ('538749492'), ('311325738'), ('1517801028');
 
 INSERT INTO favorites (username, song_id)
 VALUES 
