@@ -8,7 +8,7 @@ const morgan = require("morgan");
 const {authenticateJWT} = require('./middleware/auth');
 const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
-// const songsRoutes = require("./routes/songs");
+const songsRoutes = require("./routes/songs");
 
 app.use(cors());
 app.use(express.json());
@@ -17,7 +17,7 @@ app.use(authenticateJWT);
 
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
-// app.use("/songs", songsRoutes);
+app.use("/applemusic/songs", songsRoutes);
 
 const appleToken = require('./getToken');
 const { NotFoundError } = require('./expressError');

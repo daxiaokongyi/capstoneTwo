@@ -34,9 +34,12 @@ class User {
         const user = result.rows[0];
 
         // check password if user is found
+        console.log(`check if user exists: ${user.username}, ${user.password}, ${user.email}`);
         if (user) {
             // compare hashed password to a new hashed one from input password
             const isValid = await bcrypt.compare(password, user.password);
+            console.log(`password: ${password}, user.password: ${user.password}`);
+            console.log(`test isValid: ${isValid}`);
             if (isValid === true) {
                 // "hide" user's hashed password before returning the current user's infomation 
                 delete user.password;
@@ -87,7 +90,7 @@ class User {
                 is_admin AS "isAdmin"`,
             [
                 username,
-                password,
+                hashedPassword,
                 firstName,
                 lastName,
                 email,

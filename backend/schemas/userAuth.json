@@ -7,57 +7,34 @@
     "default": {},
     "examples": [
         {
-            "user": {
-                "username": "testuser",
-                "password": "password"
-            }
+            "username": "username",
+            "password": "password"
         }
     ],
     "required": [
-        "user"
+        "username",
+        "password"
     ],
     "properties": {
-        "user": {
-            "$id": "#/properties/user",
-            "type": "object",
-            "title": "The user schema",
+        "username": {
+            "$id": "#/properties/username",
+            "type": "string",
+            "title": "The username schema",
             "description": "An explanation about the purpose of this instance.",
-            "default": {},
+            "default": "",
             "examples": [
-                {
-                    "username": "testuser",
-                    "password": "password"
-                }
-            ],
-            "required": [
-                "username",
+                "username"
+            ]
+        },
+        "password": {
+            "$id": "#/properties/password",
+            "type": "string",
+            "title": "The password schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
                 "password"
-            ],
-            "properties": {
-                "username": {
-                    "$id": "#/properties/user/properties/username",
-                    "type": "string",
-                    "title": "The username schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "testuser"
-                    ],
-                    "minLength": 3,
-                    "maxLength": 10
-                },
-                "password": {
-                    "$id": "#/properties/user/properties/password",
-                    "type": "string",
-                    "title": "The password schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "password"
-                    ]
-                }
-            },
-            "additionalProperties": true
+            ]
         }
     },
     "additionalProperties": true
