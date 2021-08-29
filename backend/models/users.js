@@ -177,23 +177,23 @@ class User {
             {
                 firstName : "first_name",
                 lastName : "last_name",
-                isAdmin : "is_admin"
+                isAdmin : "is_admin",
             }); 
 
-        const usernameVarIdx = `$${values.length + 1}`;
+        // const usernameVarIdx = `$${values.length + 1}`;
+        const usernameVarIdx = "$" + (values.length + 1);
 
         const querySql = `UPDATE users
-                                SET ${setCols}
-                                WHERE username = ${usernameVarIdx}
-                                RETURNING username,
-                                    first_name AS "firstName",
-                                    last_name AS "lastName",
-                                    email,
-                                    is_admin AS "isAdmin";
-                                `
-
+                            SET ${setCols}
+                            WHERE username = ${usernameVarIdx}
+                            RETURNING username,
+                                first_name AS "firstName",
+                                last_name AS "lastName",
+                                email,
+                                is_admin AS "isAdmin"`;
+                                
         // update the data in the database
-        const result = await db.update(querySql, [...values, username]);
+        const result = await db.query(querySql, [...values, username]);
         // return the updated user 
         const user = result.rows[0];
 

@@ -81,7 +81,11 @@ const getUser = (user, token) => {
 export const sendEditToAPI = (username, updatedUserData, token) => {
     console.log(JSON.stringify(updatedUserData));
     return async function (dispatch) {
-        const result = await axios.patch(`${API_URL}/users/${username}`, {...updatedUserData});
+        const result = await axios.patch(`${API_URL}/users/${username}`, updatedUserData, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         return dispatch(editUser(result.data.user, token));
     }
 }

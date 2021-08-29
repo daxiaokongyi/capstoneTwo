@@ -87,9 +87,11 @@ router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, nex
 
 router.patch("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {
+        console.log(req.body);
         const validator = jsonschema.validate(req.body, userNewSchema);
         if (!validator.valid) {
-            const errors = validator.errors.map(err => err.stack);
+            const errors = validator.errors.map(e => e.stack);
+            console.log(errors);
             throw new BadRequestError(errors);
         }
         const user = await User.update(req.params.username, req.body);

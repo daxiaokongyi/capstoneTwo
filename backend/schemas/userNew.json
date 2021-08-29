@@ -7,116 +7,58 @@
     "default": {},
     "examples": [
         {
-            "user": {
-                "username": "testuser",
-                "password": "password",
-                "firstName": "first",
-                "lastName": "last",
-                "email": "test@gmail.com",
-                "isAdmin": false
-            }
+            "password": "password",
+            "firstName": "first",
+            "lastName": "last",
+            "email": "test@gmail.com"
         }
     ],
     "required": [
-        "user"
+        "password",
+        "firstName",
+        "lastName",
+        "email"
     ],
     "properties": {
-        "user": {
-            "$id": "#/properties/user",
-            "type": "object",
-            "title": "The user schema",
+        "password": {
+            "$id": "#/properties/password",
+            "type": "string",
+            "title": "The password schema",
             "description": "An explanation about the purpose of this instance.",
-            "default": {},
+            "default": "",
             "examples": [
-                {
-                    "username": "testuser",
-                    "password": "password",
-                    "firstName": "first",
-                    "lastName": "last",
-                    "email": "test@gmail.com",
-                    "isAdmin": false
-                }
-            ],
-            "required": [
-                "username",
-                "password",
-                "firstName",
-                "lastName",
-                "email"
-            ],
-            "properties": {
-                "username": {
-                    "$id": "#/properties/user/properties/username",
-                    "type": "string",
-                    "title": "The username schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "testuser"
-                    ],
-                    "minLength": 3,
-                    "maxLength": 10
-                    
-                },
-                "password": {
-                    "$id": "#/properties/user/properties/password",
-                    "type": "string",
-                    "title": "The password schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "password"
-                    ]
-                },
-                "firstName": {
-                    "$id": "#/properties/user/properties/firstName",
-                    "type": "string",
-                    "title": "The firstName schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "first"
-                    ],
-                    "minimum": 1,
-                    "maximum": 30
-                },
-                "lastName": {
-                    "$id": "#/properties/user/properties/lastName",
-                    "type": "string",
-                    "title": "The lastName schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "last"
-                    ],
-                    "minLength": 1,
-                    "maxLength": 30
-                },
-                "email": {
-                    "$id": "#/properties/user/properties/email",
-                    "type": "string",
-                    "title": "The email schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "test@gmail.com"
-                    ],
-                    "format": "email",
-                    "minLength": 5,
-                    "maxLength": 30
-                },
-                "isAdmin": {
-                    "$id": "#/properties/user/properties/isAdmin",
-                    "type": "boolean",
-                    "title": "The isAdmin schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": false,
-                    "examples": [
-                        false
-                    ]
-                }
-            },
-            "additionalProperties": true
+                "password"
+            ]
+        },
+        "firstName": {
+            "$id": "#/properties/firstName",
+            "type": "string",
+            "title": "The firstName schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "first"
+            ]
+        },
+        "lastName": {
+            "$id": "#/properties/lastName",
+            "type": "string",
+            "title": "The lastName schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "last"
+            ]
+        },
+        "email": {
+            "$id": "#/properties/email",
+            "type": "string",
+            "title": "The email schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "test@gmail.com"
+            ]
         }
     },
     "additionalProperties": true
