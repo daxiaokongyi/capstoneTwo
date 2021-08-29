@@ -9,7 +9,7 @@ const Songs = () => {
 
     useEffect(function () {
         async function fetchSongs() {
-            await dispatch(fetchSongsFromAPI());
+            await dispatch(fetchSongsFromAPI("jason"));
             setIsLoading(false);
         }
 

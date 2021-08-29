@@ -1,13 +1,14 @@
 import axios from 'axios';
 import {FETCH_SONGS} from '../actions/types';
-const API_URL = process.env.APP_API_URL
+const API_URL = "http://localhost:3001";
 
 console.log(API_URL);
 
-export function fetchSongsFromAPI() {
+// get songs based on song's name 
+export function fetchSongsFromAPI(songName) {
     return async function (dispatch) {
-        // const result = await axios.get(`${API_URL}/terms=jay+chou&types=songs`);
-        const result = await axios.get('https://api.music.apple.com/v1/catalog/us/search?term=james+brown&limit=2&types=artists,albums'); 
+        console.log('hi');
+        const result = await axios.get(`${API_URL}/applemusic/songs`);
         console.log(result.data);
         return dispatch(getSongs(result.data));
     }

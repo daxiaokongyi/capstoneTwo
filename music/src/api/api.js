@@ -10,14 +10,14 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
  *
  */
 
-class musicApi {
+class MusicApi {
     // the token for interactive with the API will be stored here.
     static token;
     
     static async request (endpoint, data = {}, method= "get") {
         console.debug("API Call:", endpoint, data, method);
         const url = `${BASE_URL}/${endpoint}`;
-        const headers = {Authorization: `Bearer ${musicApi.token}`};
+        const headers = {Authorization: `Bearer ${MusicApi.token}`};
         const params = (method === 'get') ? data : {};
 
         try {
@@ -61,6 +61,6 @@ class musicApi {
     }
 }
 
-export default musicApi;
+export default MusicApi;
 
 
