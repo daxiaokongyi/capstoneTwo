@@ -1,19 +1,44 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER } from "./types";
+import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER, GET_SIGNUP_ERRORS, GET_SIGNIN_ERRORS} from "./types";
 
 const API_URL = "http://localhost:3001";
 
 // action for adding a new user
 export const sendSignupToAPI = (username, password, firstName, lastName, email) => {
-    return async function (dispatch) {
-        const result = await axios.post(`${API_URL}/auth/register`, {
+    return async function (dispatch) {  
+        // const result = await axios.post(`${API_URL}/auth/register`, {
+        //     username,
+        //     password,
+        //     firstName,
+        //     lastName,   
+        //     email
+        // }).catch(
+        //     err => {
+        //         if(err.response) {
+        //             console.log(err.response.data.error);
+        //         }
+        //     }
+        // );
+        // console.log(result);
+        // return dispatch(signup(result.data));   
+        await axios.post(`${API_URL}/auth/register`, {
             username,
             password,
             firstName,
             lastName,   
             email
-        });
-        return dispatch(signup(result.data));
+        }).then(
+            result => {
+                return dispatch(signup(result.data));
+            }
+        ).catch(
+            err => {
+                console.log(err.response.data.error);
+                console.log(err.response.data.error.message);
+                return dispatch(getSignupErrors(err.response.data.error.message));
+            }
+        );
+        // return dispatch(signup(result.data));   
     }
 }
 
@@ -24,16 +49,38 @@ const signup = (userData) => {
     }
 }
 
+const getSignupErrors = (errorMessage) => {
+    return {
+        type: GET_SIGNUP_ERRORS, 
+        errs: {
+            signupErrs: errorMessage
+        }
+    }
+}
+
 // action for signning in
 export const sendSigninToAPI = (username, password) => {
     return async function (dispatch) {
-        const result = await axios.post(`${API_URL}/auth/token`, 
-            {
-                username,
-                password
-            });
+        // const result = await axios.post(`${API_URL}/auth/token`, 
+        //     {
+        //         username,
+        //         password
+        //     });
 
-        return dispatch(signin(result.data));
+        // return dispatch(signin(result.data));
+
+        await axios.post(`${API_URL}/auth/token`, {
+            username,
+            password
+        }).then(
+            result => {
+                return dispatch(signin(result.data))
+        }).catch(
+            err => {
+                console.log(err.response.data.error);
+                console.log(err.response.data.error.message);
+                return dispatch(getSigninErrors(err.response.data.error.message));
+        });
     }
 }
 
@@ -43,6 +90,17 @@ const signin = (userData) => {
         data: userData
     }
 }
+
+const getSigninErrors = (errorMessage) => {
+    return {
+        type: GET_SIGNIN_ERRORS, 
+        errs: {
+            signinErrs: errorMessage
+        }
+    }
+}
+
+
 
 // action for logging out
 export const logout = () => {

@@ -7,39 +7,6 @@ import { useHistory } from 'react-router-dom';
 
 const UserDetail = () => {
     const token = useSelector(st => st.users.token);
-    const user = useSelector(st => st.users.user);
-    const [infoLoaded, setInfoLoaded] = useState(false);
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const [editable, setEditable] = useState(false);
-
-    console.log(user);
-
-    const [formData, setFormData] = useState({
-        username: user.username,
-        password: "",
-        firstName: user.firstName,
-        lastName: user.lastName,   
-        email: user.email 
-    });
-
-    console.log(formData);
-
-    const [formErrors, setFormErrors] = useState([]);
-    const [saveConfirmed, setSaveConfirmed] = useState(false);
-
-    const save = (username, updatedUser) => {
-        dispatch(sendEditToAPI(username, updatedUser, token));
-        setEditable(false);
-        setSaveConfirmed(true);
-        history.push(`/users/${user.username}`);
-    }
-
-    const cancel = () => {
-        setEditable(false);
-    }
-
-    console.log(user);
 
     useEffect(function loadUserInfo() {
         const getCurrentUser = async () => {
@@ -55,11 +22,39 @@ const UserDetail = () => {
                 }
             }
             setInfoLoaded(true);
-            console.log(formData);
         }
         setInfoLoaded(false);
         getCurrentUser();
-    }, [token])
+    }, [token]);
+
+    const save = (username, updatedUser) => {
+        dispatch(sendEditToAPI(username, updatedUser, token));
+        setEditable(false);
+        setSaveConfirmed(true);
+        history.push(`/users/${user.username}`);
+    }
+
+    const cancel = () => {
+        setEditable(false);
+    }
+
+    const user = useSelector(st => st.users.user);
+
+    const [formData, setFormData] = useState({
+        username: user.username,
+        password: "",
+        firstName: user.firstName,
+        lastName: user.lastName,   
+        email: user.email 
+    });
+
+    console.log(formData);
+    const [infoLoaded, setInfoLoaded] = useState(false);
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const [editable, setEditable] = useState(false);
+    const [formErrors, setFormErrors] = useState([]);
+    const [saveConfirmed, setSaveConfirmed] = useState(false);
 
     // handlers for non-editable template
 
@@ -68,8 +63,14 @@ const UserDetail = () => {
     }
 
     const handleEdit = () => {
+        setFormData({
+            username: user.username,
+            password: "",
+            firstName: user.firstName,
+            lastName: user.lastName,   
+            email: user.email 
+        });
         setEditable(true);
-        history.push(`/users/${user.username}`);
     }
 
     // show details only when it's not editable

@@ -5,6 +5,7 @@ import SigninForm from './SigninForm';
 import {sendSigninToAPI} from '../actions/users';
 import { useSelector } from 'react-redux';
 import useLocalStorage from '../hooks/useLocalStorage';
+import {cancel} from '../actions/users';
 
 export const TOKEN_STORAGE_ID = 'music-token';
 
@@ -20,17 +21,13 @@ const Signin = () => {
         console.log(userToken.token);
         // setToken(userToken.token);
         // console.log(token);
-        history.push(`/users/${username}`);
-    }
-
-    const cancel = () => {
-        history.push('/');
+        // history.push(`/users/${username}`);
     }
 
     return (
         <main>
             <h1>Sign In</h1>
-            <SigninForm save={signin} cancel={cancel}/>
+            <SigninForm save={signin} />
         </main>
     )
 }

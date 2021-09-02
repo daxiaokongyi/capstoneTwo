@@ -1,6 +1,16 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import { useHistory } from 'react-router-dom';
+import Alert from './Alert';
+import { useSelector } from 'react-redux';
 
-const SignupForm = ({save, cancel}) => {
+const SignupForm = ({save}) => {
+    const token = useSelector(st => st.users.token);
+    const signupErrors = useSelector(st => st.users.signup_errors);
+
+    // console.log(`token: ${token}, errors: ${errors}`);
+    // console.log(`!token: ${!token}`);
+    // console.log(`errors.length: ${errors.length}`);
+
     const INITIAL_SIGNUPDATA = {
         username: "",
         password: "",
@@ -11,11 +21,47 @@ const SignupForm = ({save, cancel}) => {
 
     // Initialize and update the user info state
     const [formData, setFormData] = useState(INITIAL_SIGNUPDATA);
+    const [formErrors, setFormErrors] = useState([]);
+    const [userToken, setUserToken] = useState(token);
+    const history = useHistory();
+
+    useEffect(() => {
+        // setUserToken(token);
+        // setFormErrors(errors);
+
+        console.log(token);
+        console.log(signupErrors);
+
+        if (token) {
+            history.push(`/users/${formData.username}`);
+        } else if (signupErrors.length !== 0) {
+            setFormErrors(signupErrors);
+        }
+    }, [signupErrors, token]);
 
     const handleSubmit = evt => {
         evt.preventDefault();
         console.log(formData);
         save(formData);
+        // check if sign up has no errors
+        // console.log(formErrors);
+        // console.log(`token: ${token}, errors: ${errors}`);
+        // console.log(`!token: ${!token}`);
+        // console.log(`errors.length: ${errors.length}`);
+
+        // if (token && errors.length === 0) {
+        //     history.push(`/users/${formData.username}`);    
+        // }
+
+        // if (formErrors.length === 0) {
+        //     history.push(`/users/${formData.username}`);    
+        //     setFormErrors([]);
+        // } else {
+        //     // console.log(users);
+        //     console.log(users.errors);
+        //     setFormErrors(users.errors);
+        //     // console.log(formErrors);
+        // }
     }
 
     const handleChange = evt => {
@@ -83,8 +129,10 @@ const SignupForm = ({save, cancel}) => {
                     value={formData.password}
                 />                              
             </div> 
+
+            {formErrors.length ? <Alert type='danger' messages={formErrors}/> : null}
+
             <button className="btn btn-primary mr-2">Save</button>
-            <button className="btn btn-secondary" onClick={cancel}>Cancel</button>
         </form>
     )
 }
