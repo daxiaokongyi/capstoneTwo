@@ -7,88 +7,64 @@
     "default": {},
     "examples": [
         {
-            "user": {
-                "password": "password",
-                "firstName": "first",
-                "lastName": "last",
-                "email": "test@gmail.com"
-            }
+            "password": "password",
+            "firstName": "first",
+            "lastName": "last",
+            "email": "test@gmail.com"
         }
     ],
     "required": [
-        "user"
+        "password"
     ],
     "properties": {
-        "user": {
-            "$id": "#/properties/user",
-            "type": "object",
-            "title": "The user schema",
+        "password": {
+            "$id": "#/properties/password",
+            "type": "string",
+            "title": "The password schema",
             "description": "An explanation about the purpose of this instance.",
-            "default": {},
+            "default": "",
             "examples": [
-                {
-                    "password": "password",
-                    "firstName": "first",
-                    "lastName": "last",
-                    "email": "test@gmail.com"
-                }
+                "password"
             ],
-            "required": [
-                "password",
-                "firstName",
-                "lastName",
-                "email"
+            "minLength": 5,
+            "maxLength": 20
+        },
+        "firstName": {
+            "$id": "#/properties/firstName",
+            "type": "string",
+            "title": "The firstName schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "first"
             ],
-            "properties": {
-                "password": {
-                    "$id": "#/properties/user/properties/password",
-                    "type": "string",
-                    "title": "The password schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "password"
-                    ]
-                },
-                "firstName": {
-                    "$id": "#/properties/user/properties/firstName",
-                    "type": "string",
-                    "title": "The firstName schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "first"
-                    ],
-                    "minimum": 1,
-                    "maximum": 30
-                },
-                "lastName": {
-                    "$id": "#/properties/user/properties/lastName",
-                    "type": "string",
-                    "title": "The lastName schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "last"
-                    ],
-                    "minimum": 1,
-                    "maximum": 30
-                },
-                "email": {
-                    "$id": "#/properties/user/properties/email",
-                    "type": "string",
-                    "title": "The email schema",
-                    "description": "An explanation about the purpose of this instance.",
-                    "default": "",
-                    "examples": [
-                        "test@gmail.com"
-                    ],
-                    "format": "email",
-                    "minLength": 5,
-                    "maxLength": 30
-                }
-            },
-            "additionalProperties": true
+            "minLength": 1,
+            "maxLength": 30
+        },
+        "lastName": {
+            "$id": "#/properties/lastName",
+            "type": "string",
+            "title": "The lastName schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "last"
+            ],
+            "minLength": 1,
+            "maxLength": 30
+        },
+        "email": {
+            "$id": "#/properties/email",
+            "type": "string",
+            "title": "The email schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "test@gmail.com"
+            ],
+            "minLength": 6,
+            "maxLength": 30,
+            "format": "email"
         }
     },
     "additionalProperties": true

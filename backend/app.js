@@ -21,6 +21,7 @@ app.use("/applemusic/songs", songsRoutes);
 
 const appleToken = require('./getToken');
 const { NotFoundError } = require('./expressError');
+const { stat } = require('fs');
 
 console.log(appleToken);
 
@@ -37,9 +38,13 @@ app.use(function(err, req, res ,next) {
     let status = err.status || 500;
     let message = err.message;
 
+    console.log(`status: ${status}`);
+    console.log(`message: ${message}`);
+    console.log(`res: ${res}`);
+
     // set the status and alert the user
     return res.status(status).json({
-        error: {message, status}
+        error: {message, status},
     });
 });
 

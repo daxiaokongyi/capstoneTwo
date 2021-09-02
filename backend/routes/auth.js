@@ -1,7 +1,8 @@
 "use strict"
 
-const jsonSchema = require('jsonschema');
+const jsonschema = require('jsonschema');
 const userAuthSchema = require('../schemas/userAuth.json');
+const userRegisterSchema = require('../schemas/userRegister.json');
 const {BadRequestError} = require('../expressError');
 const User = require('../models/users');
 const express = require('express');
@@ -17,7 +18,7 @@ router.post('/token', async function(req, res, next) {
     try {
         console.log('testing token, it works');
         // do the validator to check if username and password valid
-        const validator = jsonSchema.validate(req.body, userAuthSchema);
+        const validator = jsonschema.validate(req.body, userAuthSchema);
         // throw error message if invalid
         if (!validator.valid) {
             const errs = validator.errors.map(e => e.stack);
@@ -47,15 +48,18 @@ router.post("/register", async function (req, res, next) {
     try {
         console.log('register works so far!');
         console.log(req.body);
-        const validator = jsonSchema.validate(req.body, userAuthSchema);
+        const validator = jsonschema.validate(req.body, userRegisterSchema);
+        console.log(validator.errors);
         if (!validator.valid) {
             const errors = validator.errors.map(e => e.stack);
+            console.log(errors);
             throw new BadRequestError(errors);
         }
         const newUser = await User.signup({...req.body, isAdmin: false});
         const token = createToken(newUser);
         return res.status(201).json({token});
     } catch (error) {
+        console.log(`error on the backend: ${error}`);
         return next(error);
     }
 });

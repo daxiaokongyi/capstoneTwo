@@ -32,10 +32,12 @@ class User {
 
         // get user from result
         const user = result.rows[0];
-
+        
         // check password if user is found
-        console.log(`check if user exists: ${user.username}, ${user.password}, ${user.email}`);
+
         if (user) {
+            console.log(`check if user exists: ${user.username}, ${user.password}, ${user.email}`);
+
             // compare hashed password to a new hashed one from input password
             const isValid = await bcrypt.compare(password, user.password);
             console.log(`password: ${password}, user.password: ${user.password}`);
@@ -172,6 +174,8 @@ class User {
             data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
         }
 
+        console.log(`psql~~~~~~~~~ ${username}, ${JSON.stringify(data)}`);
+
         const {setCols, values} = sqlForPartialUpdate(
             data, 
             {
@@ -179,6 +183,9 @@ class User {
                 lastName : "last_name",
                 isAdmin : "is_admin",
             }); 
+
+        console.log(`check setCols: ${setCols}`);
+        console.log(`check values: ${values}`);
 
         // const usernameVarIdx = `$${values.length + 1}`;
         const usernameVarIdx = "$" + (values.length + 1);
@@ -191,7 +198,7 @@ class User {
                                 last_name AS "lastName",
                                 email,
                                 is_admin AS "isAdmin"`;
-                                
+        console.log(querySql);      
         // update the data in the database
         const result = await db.query(querySql, [...values, username]);
         // return the updated user 

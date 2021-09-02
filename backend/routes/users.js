@@ -94,6 +94,7 @@ router.patch("/:username", ensureCorrectUserOrAdmin, async function (req, res, n
             console.log(errors);
             throw new BadRequestError(errors);
         }
+        console.log('hello tesing!');
         const user = await User.update(req.params.username, req.body);
         return res.json({user});
     } catch (error) {

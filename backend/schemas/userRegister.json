@@ -30,7 +30,9 @@
             "default": "",
             "examples": [
                 "username"
-            ]
+            ],
+            "minLength": 1,
+            "maxLength": 20
         },
         "password": {
             "$id": "#/properties/password",
@@ -40,7 +42,9 @@
             "default": "",
             "examples": [
                 "password"
-            ]
+            ],
+            "minLength": 5,
+            "maxLength": 20
         },
         "firstName": {
             "$id": "#/properties/firstName",
@@ -50,7 +54,9 @@
             "default": "",
             "examples": [
                 "first"
-            ]
+            ],
+            "minLength": 1,
+            "maxLength": 30
         },
         "lastName": {
             "$id": "#/properties/lastName",
@@ -60,7 +66,9 @@
             "default": "",
             "examples": [
                 "last"
-            ]
+            ],
+            "minLength": 1,
+            "maxLength": 30
         },
         "email": {
             "$id": "#/properties/email",
@@ -70,7 +78,10 @@
             "default": "",
             "examples": [
                 "jason@gmail.com"
-            ]
+            ],
+            "minLength": 6,
+            "maxLength": 60,
+            "format": "email"
         }
     },
     "additionalProperties": true

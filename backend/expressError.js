@@ -13,29 +13,29 @@ class ExpressError extends Error {
 
 /** Bad Request with status 400 */
 class BadRequestError extends ExpressError {
-    constructor() {
-        super("Bad Request", 400);
+    constructor(message = "Bad Request") {
+        super(message, 400);
     }
 }
 
 /** Unauthorized Error with status 401 */
 class UnauthorizedError extends ExpressError {
-    constructor() {
-        super("Unauthorized", 401);
+    constructor(message = "Unauthorized") {
+        super(message, 401);
     }
 }
 
 /** Forbidden Error with status 403 */
 class ForbiddenError extends ExpressError {
-    constructor() {
-        super("Forbidden Error", 403);
+    constructor(message = "Forbidden Error") {
+        super(message, 403);
     }
 }
 
 /** Not Found Error with status 404 */
 class NotFoundError extends ExpressError {
-    constructor() {
-        super("Not Found", 404);
+    constructor(message = "Not Found") {
+        super(message, 404);
     }
 }
 
