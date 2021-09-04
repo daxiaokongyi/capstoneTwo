@@ -11,10 +11,11 @@ const BASIC_API_URL = "https://api.music.apple.com/v1/catalog/us/search";
 /** GET / Get songes with the category of songs
  */
 
-router.get("/", async function (req, res, next) {
+router.get("/:searchTerm", async function (req, res, next) {
     try {
         console.log("it works!");
-        const result = await axios.get(`${BASIC_API_URL}?term=jay+chou&limit=20`, {
+        console.log(`search term: ${req.params.searchTerm}`)
+        const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}=5`, {
             headers: {
                 'Authorization':`Bearer ${token}`
             }

@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import {logout} from '../actions/users';
+import SearchBox from '../components/SearchBox'
+
 const Navbar = () => {
     const dispatch = useDispatch();
 
@@ -18,6 +20,7 @@ const Navbar = () => {
 
     const loggedInNav = () => {
       return (
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <ul className="navbar-nav ml-auto">
           <li className="nav-item mr-4">
             <NavLink className="nav-link" to="/:username">
@@ -28,31 +31,41 @@ const Navbar = () => {
             <Link className="nav-link" to="/" onClick={signOut}>Log Out</Link>
           </li>
         </ul>
+      </nav>
       )
     } 
 
     const loggedOutNav = () => {
       return (
-        <ul className="navbar-nav ml-auto">
-          <li className="nav-item mr-4">
-            <NavLink className="nav-link" to="/signin">
-              Sign In
-            </NavLink>
-          </li>
-          <li className="nav-item mr-4">
-            <NavLink className="nav-link" to="/signup">
-              Sign Up
-            </NavLink>
-          </li>
-        </ul>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <a className="navbar-brand" href="/">I-Music</a>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item active">
+                <NavLink className="nav-link" to="/signin">
+                  Sign In
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/signup">
+                  Sign Up
+                </NavLink>
+              </li>
+            </ul>
+            <SearchBox/>
+          </div>
+        </nav>
       )
     }
 
     return (
-      <nav className="Navigation navbar navbar-expand-md">
+      <div>
         {token ? loggedInNav() : loggedOutNav()}
-      </nav>
-    );
+      </div>
+    ) 
 }
 
 export default Navbar;
