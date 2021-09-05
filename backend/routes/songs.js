@@ -15,7 +15,7 @@ router.get("/:searchTerm", async function (req, res, next) {
     try {
         console.log("it works!");
         console.log(`search term: ${req.params.searchTerm}`)
-        const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}=5`, {
+        const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}&limit=5`, {
             headers: {
                 'Authorization':`Bearer ${token}`
             }
@@ -26,6 +26,8 @@ router.get("/:searchTerm", async function (req, res, next) {
         });
         console.log(result.data.results.songs.data);
         console.log(nameSongs);
+
+        return res.status(201).json({songs:resultSongs});
     } catch (error) {
         return next(error);
     }
