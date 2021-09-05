@@ -30,6 +30,7 @@ const Navbar = () => {
           <li className="naw-item">
             <Link className="nav-link" to="/" onClick={signOut}>Log Out</Link>
           </li>
+          <SearchBox/>
         </ul>
       </nav>
       )

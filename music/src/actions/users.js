@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER, GET_SIGNUP_ERRORS, GET_SIGNIN_ERRORS} from "./types";
+import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER, GET_SIGNUP_ERRORS, GET_SIGNIN_ERRORS, ADD_FAVORITE_SONG} from "./types";
 
 const API_URL = "http://localhost:3001";
 
@@ -157,3 +157,29 @@ const editUser = (user, token) => {
         }
     }
 }
+
+export function addSongToFavorite (token, username, songId) {
+    return async function (dispatch) {
+        await axios.post(`${API_URL}/users/${username}/songs/${songId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(
+            result => {
+                dispatch(addFavoriteSong(result.favorited));
+            }
+        ).catch(
+            error => {
+                console.log(error);
+            }
+        )
+    }
+}
+
+const addFavoriteSong = (songId) => {
+    return {
+        type: ADD_FAVORITE_SONG,
+        data: songId
+    }
+}
+

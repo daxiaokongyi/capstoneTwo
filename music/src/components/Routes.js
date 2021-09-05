@@ -5,6 +5,7 @@ import UserDetail from './UserDetail';
 import Songs from './Songs';
 import Signup from './Signup';
 import Signin from './Signin';
+import SongDetail from './SongDetail';
 
 const Routes = () => {
     return (
@@ -21,6 +22,9 @@ const Routes = () => {
                 </Route>
                 <Route exact path="/signup">
                     <Signup/>
+                </Route>
+                <Route path="/songs/:songid">
+                    <SongDetail/>
                 </Route>
                 <Route path="/:username">
                     <UserDetail/>

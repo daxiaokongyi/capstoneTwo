@@ -18,7 +18,9 @@ export function fetchSongsFromAPI(searchTerm) {
 function getSongs (songs) {
     return {
         type: FETCH_SONGS,
-        songs: songs
+        data: songs
     }
 }
+
+
 
