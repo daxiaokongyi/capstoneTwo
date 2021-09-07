@@ -19,7 +19,7 @@ export default function rootReducer (state = INITIAL_STATE, action) {
         case SIGN_IN:
             return {...state, token: data.token, signin_errors: [], signup_errors: []};
         case LOG_OUT:
-            return {...state, token: null, user: {}, signin_errors: [], signup_errors: []};
+            return {...state, token: null, user: {}, signin_errors: [], signup_errors: [], favorite_songs: []};
         case GET_CURRENTUSER:
             return {...state, ...data};
         case EDIT_CURRENTUSER:
@@ -29,7 +29,8 @@ export default function rootReducer (state = INITIAL_STATE, action) {
         case GET_SIGNIN_ERRORS:
             return {...state, token: null, signin_errors: errs.signinErrs, signup_errors: []};
         case ADD_FAVORITE_SONG:
-            return {...state, favorite_songs: [...state.favorite_songs, data]}
+            // return {...state, favorite_songs: [...state.favorite_songs, data]}
+            return {...state, user: {...state.user, favoriteSongs: [...state.user.favoriteSongs ,data]}}
         default:
             return state;
     }

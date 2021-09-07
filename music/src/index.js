@@ -3,29 +3,23 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {createStore, applyMiddleware} from 'redux';
-import rootReducer from './reducers/root';
-import {Provider} from 'react-redux';
+
 import {BrowserRouter} from 'react-router-dom';
-import {composeWithDevTools} from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
 
 import "bootstrap/dist/css/bootstrap.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 
-// create store
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(
-    applyMiddleware(thunk)
-  )
-);
+import {PersistGate} from "redux-persist/integration/react";
+import {Provider} from 'react-redux';
+import {store, persistedStore} from './store';
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>  
-      <App />
-    </BrowserRouter>
+    <PersistGate loading={null} persistor={persistedStore}>
+      <BrowserRouter>  
+        <App />
+      </BrowserRouter>
+    </PersistGate>
   </Provider>,
   document.getElementById('root')
 );

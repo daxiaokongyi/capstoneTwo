@@ -40,6 +40,8 @@ const UserDetail = () => {
 
     const user = useSelector(st => st.users.user);
 
+    console.log(`user's favorite songs ${user.favoriteSongs}`);
+
     const [formData, setFormData] = useState({
         username: user.username,
         password: "",
@@ -73,6 +75,14 @@ const UserDetail = () => {
         setEditable(true);
     }
 
+    let userFavorite = (favoritedSongs) => {
+        if (favoritedSongs) {
+            favoritedSongs.map(songId => {
+            <p>{songId}</p>
+            })
+        }
+    }
+
     // show details only when it's not editable
     const nonEditable = () => {
         return (
@@ -86,6 +96,8 @@ const UserDetail = () => {
                 </div>
                 <button onClick={handleClick}>Home Page</button>
                 <button onClick={handleEdit}>Edit Profile</button>
+
+                {userFavorite(user.favorite_songs)}
             </div>
         )
     }

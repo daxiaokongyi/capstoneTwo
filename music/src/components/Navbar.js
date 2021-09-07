@@ -23,7 +23,7 @@ const Navbar = () => {
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <ul className="navbar-nav ml-auto">
           <li className="nav-item mr-4">
-            <NavLink className="nav-link" to="/:username">
+            <NavLink className="nav-link" to={`/${user.username}`}>
               Hello {`${user.username}'s`}!
             </NavLink>
           </li>
