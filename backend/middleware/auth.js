@@ -56,6 +56,7 @@ function ensureAdmin(req, res, next) {
 
 function ensureCorrectUserOrAdmin(req, res, next) {
     try {
+        console.log('ensure correct user or admin');
         console.log(`res.locals.user ${JSON.stringify(res.locals)}`);
         console.log(`res.locals.user ${res.locals.user}`);
 

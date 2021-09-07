@@ -3,6 +3,7 @@ const { default: axios } = require('axios');
 const express = require('express'); 
 const router = new express.Router();
 const token = require('../getToken');
+const Song = require('../models/songs');
 // const songSearchSchema = require('../schemas/songSearch.json');
 
 // basic Apple API URL
@@ -21,11 +22,18 @@ router.get("/:searchTerm", async function (req, res, next) {
             }
         });
         const resultSongs = result.data.results.songs.data;
-        const nameSongs = resultSongs.map((song) => {
-            return song.attributes.name;
+
+        resultSongs.map((song) => {
+            console.log(`song route: ${song.id}`);
+            console.log(`song route: ${song.attributes.name}`);
+            console.log(`song route: ${song.attributes.artistName}`);
+
+            Song.addSongToDatabase(song.id, song.attributes.name, song.attributes.artistName);
         });
-        console.log(result.data.results.songs.data);
-        console.log(nameSongs);
+
+        // console.log(result.data.results.songs.data);
+
+
 
         return res.status(201).json({songs:resultSongs});
     } catch (error) {

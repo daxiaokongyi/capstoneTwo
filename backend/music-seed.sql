@@ -21,18 +21,18 @@ VALUES ('jj',
         FALSE
         );
 
-INSERT INTO songs (id)
-VALUES ('79029766'), ('1119072024'), ('538749492'), ('311325738'), ('1517801028');
+INSERT INTO songs (song_id, song_name, artist_name)
+VALUES ('79029766', 'song1', 'artist1'), ('1119072024', 'song2', 'artist2'), ('538749492', 'song3', 'artist3'), ('311325738', 'song4', 'artist4'), ('1517801028', 'song5', 'artist5');
 
-INSERT INTO favorites (username, song_id)
+INSERT INTO favorites (username, songs_id)
 VALUES 
-    ('jj', '79029766'), 
-    ('jj', '1119072024'),
-    ('jj', '538749492'),
-    ('th', '311325738'),
-    ('th', '1517801028'),
-    ('jb', '538749492'),
-    ('jb', '79029766');
+    ('jj', 1), 
+    ('jj', 2),
+    ('jj', 3),
+    ('th', 1),
+    ('th', 2),
+    ('jb', 5),
+    ('jb', 4);
 
 -- INSERT INTO songs (id, name, types, artist_name, genre_names, duration_millis, release_date, album_name, composer_name, artwork_url, previews_url, hasLyrics)
 -- VALUES (

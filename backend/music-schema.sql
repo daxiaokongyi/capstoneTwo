@@ -9,15 +9,18 @@ CREATE TABLE users (
 );
 
 CREATE TABLE songs (
-    id TEXT PRIMARY KEY
+    id SERIAL PRIMARY KEY,
+    song_id INTEGER NOT NULL,
+    song_name TEXT NOT NULL,
+    artist_name TEXT NOT NULL
 );
 
 CREATE TABLE favorites (
     username VARCHAR(25) 
         REFERENCES users ON DELETE CASCADE,
-    song_id TEXT 
+    songs_id INTEGER 
         REFERENCES songs ON DELETE CASCADE,
-    PRIMARY KEY (username, song_id)
+    PRIMARY KEY (username, songs_id)
 );
 
 

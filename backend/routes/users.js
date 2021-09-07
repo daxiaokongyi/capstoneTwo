@@ -118,7 +118,7 @@ router.delete("/:username", ensureCorrectUserOrAdmin, async function(req, res, n
 
 /** POST /[username]/songs/[id]  { state } => { application }
  *
- * Returns {"applied": songId}
+ * Returns {"favortied": songId}
  *
  * Authorization required: admin or same-user-as-:username
  * */
@@ -126,6 +126,7 @@ router.delete("/:username", ensureCorrectUserOrAdmin, async function(req, res, n
 router.post("/:username/songs/:id", ensureCorrectUserOrAdmin, async function(req, res, next) {
     try {
         const songId = +req.params.id;
+        console.log(songId);
         await User.setFavorite(req.params.username, songId);
         return res.json({favorited: songId});
     } catch (error) {

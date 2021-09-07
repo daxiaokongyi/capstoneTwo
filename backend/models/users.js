@@ -149,14 +149,14 @@ class User {
 
         // get all existing user's favourite songs
         const userSongsResult = await db.query(
-            `SELECT f.song_id
+            `SELECT f.songs_id
              FROM favorites AS f
              WHERE f.username = $1`,
              [username]
         ) 
 
         // assign user's favorite songs from database
-        user.favoriteSongs = userSongsResult.rows.map(song => song.song_id);
+        user.favoriteSongs = userSongsResult.rows.map(f => f.song_id);
         return user;
     }
 
@@ -231,6 +231,7 @@ class User {
     /** set songs as user's favorite */
 
     static async setFavorite(username, songId) {
+        console.log(`set song favorite ${username}, ${songId}`);
         // get user based on the username given
         const usernameSelected = await db.query(
             `SELECT username
@@ -244,20 +245,23 @@ class User {
 
         // get song based on its song_id
         const songSelected = await db.query(
-            `SELECT song_id
+            `SELECT id
             FROM songs
             WHERE song_id = $1`,
             [songId]
         );
         // check if this song can be found
         const song = songSelected.rows[0];
-        if (!user) throw new NotFoundError(`No song with ID of ${song_id} found`);
+        console.log(`check song's id in the model, ${song}`);
+        console.log(`check song's id in the model, ${JSON.stringify(song)}`);
+
+        if (!song) throw new NotFoundError(`No song with ID of ${songId} found`);
 
         // set this song to be user's favorite
         await db.query(
-            `INSERT INTO favorites (username, song_id)
+            `INSERT INTO favorites (username, songs_id)
             VALUES ($1, $2)`,
-            [username, songId]
+            [username, song.id]
         );
     } 
 }
