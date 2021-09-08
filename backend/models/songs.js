@@ -36,6 +36,43 @@ class Song {
         return;
     }
 
+    static async checkIfFavorited(songsIdArr, songId, username) {
+        console.log(`check songsIdArr: ${songsIdArr}, song Id: ${songId}`);
+
+        const songIdInDatabase = await db.query(
+            `SELECT id
+             FROM songs
+             WHERE song_id = $1`,
+             [songId]
+        )
+
+        console.log(`song id in database: ${JSON.stringify(songIdInDatabase.rows[0])}`);
+        console.log(`song id in database: ${songIdInDatabase.rows[0].id}`);
+
+        if (Object.keys(songIdInDatabase.rows[0]).length === 0) throw new NotFoundError(`No song with ID ${songId} was found`);
+
+        const songIdInFavorite = await db.query(
+            `SELECT songs_id AS "songsId"
+             FROM favorites
+             WHERE songs_id = $1
+             AND username = $2
+            `,
+            [songIdInDatabase.rows[0].id, username]
+        ) 
+
+        console.log(`check if no song is found in favorites: ${JSON.stringify(songIdInFavorite.rows)}`);
+        console.log(`check if no song is found in favorites: ${songIdInFavorite.rows}`);
+
+
+        if (songIdInFavorite.rows.length !== 0) {
+            console.log(`check if song is saved in the favorited: ${songIdInFavorite.rows[0].songsId}`);
+        } 
+
+        console.log(`favorited song is found: ${songIdInFavorite.rows.length !== 0}`);
+
+        return songIdInFavorite.rows.length !== 0 ? true : false;
+    }
+
     // Add a selected song to user's favorite list
 
 

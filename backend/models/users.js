@@ -155,8 +155,18 @@ class User {
              [username]
         ) 
 
+        console.log(userSongsResult.rows);
+        console.log(userSongsResult.rows[0]);
+
+        // const favoritedSongId = await db.query(
+        //     `SELECT s.song_id
+        //     FROM songs AS s
+        //     WHERE s.id = $1`,
+        //     [id]
+        // )
+
         // assign user's favorite songs from database
-        user.favoriteSongs = userSongsResult.rows.map(f => f.song_id);
+        user.favoriteSongs = userSongsResult.rows.map(f => f.songs_id);
         return user;
     }
 
@@ -198,10 +208,10 @@ class User {
                                 last_name AS "lastName",
                                 email,
                                 is_admin AS "isAdmin"`;
-        console.log(querySql);      
+        console.log(querySql);
         // update the data in the database
         const result = await db.query(querySql, [...values, username]);
-        // return the updated user 
+        // return the updated user
         const user = result.rows[0];
 
         // check if user exists
@@ -210,7 +220,6 @@ class User {
         delete user.password;
         return user;
     }
-
 
     /** Delete given user from database */
     static async remove(username) {
@@ -225,7 +234,7 @@ class User {
         const user = result.rows[0];
 
         // return not found error if no given username
-        if(!user) throw new NotFoundError(`No user ${username} found`); 
+        if(!user) throw new NotFoundError(`No user ${username} found`);
     }
 
     /** set songs as user's favorite */
@@ -256,6 +265,8 @@ class User {
         console.log(`check song's id in the model, ${JSON.stringify(song)}`);
 
         if (!song) throw new NotFoundError(`No song with ID of ${songId} found`);
+
+        // console.log(favoritesInUser.rows);
 
         // set this song to be user's favorite
         await db.query(
