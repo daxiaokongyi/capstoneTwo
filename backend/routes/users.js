@@ -127,9 +127,22 @@ router.delete("/:username", ensureCorrectUserOrAdmin, async function(req, res, n
 router.post("/:username/songs/:id", ensureCorrectUserOrAdmin, async function(req, res, next) {
     try {
         const songId = +req.params.id;
+        const username = req.params.username;
         console.log(songId);
-        await User.setFavorite(req.params.username, songId);
+        await User.setFavorite(username, songId);
         return res.json({favorited: songId});
+    } catch (error) {
+        return next(error);
+    }
+});
+
+router.delete("/:username/songs/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
+    try {
+        const songId = +req.params.id;
+        const username = req.params.username;
+        console.log(songId);
+        const songsId = await User.deleteFavorite(username, songId);
+        return res.json({deletedFavorited: songsId});
     } catch (error) {
         return next(error);
     }

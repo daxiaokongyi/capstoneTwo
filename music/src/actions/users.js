@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER, GET_SIGNUP_ERRORS, GET_SIGNIN_ERRORS, ADD_FAVORITE_SONG} from "./types";
+import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER, GET_SIGNUP_ERRORS, GET_SIGNIN_ERRORS, ADD_FAVORITE_SONG, REMOVE_FAVORITE_SONG} from "./types";
 
 const API_URL = "http://localhost:3001";
 
@@ -100,8 +100,6 @@ const getSigninErrors = (errorMessage) => {
     }
 }
 
-
-
 // action for logging out
 export const logout = () => {
     return {
@@ -188,3 +186,31 @@ const addFavoriteSong = (songId) => {
     }
 }
 
+// remove a song from user's favorited list
+export const removeSongFromFavorite = (username, songId, token) => {
+    return async function (dispatch) {
+        await axios.delete(`${API_URL}/users/${username}/songs/${songId}`, {
+            headers: {
+                'Authorization':`Bearer ${token}`
+            }
+        }).then(
+            result => {
+                console.log(`see what result will be: ${JSON.stringify(result)}`);
+                console.log(`result.favorited: ${result.data.favorited}`);
+                return dispatch(removeFavoriteSong(result.data.deletedFavorited));
+            }
+        ).catch(
+            error => {
+                console.log(error);
+            }
+        )
+    }
+}
+
+const removeFavoriteSong = (songId) => {
+    console.log(`action songId: ${songId}`);
+    return {
+        type: REMOVE_FAVORITE_SONG,
+        data: songId
+    }
+}

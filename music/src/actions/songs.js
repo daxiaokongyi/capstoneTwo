@@ -29,7 +29,10 @@ export function checkIfFavorited(songId, songsId, username) {
             songsId,
             username
         }).then(
-            result => dispatch(checkFavorited(result.data))
+            result => {    
+                console.log(`result data: ${JSON.stringify(result.data)}`);
+                return dispatch(checkFavorited(result.data));
+            }
         ).catch(
             error => {
                 return dispatch(checkFavoritedError(error.response.data.error.message));
@@ -39,6 +42,7 @@ export function checkIfFavorited(songId, songsId, username) {
 }
 
 const checkFavorited = (ifFavorited) => {
+    console.log(`check ifFavorited ${JSON.stringify(ifFavorited)}`);
     return {
         type: CHECK_IF_FAVORITED,
         data: ifFavorited
@@ -49,7 +53,7 @@ const checkFavoritedError = (errorMessage) => {
     return {
         type: CHECK_FAVORITES_ERRORS, 
         errs: {
-            signupErrs: errorMessage
+            checkFavoritedErrs: errorMessage
         }
     }
 }

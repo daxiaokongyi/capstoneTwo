@@ -275,6 +275,48 @@ class User {
             [username, song.id]
         );
     } 
+
+    static async deleteFavorite(username, songId) {
+        console.log(`set song favorite ${username}, ${songId}`);
+        // get user based on the username given
+        const usernameSelected = await db.query(
+            `SELECT username
+            FROM users
+            WHERE username = $1`, 
+            [username]
+        );
+        // check if this user can be found
+        const user = usernameSelected.rows[0];
+        if (!user) throw new NotFoundError(`No username ${username} found`);
+
+        // get song based on its song_id
+        const songSelected = await db.query(
+            `SELECT id
+            FROM songs
+            WHERE song_id = $1`,
+            [songId]
+        );
+        // check if this song can be found
+        const song = songSelected.rows[0];
+        console.log(`check song's id in the model, ${song}`);
+        console.log(`check song's id in the model, ${JSON.stringify(song)}`);
+
+        if (!song) throw new NotFoundError(`No song with ID of ${songId} found`);
+
+        // remove this song from user's favorite
+        const songDeleted = await db.query(
+            `DELETE 
+             FROM favorites
+             WHERE username = $1
+             AND songs_id = $2
+             RETURNING $3`,
+             [username, song.id, songId]
+        )
+
+        if (!songDeleted) throw new NotFoundError(`No song with id of ${songId} was found`);
+
+        return song.id;
+    }
 }
 
 module.exports = User;
