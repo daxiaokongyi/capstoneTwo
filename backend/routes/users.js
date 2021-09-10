@@ -69,7 +69,8 @@ router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, nex
   try {
     console.log(`get username ...`);
     const user = await User.get(req.params.username);
-    console.log(JSON.stringify(user));
+    // console.log(JSON.stringify(user));
+    console.log(`get user from users route: ${JSON.stringify(user)}`);
     return res.json({ user });
   } catch (err) {
     return next(err);

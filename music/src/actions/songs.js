@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS} from '../actions/types';
+import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS, GET_FAVORITE_DETAILS} from '../actions/types';
 const API_URL = "http://localhost:3001";
 
 console.log(API_URL);
@@ -57,8 +57,3 @@ const checkFavoritedError = (errorMessage) => {
         }
     }
 }
-
-
-
-
-

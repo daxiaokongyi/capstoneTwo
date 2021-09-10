@@ -22,7 +22,16 @@ export default function rootReducer (state = INITIAL_STATE, action) {
         case LOG_OUT:
             return {...state, token: null, user: {}, signin_errors: [], signup_errors: [], favorite_songs: []};
         case GET_CURRENTUSER:
-            return {...state, ...data};
+            console.log(JSON.stringify(data));
+            // let favSongsDetails = data.user.favoriteSongs.map(each => {
+            //     return {
+            //         songId: each[0], 
+            //         songName: each[1], 
+            //         songArtist: each[0]
+            //     }
+            // })
+            // return {...state, user: {...data.user, favoriteSongs: favSongsDetails}};
+            return {...state, ...data}
         case EDIT_CURRENTUSER:
             return {...state, ...data};
         case GET_SIGNUP_ERRORS:

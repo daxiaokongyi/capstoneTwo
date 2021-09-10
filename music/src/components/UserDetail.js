@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 
 const UserDetail = () => {
     const token = useSelector(st => st.users.token);
+    const favoritedSongs = useSelector(st => st.users.user.favoriteSongs);
 
     useEffect(function loadUserInfo() {
         const getCurrentUser = async () => {
@@ -26,6 +27,8 @@ const UserDetail = () => {
         setInfoLoaded(false);
         getCurrentUser();
     }, [token]);
+
+    console.log(`favorite songs: ${favoritedSongs}`);
 
     const save = (username, updatedUser) => {
         dispatch(sendEditToAPI(username, updatedUser, token));
@@ -75,13 +78,18 @@ const UserDetail = () => {
         setEditable(true);
     }
 
-    let userFavorite = (favoritedSongs) => {
+    const showFavSongs = (favoritedSongs) => {
+        console.log(favoritedSongs);
         if (favoritedSongs) {
-            favoritedSongs.map(songId => {
-            <p>{songId}</p>
-            })
+            return favoritedSongs.map(each => (
+                <p>
+                    <span><b>Song ID: </b> {each[0]} </span>
+                    <span><b>Song Name: </b> {each[1]} </span>
+                    <span><b>Song Artist: </b> {each[2]} </span>
+                </p>
+            ))
         }
-    }
+    };
 
     // show details only when it's not editable
     const nonEditable = () => {
@@ -96,8 +104,7 @@ const UserDetail = () => {
                 </div>
                 <button onClick={handleClick}>Home Page</button>
                 <button onClick={handleEdit}>Edit Profile</button>
-
-                {userFavorite(user.favorite_songs)}
+                {showFavSongs(favoritedSongs)}
             </div>
         )
     }
