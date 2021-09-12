@@ -5,8 +5,8 @@ const {NotFoundError} = require('../expressError');
 
 class Song {
     // Add songs fetched from API to song's database
-    static async addSongToDatabase(songId, songName, artistName) {
-        console.log(`check in song's model: ${songId}, ${songName}, ${artistName}`);
+    static async addSongToDatabase(songId, songName, artistName, genreName) {
+        console.log(`check in song's model: ${songId}, ${songName}, ${artistName}, ${genreName}`);
 
         // check if the selected song is already in the song's database
         const songPreviewCheck = await db.query(
@@ -19,15 +19,16 @@ class Song {
         console.log(songPreviewCheck.rows[0]);
 
         if (!songPreviewCheck.rows[0]) {
-            const result = await db.query(
+            await db.query(
                 `INSERT INTO songs
-                (song_id, song_name, artist_name)
-                VALUES ($1, $2, $3)
+                (song_id, song_name, artist_name, genre_name)
+                VALUES ($1, $2, $3, $4)
                 RETURNING
                     song_id AS "songId",
                     song_name AS "songName",
-                    artist_name AS "artistName"`,
-                [songId, songName, artistName],
+                    artist_name AS "artistName",
+                    genre_name AS "genreName"`,
+                [songId, songName, artistName, genreName],
             );
         }
 

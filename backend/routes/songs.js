@@ -17,24 +17,66 @@ router.get("/:searchTerm", async function (req, res, next) {
     try {
         console.log("it works!");
         console.log(`search term: ${req.params.searchTerm}`)
-        const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}&limit=5`, {
+        const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}&limit=8`, {
             headers: {
                 'Authorization':`Bearer ${token}`
             }
         });
         const resultSongs = result.data.results.songs.data;
+        const resultArtists = result.data.results.artists.data;
+        const resultAlbums = result.data.results.albums.data;
+        // const resultPlaylists = result.data.results.playlists.data;
+        // const resultMusicVideos = result.data.results["music-videos"].data;
+
+
+        console.log(`check albums data: ${JSON.stringify(resultAlbums)}`);
+        console.log(`check artists data: ${JSON.stringify(resultArtists)}`);
+        // console.log(`check playlists data: ${JSON.stringify(resultPlaylists)}`);
+        // console.log(`check Music Videos data: ${JSON.stringify(resultMusicVideos)}`);
 
         resultSongs.map((song) => {
             console.log(`song route: ${song.id}`);
-            console.log(`song route: ${song.attributes.name}`);
-            console.log(`song route: ${song.attributes.artistName}`);
+            console.log(`song name: ${song.attributes.name}`);
+            console.log(`song artist name: ${song.attributes.artistName}`);
+            console.log(`song genre name: ${song.attributes.genreNames[0]}`)
 
-            Song.addSongToDatabase(song.id, song.attributes.name, song.attributes.artistName);
+            Song.addSongToDatabase(song.id, song.attributes.name, song.attributes.artistName, song.attributes.genreNames[0]);
         });
+
+        resultArtists.map(artist => ({
+            artistUrl :artist.attributes.url,
+            artistName : artist.attributes.name,
+            artistGenreNames : artist.attributes.genreNames
+        }));
+
+        resultAlbums.map(album => ({
+            albumUrl : album.attributes.url,
+            albumArtist: album.attributes.artistName,
+            albumName: album.attributes.name,
+            albumReleaseDate: album.attributes.releaseDate
+        }));
+
+        // resultPlaylists.map(playlist => ({
+        //     playlistUrl : playlist.attributes.url,
+        //     playlistName: playlist.attributes.name,
+        //     playlistDescription: playlist.attributes.description.standard
+        // }));
+
+        // resultMusicVideos.map(video => ({
+        //     videoPreviewUrl : video.attributes.previews[0].url,
+        //     videoHlsUrl : video.attributes.previews[0].hlsUrl,
+        //     videoUrl : video.attributes.url,
+        //     videoName: video.atrributes.name,
+        //     videoDuration: video.atrributes.durationInMillis,
+        //     videoReleaseDate: video.attributes.releaseDate
+        // }));
 
         // console.log(result.data.results.songs.data);
 
-        return res.status(201).json({songs:resultSongs});
+        // return res.status(201).json({songs:resultSongs, artist: resultArtists, albums: resultAlbums, playlists: resultPlaylists, musicVideos: resultMusicVideos});
+
+        return res.status(201).json({songs:resultSongs, artists: resultArtists, albums: resultAlbums});
+
     } catch (error) {
         return next(error);
     }

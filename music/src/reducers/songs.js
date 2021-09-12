@@ -2,13 +2,15 @@ import {FETCH_SONGS, CHECK_IF_FAVORITED} from '../actions/types';
 
 const INITIAL_STATE = {
     songs: [],
+    artists: [],
+    albums: [],
     isFavorited: false
 }
 
 export default function songsReducer(state=INITIAL_STATE, action) {
     let {data, type} = action;
     console.log(`reducer check:`);
-    console.log(`action.data: ${data}`);
+    // console.log(`action.data: ${JSON.stringify(data)}`);
     console.log(type);
     switch (type) {
         case FETCH_SONGS:

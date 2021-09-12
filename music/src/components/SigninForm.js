@@ -25,6 +25,7 @@ const SigninForm = ({save}) => {
 
         if (token) {
             history.push(`/users/${formData.username}`);
+            // history.push(`/suggestion`);
         } else if (signinErrors.length !== 0) {
             setFormErrors(signinErrors);
         }

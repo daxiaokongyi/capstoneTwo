@@ -156,50 +156,54 @@ class User {
         ) 
 
         console.log(userSongsResult.rows);
-        console.log(userSongsResult.rows[0]);
 
-        const songsId = userSongsResult.rows.map(each => {
-            console.log(`type of ${typeof parseInt(each.songs_id)}`);
-            return parseInt(each.songs_id);
+        if (userSongsResult.rows.length !== 0) {
+            console.log(userSongsResult.rows[0]);
+
+            const songsId = userSongsResult.rows.map(each => {
+                console.log(`type of ${typeof parseInt(each.songs_id)}`);
+                return parseInt(each.songs_id);
             })
 
-        console.log(`songsId: ${songsId}`);
-        console.log(`type: `)
+            console.log(`songsId: ${songsId}`);
+            console.log(`type: `)
 
-        // const favoritedSongId = await db.query(
-        //     `SELECT s.song_id
-        //     FROM songs AS s
-        //     WHERE s.id = $1`,
-        //     [id]
-        // )
+            // const favoritedSongId = await db.query(
+            //     `SELECT s.song_id
+            //     FROM songs AS s
+            //     WHERE s.id = $1`,
+            //     [id]
+            // )
 
-        const favDetails = await db.query(
-            `SELECT song_id, song_name, artist_name
-             FROM songs
-             WHERE id in (${songsId})`
-        )
+            const favDetails = await db.query(
+                `SELECT song_id, song_name, artist_name, genre_name
+                 FROM songs
+                 WHERE id in (${songsId})`
+            )
 
-        console.log(`check favorite details: ${JSON.stringify(favDetails.rows)}`);
+            console.log(`check favorite details: ${JSON.stringify(favDetails.rows)}`);
 
-        // user.favoriteSongs = favDetails.rows.map(
-        //     each => {
-        //         return {
-        //             songId : each.song_id,
-        //             songName : each.song_name,
-        //             songArtist: each.artist_name
-        //         }
-        //     }
-        // )
+            // user.favoriteSongs = favDetails.rows.map(
+            //     each => {
+            //         return {
+            //             songId : each.song_id,
+            //             songName : each.song_name,
+            //             songArtist: each.artist_name
+            //         }
+            //     }
+            // )
 
-        user.favoriteSongs = favDetails.rows.map(
-            each => [each.song_id, each.song_name, each.artist_name]
-        )
+            user.favoriteSongs = favDetails.rows.map(
+                each => [each.song_id, each.song_name, each.artist_name, each.genre_name]
+            )
 
-        console.log(JSON.stringify( user.favoriteSongs));
+            console.log(JSON.stringify( user.favoriteSongs));
+        }
 
         // assign user's favorite songs from database
         // user.favoriteSongs = userSongsResult.rows.map(f => f.songs_id);
 
+        console.log(JSON.stringify(user));
         return user;
     }
 

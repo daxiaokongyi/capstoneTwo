@@ -10,7 +10,10 @@ export function fetchSongsFromAPI(searchTerm) {
         console.log('hi');
         console.log(`Search term: ${searchTerm}`);
         const result = await axios.get(`${API_URL}/applemusic/songs/${searchTerm}`);
-        console.log(result.data);
+        // console.log(`check song's result data: ${JSON.stringify(result.data.songs)}`);
+        // console.log(`check artist's result data: ${JSON.stringify(result.data.artists)}`);
+        // console.log(`check albums' result data: ${JSON.stringify(result.data.albums)}`);
+
         return dispatch(getSongs(result.data));
     }
 }

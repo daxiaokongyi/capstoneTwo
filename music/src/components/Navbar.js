@@ -18,17 +18,37 @@ const Navbar = () => {
       dispatch(logout());
     }
 
+    const homeOrSuggestion = (user) => {
+      if (user && user.username) {
+        return (
+          <NavLink className="nav-link" to={`/suggestion`}>
+            I-Music
+          </NavLink>
+        )
+      } else {
+        <NavLink className="nav-link" to={`/`}>
+          I-Music
+        </NavLink>
+      }
+    }
+
     const loggedInNav = () => {
       return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <ul className="navbar-nav ml-auto">
           <li className="nav-item mr-4">
+            {homeOrSuggestion(user)}
+            {/* <NavLink className="nav-link" to={`/`}>
+              I-Music
+            </NavLink> */}
             <NavLink className="nav-link" to={`/${user.username}`}>
               Hello {`${user.username}'s`}!
             </NavLink>
           </li>
           <li className="naw-item">
-            <Link className="nav-link" to="/" onClick={signOut}>Log Out</Link>
+            <NavLink className="nav-link" to="/" onClick={signOut}>
+              Log Out
+            </NavLink>
           </li>
           <SearchBox/>
         </ul>

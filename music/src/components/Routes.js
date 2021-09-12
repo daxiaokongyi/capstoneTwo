@@ -6,6 +6,7 @@ import Songs from './Songs';
 import Signup from './Signup';
 import Signin from './Signin';
 import SongDetail from './SongDetail';
+import Suggestion from './Suggestion';
 
 const Routes = () => {
     return (
@@ -13,6 +14,9 @@ const Routes = () => {
             <Switch>
                 <Route exact path="/">
                     <Home/>
+                </Route>
+                <Route exact path="/suggestion">
+                    <Suggestion/>
                 </Route>
                 <Route exact path="/songs">
                     <Songs/>

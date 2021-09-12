@@ -9,6 +9,7 @@ const UserDetail = () => {
     const token = useSelector(st => st.users.token);
     const favoritedSongs = useSelector(st => st.users.user.favoriteSongs);
 
+
     useEffect(function loadUserInfo() {
         const getCurrentUser = async () => {
             console.log(token);
@@ -83,9 +84,9 @@ const UserDetail = () => {
         if (favoritedSongs) {
             return favoritedSongs.map(each => (
                 <p>
-                    <span><b>Song ID: </b> {each[0]} </span>
-                    <span><b>Song Name: </b> {each[1]} </span>
+                    <a href={`/songs/${each[0]}`}>{each[1]}</a>
                     <span><b>Song Artist: </b> {each[2]} </span>
+                    <p>Genre Name: {each[3]}</p>
                 </p>
             ))
         }
