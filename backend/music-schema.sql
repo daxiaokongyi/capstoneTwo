@@ -10,10 +10,10 @@ CREATE TABLE users (
 
 CREATE TABLE songs (
     id SERIAL PRIMARY KEY,
-    song_id INTEGER NOT NULL,
-    song_name TEXT NOT NULL,
-    artist_name TEXT NOT NULL,
-    genre_name TEXT NOT NULL
+    song_id INTEGER NOT NULL
+    -- song_name TEXT NOT NULL,
+    -- artist_name TEXT NOT NULL,
+    -- genre_name TEXT NOT NULL
 );
 
 CREATE TABLE favorites (

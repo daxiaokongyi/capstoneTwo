@@ -130,6 +130,9 @@ router.post("/:username/songs/:id", ensureCorrectUserOrAdmin, async function(req
         const songId = +req.params.id;
         const username = req.params.username;
         console.log(songId);
+
+        await Song.addSongToDatabase(songId);
+
         await User.setFavorite(username, songId);
         return res.json({favorited: songId});
     } catch (error) {

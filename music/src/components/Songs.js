@@ -7,27 +7,29 @@ const Songs = () => {
     const songs = useSelector(store => store.songs.songs);
     const artists = useSelector(store => store.songs.artists);
     const albums = useSelector(store => store.songs.albums);
+    const playlists = useSelector(store => store.songs.playlists);
+    const musicVideos = useSelector(store => store.songs.musicVideos);
 
     console.log(`artists: ${artists}`);
 
     const dispatch = useDispatch();
-    const [isLoading, setIsLoading] = useState(true);
+    // const [isLoading, setIsLoading] = useState(true);
     const history = useHistory();
 
     const handleClick = (songId) => {
         history.push(`/songs/${songId}`);
     }
 
-    useEffect(function () {
-        async function fetchSongs() {
-            await dispatch(fetchSongsFromAPI());
-            setIsLoading(false);
-        }
+    // useEffect(function () {
+    //     async function fetchSongs() {
+    //         await dispatch(fetchSongsFromAPI());
+    //         setIsLoading(false);
+    //     }
 
-        if (isLoading) fetchSongs();
-    }, [dispatch, isLoading]);
+    //     if (isLoading) fetchSongs();
+    // }, [dispatch, isLoading]);
 
-    if (isLoading) return <b>Loading ...</b>
+    // if (isLoading) return <b>Loading ...</b>
 
     // console.log(songs);
 
@@ -40,10 +42,10 @@ const Songs = () => {
                         <div className="card" style={{width : "18rem"}}>
                             <div className="card-body">
                                 <p className="card-title">
-                                    <a href={`${artist.attributes.url}`} style= {{textDecoration : "none"}} target="_blank">Artist Name: {artist.attributes.name}</a>
+                                    <a href={`${artist.artistUrl}`} style= {{textDecoration : "none"}} target="_blank">Artist Name: {artist.artistName}</a>
                                 </p>
                                 <p className="card-text">
-                                    Genre Name: {artist.attributes.genreNames.map(each => (
+                                    Genre Name: {artist.artistGenreNames.map(each => (
                                         <span>{each}</span>
                                     ))}
                                 </p>
@@ -58,18 +60,18 @@ const Songs = () => {
                     <div className="col">
                         <div className="card" style={{width : "18rem"}}>
                             <div className="card-body">
-                                <p>{song.attributes.name}</p>
-                                <p>Song ID: {song.id}</p>
+                                <p>{song.songName}</p>
+                                <p>Song ID: {song.songId}</p>
                                 <h5 className="card-title">
-                                    <a href={`${song.attributes.url}`} style= {{textDecoration : "none"}} target="_blank">Preivew</a>
+                                    <a href={`${song.songPreview}`} style= {{textDecoration : "none"}} target="_blank">Preivew</a>
                                 </h5>
                                 <p className="card-text">
-                                    Artist Name: {song.attributes.artistName}
+                                    Artist Name: {song.songName}
                                 </p>
-                                <p> Download Preview: <a href={song.attributes.previews[0].url}>{song.attributes.name}</a>
+                                <p> Download Preview: <a href={song.songDownloadPreview}>{song.songName}</a>
                                 </p>
                                 {/* <img src={song.attributes.artwork.url} alt="" /> */}
-                                <button onClick={() => handleClick(song.id)}>Check Detail</button>
+                                <button onClick={() => handleClick(song.songId)}>Check Detail</button>
                             </div>
                         </div>
                     </div>
@@ -82,10 +84,54 @@ const Songs = () => {
                         <div className="card" style={{width : "18rem"}}>
                             <div className="card-body">
                                 <p className="card-title">
-                                    <a href={`${album.attributes.url}`} style= {{textDecoration : "none"}} target="_blank">Album: {album.attributes.name}</a>
+                                    <a href={`${album.albumUrl}`} style= {{textDecoration : "none"}} target="_blank">Album: {album.albumName}</a>
                                 </p>
                                 <p className="card-text">
-                                    Artist Name: {album.attributes.artistName}
+                                    Artist Name: {album.albumArtist}
+                                </p>
+                                <p>Release Date: {album.albumReleaseDate}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "border-radius": "0.6rem"}}>     
+                <p>Playlists: </p>
+                {playlists.map(playlist => (
+                    <div className="col">
+                        <div className="card" style={{width : "18rem"}}>
+                            <div className="card-body">
+                                <p className="card-title">
+                                    <a href={`${playlist.playlistUrl}`} style= {{textDecoration : "none"}} target="_blank">Album: {playlist.playlistName}</a>
+                                </p>
+                                <p className="card-text">
+                                    Playlist Description: {playlist.playlistDescription}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "border-radius": "0.6rem"}}>     
+                <p>Music Videos: </p>
+                {musicVideos.map(musicVideo => (
+                    <div className="col">
+                        <div className="card" style={{width : "18rem"}}>
+                            <div className="card-body">
+                                <p className="card-title">
+                                    <a href={`${musicVideo.videoUrl}`} style= {{textDecoration : "none"}} target="_blank">Music Video: {musicVideo.videoName}</a>
+                                </p>
+                                <p className="card-title">
+                                    <a href={`${musicVideo.videoPreviewUrl}`} style= {{textDecoration : "none"}} target="_blank">Music Video Preview</a>
+                                </p>
+                                <p className="card-title">
+                                    <a href={`${musicVideo.videoHlsUrl}`} style= {{textDecoration : "none"}} target="_blank">Music Video HLS Preview</a>
+                                </p>
+                                <p className="card-text">
+                                    Music Video duration: {musicVideo.videoDuration}
+                                </p>
+                                <p className="card-text">
+                                    Music Video Release Date: {musicVideo.videoReleaseDate}
                                 </p>
                             </div>
                         </div>
@@ -93,14 +139,6 @@ const Songs = () => {
                 ))}
             </div>
         </div>
-
-                // {songs.map(song => <p>{song.attributes.name}</p>)}
-                // {songs.map(song => <a href={song.attributes.previews[0].url}>{song.attributes.name}</a>  )}
-                // {songs.map(song => <h1>{song.id}</h1>)}
-                // {songs.map(song => <a href={song.attributes.url}>{song.attributes.url}</a>)}
-                // {songs.map(song => <img src={song.attributes.artwork.url} alt="" width={song.attributes.artwork.width} 
-                // height={song.attributes.artwork.height}/> )}            
-        // </div>
     )
 }
 
