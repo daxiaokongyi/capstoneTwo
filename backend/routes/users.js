@@ -8,6 +8,7 @@ const {ensureAdmin, ensureCorrectUserOrAdmin} = require('../middleware/auth');
 const userNewSchema = require('../schemas/userNew.json');
 const {BadRequestError} = require('../expressError');
 const User = require('../models/users');
+const Song = require('../models/songs');
 const {createToken} = require('../helpers/tokens');
 
 /** POST / { user }  => { user, token }
@@ -130,11 +131,12 @@ router.post("/:username/songs/:id", ensureCorrectUserOrAdmin, async function(req
         const songId = +req.params.id;
         const username = req.params.username;
         console.log(songId);
+        const songName = req.body.songName;
+        const songArtistName = req.body.songArtistName; 
 
-        await Song.addSongToDatabase(songId);
-
+        await Song.addSongToDatabase(songId, songName, songArtistName);
         await User.setFavorite(username, songId);
-        return res.json({favorited: songId});
+        return res.json({favorited: true});
     } catch (error) {
         return next(error);
     }

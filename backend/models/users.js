@@ -176,7 +176,9 @@ class User {
             // )
 
             const favDetails = await db.query(
-                `SELECT song_id
+                `SELECT song_id AS "songId",
+                        song_name AS "songName",
+                        song_artist AS "songArtist"       
                  FROM songs
                  WHERE id in (${songsId})`
             )
@@ -194,8 +196,10 @@ class User {
             // )
 
             user.favoriteSongs = favDetails.rows.map(
-                each => [each.song_id, each.song_name, each.artist_name, each.genre_name]
+                each => [each.songId, each.songName, each.songArtist]
             )
+
+
         } else {
             user.favoriteSongs = [];
         }
@@ -343,7 +347,7 @@ class User {
         if (!song) throw new NotFoundError(`No song with ID of ${songId} found`);
 
         // remove this song from user's favorite
-        const songDeleted = await db.query(
+        const songDeletedFromFav = await db.query(
             `DELETE 
              FROM favorites
              WHERE username = $1
@@ -352,7 +356,17 @@ class User {
              [username, song.id, songId]
         )
 
-        if (!songDeleted) throw new NotFoundError(`No song with id of ${songId} was found`);
+        if (!songDeletedFromFav) throw new NotFoundError(`No song with id of ${songId} was found`);
+
+        // remove this song from songs database
+        const songDeletedFromSongs = await db.query(
+            `DELETE 
+             FROM songs
+             WHERE id = $1`,
+             [song.id]
+        )
+
+        if (!songDeletedFromSongs) throw new NotFoundError(`No song with id of ${songId} was found`);
 
         return song.id;
     }

@@ -9,6 +9,7 @@ const Song = require('../models/songs');
 
 // basic Apple API URL
 const BASIC_API_URL = "https://api.music.apple.com/v1/catalog/us/search";
+const BASIC_API_URL_SONG_DETAIL = "https://api.music.apple.com/v1/catalog/us/songs?ids=";
 
 /** GET / Get songes with the category of songs
  */
@@ -29,10 +30,10 @@ router.get("/:searchTerm", async function (req, res, next) {
         let resultMusicVideos = result.data.results["music-videos"].data;
 
 
-        console.log(`check albums data: ${JSON.stringify(resultAlbums)}`);
-        console.log(`check artists data: ${JSON.stringify(resultArtists)}`);
-        console.log(`check playlists data: ${JSON.stringify(resultPlaylists)}`);
-        console.log(`check Music Videos data: ${JSON.stringify(resultMusicVideos)}`);
+        // console.log(`check albums data: ${JSON.stringify(resultAlbums)}`);
+        // console.log(`check artists data: ${JSON.stringify(resultArtists)}`);
+        // console.log(`check playlists data: ${JSON.stringify(resultPlaylists)}`);
+        // console.log(`check Music Videos data: ${JSON.stringify(resultMusicVideos)}`);
 
         resultSongs = resultSongs.map(song => ({
             // console.log(`song route: ${song.id}`);
@@ -88,23 +89,69 @@ router.get("/:searchTerm", async function (req, res, next) {
     }
 });
 
-router.post("/checkfavorited/:songId", async function (req, res, next) {
+router.post("/songDetail/:songId", async function (req, res, next) {
     try {
+        console.log(`:songId: ${req.params.songId}`);
+
+        const result = await axios.get(`${BASIC_API_URL_SONG_DETAIL}${req.params.songId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const ifFavorited = await Song.checkIfFavorited(req.params.songId, req.body.username);
+
+        // console.log(`result of song's detail: ${JSON.stringify(result.data.attributes)}`);
+        // console.log(`result of song's detail: ${JSON.stringify(result.data.data[0].attributes)}`);
+
+        const songDetail = result.data.data[0].attributes;
+
+        // const resultSongDetail = result.data.results.songs;
+
+        // also check if the song is set as favorited by user
         console.log(`check for favorited: ${JSON.stringify(req.body)}, and songID ${req.params.songId}`);
         console.log(`songs id: ${req.body.songsId} `);
         console.log(`type of songs id: ${Array.isArray(req.body.songsId)} `);
-        console.log(`length of songs id array: ${req.body.songsId.length} `);
+        // console.log(`length of songs id array: ${req.body.songsId.length} `);
 
 // ============
 
 
-        const ifFavorited = await Song.checkIfFavorited(req.body.songsId, req.params.songId, req.body.username);
+        // const ifFavorited = await Song.checkIfFavorited(req.body.songsId, req.params.songId, req.body.username);
         console.log(`check if favorited: ${ifFavorited}`);
         console.log(`check if favorited: ${JSON.stringify(ifFavorited)}`);
-        return res.json({favorited : ifFavorited});
+        // return res.json({favorited : ifFavorited});
+
+
+        return res.status(201).json({
+            songName: songDetail.name,
+            songArtistName: songDetail.artistName,
+            songGenreNames: songDetail.genreNames,
+            songArtwork: songDetail.artwork,
+            favorited : ifFavorited
+        })
     } catch (error) {
         return next(error);
     }
-})
+});
+
+// router.post("/checkfavorited/:songId", async function (req, res, next) {
+//     try {
+//         console.log(`check for favorited: ${JSON.stringify(req.body)}, and songID ${req.params.songId}`);
+//         console.log(`songs id: ${req.body.songsId} `);
+//         console.log(`type of songs id: ${Array.isArray(req.body.songsId)} `);
+//         console.log(`length of songs id array: ${req.body.songsId.length} `);
+
+// // ============
+
+
+//         const ifFavorited = await Song.checkIfFavorited(req.body.songsId, req.params.songId, req.body.username);
+//         console.log(`check if favorited: ${ifFavorited}`);
+//         console.log(`check if favorited: ${JSON.stringify(ifFavorited)}`);
+//         return res.json({favorited : ifFavorited});
+//     } catch (error) {
+//         return next(error);
+//     }
+// })
 
 module.exports = router;
