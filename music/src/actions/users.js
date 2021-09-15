@@ -156,10 +156,13 @@ const editUser = (user, token) => {
     }
 }
 
-export const addSongToFavorite =(username, songId, token) => {
+export const addSongToFavorite =(songId, songName, songArtistName, username, token) => {
     return async function (dispatch) {
-        console.log(`set favorite action: ${username}, ${songId}, ${token}`);
-        await axios.post(`${API_URL}/users/${username}/songs/${songId}`, {}, {
+        console.log(`set favorite action: ${username}, ${songId}, ${token}, ${songName}, ${songArtistName}`);
+        await axios.post(`${API_URL}/users/${username}/songs/${songId}`, {
+            songName,
+            songArtistName
+        }, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -178,11 +181,11 @@ export const addSongToFavorite =(username, songId, token) => {
     }
 }
 
-const addFavoriteSong = (songId) => {
-    console.log(`action songId: ${songId}`);
+const addFavoriteSong = (checkFavorited) => {
+    console.log(`action songId: ${checkFavorited}`);
     return {
         type: ADD_FAVORITE_SONG,
-        data: songId
+        data: checkFavorited
     }
 }
 

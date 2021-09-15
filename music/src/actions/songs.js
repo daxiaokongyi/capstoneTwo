@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS, GET_FAVORITE_DETAILS} from '../actions/types';
+import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS, GET_FAVORITE_DETAILS, GET_SONG_DETAIL, ADD_FAVORITE_SONG} from '../actions/types';
 const API_URL = "http://localhost:3001";
 
 console.log(API_URL);
@@ -58,5 +58,25 @@ const checkFavoritedError = (errorMessage) => {
         errs: {
             checkFavoritedErrs: errorMessage
         }
+    }
+}
+
+export function fetchSongDetail(songId, username) {
+    return async function (dispatch) {
+        console.log(`songId: ${songId}`);
+        console.log(`username: ${username}`);
+
+        const result = await axios.post(`${API_URL}/applemusic/songs/songDetail/${songId}`, {
+            username
+        });
+        console.log(`action result about song detail; ${JSON.stringify(result.data)}`);
+        return dispatch(getSongDetail(result.data));
+    }
+}
+
+function getSongDetail (songDetailData){
+    return {
+        type: GET_SONG_DETAIL,
+        data: songDetailData
     }
 }
