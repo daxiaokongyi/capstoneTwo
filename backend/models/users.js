@@ -36,12 +36,9 @@ class User {
         // check password if user is found
 
         if (user) {
-            console.log(`check if user exists: ${user.username}, ${user.password}, ${user.email}`);
-
             // compare hashed password to a new hashed one from input password
             const isValid = await bcrypt.compare(password, user.password);
-            console.log(`password: ${password}, user.password: ${user.password}`);
-            console.log(`test isValid: ${isValid}`);
+
             if (isValid === true) {
                 // "hide" user's hashed password before returning the current user's infomation 
                 delete user.password;
@@ -155,25 +152,11 @@ class User {
              [username]
         ) 
 
-        console.log(userSongsResult.rows);
-
         if (userSongsResult.rows.length !== 0) {
-            console.log(userSongsResult.rows[0]);
 
             const songsId = userSongsResult.rows.map(each => {
-                console.log(`type of ${typeof parseInt(each.songs_id)}`);
                 return parseInt(each.songs_id);
             })
-
-            console.log(`songsId: ${songsId}`);
-            console.log(`type: `)
-
-            // const favoritedSongId = await db.query(
-            //     `SELECT s.song_id
-            //     FROM songs AS s
-            //     WHERE s.id = $1`,
-            //     [id]
-            // )
 
             const favDetails = await db.query(
                 `SELECT song_id AS "songId",
@@ -183,33 +166,13 @@ class User {
                  WHERE id in (${songsId})`
             )
 
-            console.log(`check favorite details: ${JSON.stringify(favDetails.rows)}`);
-
-            // user.favoriteSongs = favDetails.rows.map(
-            //     each => {
-            //         return {
-            //             songId : each.song_id,
-            //             songName : each.song_name,
-            //             songArtist: each.artist_name
-            //         }
-            //     }
-            // )
-
             user.favoriteSongs = favDetails.rows.map(
                 each => [each.songId, each.songName, each.songArtist]
             )
-
-
         } else {
             user.favoriteSongs = [];
         }
 
-        console.log(JSON.stringify( user.favoriteSongs));
-
-        // assign user's favorite songs from database
-        // user.favoriteSongs = userSongsResult.rows.map(f => f.songs_id);
-
-        console.log(JSON.stringify(user));
         return user;
     }
 
@@ -227,8 +190,6 @@ class User {
             data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
         }
 
-        console.log(`psql~~~~~~~~~ ${username}, ${JSON.stringify(data)}`);
-
         const {setCols, values} = sqlForPartialUpdate(
             data, 
             {
@@ -236,9 +197,6 @@ class User {
                 lastName : "last_name",
                 isAdmin : "is_admin",
             }); 
-
-        console.log(`check setCols: ${setCols}`);
-        console.log(`check values: ${values}`);
 
         // const usernameVarIdx = `$${values.length + 1}`;
         const usernameVarIdx = "$" + (values.length + 1);
@@ -251,7 +209,6 @@ class User {
                                 last_name AS "lastName",
                                 email,
                                 is_admin AS "isAdmin"`;
-        console.log(querySql);
         // update the data in the database
         const result = await db.query(querySql, [...values, username]);
         // return the updated user
@@ -283,7 +240,6 @@ class User {
     /** set songs as user's favorite */
 
     static async setFavorite(username, songId) {
-        console.log(`set song favorite ${username}, ${songId}`);
         // get user based on the username given
         const usernameSelected = await db.query(
             `SELECT username
@@ -304,12 +260,8 @@ class User {
         );
         // check if this song can be found
         const song = songSelected.rows[0];
-        console.log(`check song's id in the model, ${song}`);
-        console.log(`check song's id in the model, ${JSON.stringify(song)}`);
 
         if (!song) throw new NotFoundError(`No song with ID of ${songId} found`);
-
-        // console.log(favoritesInUser.rows);
 
         // set this song to be user's favorite
         await db.query(
@@ -320,7 +272,6 @@ class User {
     } 
 
     static async deleteFavorite(username, songId) {
-        console.log(`set song favorite ${username}, ${songId}`);
         // get user based on the username given
         const usernameSelected = await db.query(
             `SELECT username
@@ -341,8 +292,6 @@ class User {
         );
         // check if this song can be found
         const song = songSelected.rows[0];
-        console.log(`check song's id in the model, ${song}`);
-        console.log(`check song's id in the model, ${JSON.stringify(song)}`);
 
         if (!song) throw new NotFoundError(`No song with ID of ${songId} found`);
 

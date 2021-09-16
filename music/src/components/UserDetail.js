@@ -8,27 +8,23 @@ import { useHistory } from 'react-router-dom';
 const UserDetail = () => {
     const token = useSelector(st => st.users.token);
     const favoritedSongs = useSelector(st => st.users.user.favoriteSongs);
+    const dispatch = useDispatch();
 
     useEffect(function loadUserInfo() {
         const getCurrentUser = async () => {
-            console.log(token);
             if (token) {
                 try {
                     let {username} = jwt.decode(token);
                     dispatch(get_currentUser(username, token));
-                    console.log(username);
-                    console.log(user);
                 } catch (error) {
-                    console.log(error);
+                    return error;
                 }
             }
             setInfoLoaded(true);
         }
         setInfoLoaded(false);
         getCurrentUser();
-    }, [token]);
-
-    console.log(`favorite songs: ${favoritedSongs}`);
+    }, [token, dispatch]);
 
     const save = (username, updatedUser) => {
         dispatch(sendEditToAPI(username, updatedUser, token));
@@ -43,8 +39,6 @@ const UserDetail = () => {
 
     const user = useSelector(st => st.users.user);
 
-    console.log(`user's favorite songs ${user.favoriteSongs}`);
-
     const [formData, setFormData] = useState({
         username: user.username,
         password: "",
@@ -53,9 +47,7 @@ const UserDetail = () => {
         email: user.email 
     });
 
-    console.log(formData);
     const [infoLoaded, setInfoLoaded] = useState(false);
-    const dispatch = useDispatch();
     const history = useHistory();
     const [editable, setEditable] = useState(false);
     const [formErrors, setFormErrors] = useState([]);
@@ -79,7 +71,6 @@ const UserDetail = () => {
     }
 
     const showFavSongs = (favoritedSongs) => {
-        console.log(favoritedSongs);
         if (favoritedSongs) {
             return favoritedSongs.map((each => (
                 <p key="{each}">
@@ -119,9 +110,7 @@ const UserDetail = () => {
             email: formData.email
         }
 
-        let username = user.username;
-        console.log(`updated user data: ${updatedUserData} & ${username}`);
-        
+        let username = user.username;        
         save(username, updatedUserData);
     }
 
@@ -132,7 +121,6 @@ const UserDetail = () => {
             [name]: value
         }));
         setFormErrors([]);
-        console.log(formData)
     }
 
     // show edit form only when it's editable

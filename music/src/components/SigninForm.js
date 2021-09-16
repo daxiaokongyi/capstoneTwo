@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Alert from './Alert';
 
 const SigninForm = ({save}) => {
     const token = useSelector(st => st.users.token);   
     const signinErrors = useSelector(st => st.users.signin_errors);
-    console.log(token);
 
     const INITIAL_USERDATA = {
         username: "",
@@ -14,22 +13,18 @@ const SigninForm = ({save}) => {
     }
 
     const [formData, setFormData] = useState(INITIAL_USERDATA);
-    const [userToken, setUserToken] = useState(null);
     const [formErrors, setFormErrors] = useState([]);
 
     const history = useHistory();
 
     useEffect(() => {
-        // setUserToken(token);
-        // setFormErrors(errors);
 
         if (token) {
             history.push(`/users/${formData.username}`);
-            // history.push(`/suggestion`);
         } else if (signinErrors.length !== 0) {
             setFormErrors(signinErrors);
         }
-    }, [token, signinErrors]);
+    }, [token, signinErrors, formData.username, history]);
 
     const handleChange = evt => {
         const {name, value} = evt.target;
@@ -41,9 +36,7 @@ const SigninForm = ({save}) => {
 
     const handleSubmit = evt => {
         evt.preventDefault();
-        console.log(formData);
         save(formData);
-        console.log(token);
     }
 
     return(

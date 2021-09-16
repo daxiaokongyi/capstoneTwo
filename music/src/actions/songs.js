@@ -1,19 +1,11 @@
 import axios from 'axios';
-import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS, GET_FAVORITE_DETAILS, GET_SONG_DETAIL, ADD_FAVORITE_SONG} from '../actions/types';
+import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS, GET_SONG_DETAIL} from '../actions/types';
 const API_URL = "http://localhost:3001";
-
-console.log(API_URL);
 
 // get songs based on song's name 
 export function fetchSongsFromAPI(searchTerm) {
     return async function (dispatch) {
-        console.log('hi');
-        console.log(`Search term: ${searchTerm}`);
         const result = await axios.get(`${API_URL}/applemusic/songs/${searchTerm}`);
-        // console.log(`check song's result data: ${JSON.stringify(result.data.songs)}`);
-        // console.log(`check artist's result data: ${JSON.stringify(result.data.artists)}`);
-        // console.log(`check albums' result data: ${JSON.stringify(result.data.albums)}`);
-
         return dispatch(getSongs(result.data));
     }
 }
@@ -33,7 +25,6 @@ export function checkIfFavorited(songId, songsId, username) {
             username
         }).then(
             result => {    
-                console.log(`result data: ${JSON.stringify(result.data)}`);
                 return dispatch(checkFavorited(result.data));
             }
         ).catch(
@@ -45,7 +36,6 @@ export function checkIfFavorited(songId, songsId, username) {
 }
 
 const checkFavorited = (ifFavorited) => {
-    console.log(`check ifFavorited ${JSON.stringify(ifFavorited)}`);
     return {
         type: CHECK_IF_FAVORITED,
         data: ifFavorited
@@ -63,13 +53,9 @@ const checkFavoritedError = (errorMessage) => {
 
 export function fetchSongDetail(songId, username) {
     return async function (dispatch) {
-        console.log(`songId: ${songId}`);
-        console.log(`username: ${username}`);
-
         const result = await axios.post(`${API_URL}/applemusic/songs/songDetail/${songId}`, {
             username
         });
-        console.log(`action result about song detail; ${JSON.stringify(result.data)}`);
         return dispatch(getSongDetail(result.data));
     }
 }

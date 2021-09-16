@@ -68,10 +68,7 @@ router.get("/", ensureAdmin, async function (req, res, next) {
 
 router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
   try {
-    console.log(`get username ...`);
     const user = await User.get(req.params.username);
-    // console.log(JSON.stringify(user));
-    console.log(`get user from users route: ${JSON.stringify(user)}`);
     return res.json({ user });
   } catch (err) {
     return next(err);
@@ -90,14 +87,11 @@ router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, nex
 
 router.patch("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
     try {
-        console.log(req.body);
         const validator = jsonschema.validate(req.body, userNewSchema);
         if (!validator.valid) {
             const errors = validator.errors.map(e => e.stack);
-            console.log(errors);
             throw new BadRequestError(errors);
         }
-        console.log('hello tesing!');
         const user = await User.update(req.params.username, req.body);
         return res.json({user});
     } catch (error) {
@@ -130,7 +124,6 @@ router.post("/:username/songs/:id", ensureCorrectUserOrAdmin, async function(req
     try {
         const songId = +req.params.id;
         const username = req.params.username;
-        console.log(songId);
         const songName = req.body.songName;
         const songArtistName = req.body.songArtistName; 
 
@@ -146,7 +139,6 @@ router.delete("/:username/songs/:id", ensureCorrectUserOrAdmin, async function (
     try {
         const songId = +req.params.id;
         const username = req.params.username;
-        console.log(songId);
         const songsId = await User.deleteFavorite(username, songId);
         return res.json({deletedFavorited: songsId});
     } catch (error) {

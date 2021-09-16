@@ -1,8 +1,6 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
 import {logout} from '../actions/users';
 import SearchBox from '../components/SearchBox'
 
@@ -11,8 +9,6 @@ const Navbar = () => {
 
     const token = useSelector(st => st.users.token);
     const user = useSelector(st => st.users.user);
-  
-    console.log(token, user);
 
     const signOut = () => {
       dispatch(logout());

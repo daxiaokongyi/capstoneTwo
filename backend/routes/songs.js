@@ -16,8 +16,6 @@ const BASIC_API_URL_SONG_DETAIL = "https://api.music.apple.com/v1/catalog/us/son
 
 router.get("/:searchTerm", async function (req, res, next) {
     try {
-        console.log("it works!");
-        console.log(`search term: ${req.params.searchTerm}`)
         const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}&limit=8`, {
             headers: {
                 'Authorization':`Bearer ${token}`
@@ -29,25 +27,15 @@ router.get("/:searchTerm", async function (req, res, next) {
         let resultPlaylists = result.data.results.playlists ? result.data.results.playlists.data : [];
         let resultMusicVideos = result.data.results["music-videos"] ? result.data.results["music-videos"].data : [];
 
-        // console.log(`check albums data: ${JSON.stringify(resultAlbums)}`);
-        // console.log(`check artists data: ${JSON.stringify(resultArtists)}`);
-        // console.log(`check playlists data: ${JSON.stringify(resultPlaylists)}`);
-        // console.log(`check Music Videos data: ${JSON.stringify(resultMusicVideos)}`);
-
         if (resultSongs.length !== 0) {
             resultSongs = resultSongs.map(song => ({
-                // console.log(`song route: ${song.id}`);
-                // console.log(`song name: ${song.attributes.name}`);
-                // console.log(`song artist name: ${song.attributes.artistName}`);
-                // console.log(`song genre name: ${song.attributes.genreNames[0]}`)
-
-                // Song.addSongToDatabase(song.id, song.attributes.name, song.attributes.artistName, song.attributes.genreNames[0]);
                 songId : song.id,
                 songPreview: song.attributes.url,
                 songDownloadPreview: song.attributes.previews[0].url,
                 songName: song.attributes.name,
                 songArtist: song.attributes.artistName,
-                songGenreName: song.attributes.genreNames 
+                songGenreName: song.attributes.genreNames,
+                songImageUrl: song.attributes.artwork.url
             }));
         } else {
             resultSongs = []
@@ -57,7 +45,8 @@ router.get("/:searchTerm", async function (req, res, next) {
             resultArtists = resultArtists.map(artist => ({
                 artistUrl :artist.attributes.url,
                 artistName : artist.attributes.name,
-                artistGenreNames : artist.attributes.genreNames
+                artistGenreNames : artist.attributes.genreNames,
+                artistImageUrl: artist.relationships.albums.data[0].attributes ? artist.relationships.albums.data[0].attributes.artwork.url : ""
             }));
         } else {
             resultArtists = []
@@ -68,25 +57,19 @@ router.get("/:searchTerm", async function (req, res, next) {
                 albumUrl : album.attributes.url,
                 albumArtist: album.attributes.artistName,
                 albumName: album.attributes.name,
-                albumReleaseDate: album.attributes.releaseDate
+                albumReleaseDate: album.attributes.releaseDate,
+                albumImageUrl: album.attributes.artwork.url
             }));
         } else {
                 resultAlbums = []
         }
 
-        // console.log(`check description standard: ${resultPlaylists[0].playlist.attributes.description.standard}`);
-
-        // console.log(`check description standard: ${JSON.stringify(resultPlaylists[0].attributes.description.standard)}`);
-
         if (resultPlaylists.length !== 0) {
-            // console.log(`check description standard: ${JSON.stringify(resultPlaylists[0].attributes.description.standard)}`);
-
-            console.log(`check description standard: ${JSON.stringify(resultPlaylists)}`);
-
             resultPlaylists = resultPlaylists.map(playlist => ({
                 playlistDescription: playlist.attributes.description ? playlist.attributes.description.standard : "",
                 playlistUrl: playlist.attributes.url,
                 playlistName: playlist.attributes.name,
+                playlistImageUrl: playlist.attributes.artwork.url
             }));
         } else {
                 resultPlaylists = []
@@ -99,15 +82,12 @@ router.get("/:searchTerm", async function (req, res, next) {
                 videoUrl : video.attributes.url,
                 videoName: video.attributes.name,
                 videoDuration: video.attributes.durationInMillis,
-                videoReleaseDate: video.attributes.releaseDate
+                videoReleaseDate: video.attributes.releaseDate,
+                videosImageUrl: video.attributes.artwork.url
             }));
         } else {
             resultMusicVideos = []
         }
-
-        // console.log(result.data.results.songs.data);
-
-        // return res.status(201).json({songs:resultSongs, artist: resultArtists, albums: resultAlbums, playlists: resultPlaylists, musicVideos: resultMusicVideos});
 
         return res.status(201).json({songs:resultSongs, artists: resultArtists, albums: resultAlbums, playlists: resultPlaylists, musicVideos: resultMusicVideos});
 
@@ -118,8 +98,6 @@ router.get("/:searchTerm", async function (req, res, next) {
 
 router.post("/songDetail/:songId", async function (req, res, next) {
     try {
-        console.log(`:songId: ${req.params.songId}`);
-
         const result = await axios.get(`${BASIC_API_URL_SONG_DETAIL}${req.params.songId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -128,27 +106,7 @@ router.post("/songDetail/:songId", async function (req, res, next) {
 
         const ifFavorited = await Song.checkIfFavorited(req.params.songId, req.body.username);
 
-        // console.log(`result of song's detail: ${JSON.stringify(result.data.attributes)}`);
-        // console.log(`result of song's detail: ${JSON.stringify(result.data.data[0].attributes)}`);
-
         const songDetail = result.data.data[0].attributes;
-
-        // const resultSongDetail = result.data.results.songs;
-
-        // also check if the song is set as favorited by user
-        console.log(`check for favorited: ${JSON.stringify(req.body)}, and songID ${req.params.songId}`);
-        console.log(`songs id: ${req.body.songsId} `);
-        console.log(`type of songs id: ${Array.isArray(req.body.songsId)} `);
-        // console.log(`length of songs id array: ${req.body.songsId.length} `);
-
-// ============
-
-
-        // const ifFavorited = await Song.checkIfFavorited(req.body.songsId, req.params.songId, req.body.username);
-        console.log(`check if favorited: ${ifFavorited}`);
-        console.log(`check if favorited: ${JSON.stringify(ifFavorited)}`);
-        // return res.json({favorited : ifFavorited});
-
 
         return res.status(201).json({
             songName: songDetail.name,
@@ -161,24 +119,5 @@ router.post("/songDetail/:songId", async function (req, res, next) {
         return next(error);
     }
 });
-
-// router.post("/checkfavorited/:songId", async function (req, res, next) {
-//     try {
-//         console.log(`check for favorited: ${JSON.stringify(req.body)}, and songID ${req.params.songId}`);
-//         console.log(`songs id: ${req.body.songsId} `);
-//         console.log(`type of songs id: ${Array.isArray(req.body.songsId)} `);
-//         console.log(`length of songs id array: ${req.body.songsId.length} `);
-
-// // ============
-
-
-//         const ifFavorited = await Song.checkIfFavorited(req.body.songsId, req.params.songId, req.body.username);
-//         console.log(`check if favorited: ${ifFavorited}`);
-//         console.log(`check if favorited: ${JSON.stringify(ifFavorited)}`);
-//         return res.json({favorited : ifFavorited});
-//     } catch (error) {
-//         return next(error);
-//     }
-// })
 
 module.exports = router;

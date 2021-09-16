@@ -23,9 +23,6 @@ const appleToken = require('./getToken');
 const { NotFoundError } = require('./expressError');
 const { stat } = require('fs');
 
-console.log(appleToken);
-
-
 // handler for 404
 app.use(function (req, res, next) {
     const error = new NotFoundError();
@@ -37,10 +34,6 @@ app.use(function(err, req, res ,next) {
     if (process.env.NODE_ENV !== "test") console.error(err.stack);
     let status = err.status || 500;
     let message = err.message;
-
-    console.log(`status: ${status}`);
-    console.log(`message: ${message}`);
-    console.log(`res: ${res}`);
 
     // set the status and alert the user
     return res.status(status).json({

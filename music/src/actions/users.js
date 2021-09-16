@@ -6,21 +6,6 @@ const API_URL = "http://localhost:3001";
 // action for adding a new user
 export const sendSignupToAPI = (username, password, firstName, lastName, email) => {
     return async function (dispatch) {  
-        // const result = await axios.post(`${API_URL}/auth/register`, {
-        //     username,
-        //     password,
-        //     firstName,
-        //     lastName,   
-        //     email
-        // }).catch(
-        //     err => {
-        //         if(err.response) {
-        //             console.log(err.response.data.error);
-        //         }
-        //     }
-        // );
-        // console.log(result);
-        // return dispatch(signup(result.data));   
         await axios.post(`${API_URL}/auth/register`, {
             username,
             password,
@@ -33,12 +18,9 @@ export const sendSignupToAPI = (username, password, firstName, lastName, email) 
             }
         ).catch(
             err => {
-                console.log(err.response.data.error);
-                console.log(err.response.data.error.message);
                 return dispatch(getSignupErrors(err.response.data.error.message));
             }
         );
-        // return dispatch(signup(result.data));   
     }
 }
 
@@ -61,14 +43,6 @@ const getSignupErrors = (errorMessage) => {
 // action for signning in
 export const sendSigninToAPI = (username, password) => {
     return async function (dispatch) {
-        // const result = await axios.post(`${API_URL}/auth/token`, 
-        //     {
-        //         username,
-        //         password
-        //     });
-
-        // return dispatch(signin(result.data));
-
         await axios.post(`${API_URL}/auth/token`, {
             username,
             password
@@ -77,8 +51,6 @@ export const sendSigninToAPI = (username, password) => {
                 return dispatch(signin(result.data))
         }).catch(
             err => {
-                console.log(err.response.data.error);
-                console.log(err.response.data.error.message);
                 return dispatch(getSigninErrors(err.response.data.error.message));
         });
     }
@@ -113,7 +85,6 @@ export const logout = () => {
 // action for getting current user 
 export const get_currentUser = (username, token) => {
     return async function (dispatch) {
-        console.log(username, token);
         const result = await axios.get(`${API_URL}/users/${username}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -135,7 +106,6 @@ const getUser = (user, token) => {
 
 // action for editting current use
 export const sendEditToAPI = (username, updatedUserData, token) => {
-    console.log(JSON.stringify(updatedUserData));
     return async function (dispatch) {
         const result = await axios.patch(`${API_URL}/users/${username}`, updatedUserData, {
             headers: {
@@ -158,7 +128,6 @@ const editUser = (user, token) => {
 
 export const addSongToFavorite =(songId, songName, songArtistName, username, token) => {
     return async function (dispatch) {
-        console.log(`set favorite action: ${username}, ${songId}, ${token}, ${songName}, ${songArtistName}`);
         await axios.post(`${API_URL}/users/${username}/songs/${songId}`, {
             songName,
             songArtistName
@@ -168,21 +137,17 @@ export const addSongToFavorite =(songId, songName, songArtistName, username, tok
             }
         }).then(
             result => {
-                console.log(`see what result will be: ${result}`);
-                console.log(`see what result will be: ${JSON.stringify(result)}`);
-                console.log(`result.favorited: ${result.data.favorited}`);
                 return dispatch(addFavoriteSong(result.data.favorited));
             }
         ).catch(
             error => {
-                console.log(error);
+                return error;
             }
         )
     }
 }
 
 const addFavoriteSong = (checkFavorited) => {
-    console.log(`action songId: ${checkFavorited}`);
     return {
         type: ADD_FAVORITE_SONG,
         data: checkFavorited
@@ -191,8 +156,6 @@ const addFavoriteSong = (checkFavorited) => {
 
 // remove a song from user's favorited list
 export const removeSongFromFavorite = (username, songId, token) => {
-    console.log(`check username, songId, and token: ${username}, ${songId}, ${token}`);
-
     return async function (dispatch) {
         await axios.delete(`${API_URL}/users/${username}/songs/${songId}`, {
             headers: {
@@ -200,20 +163,17 @@ export const removeSongFromFavorite = (username, songId, token) => {
             }
         }).then(
             result => {
-                console.log(`see what result will be: ${JSON.stringify(result)}`);
-                console.log(`result.favorited: ${result.data.favorited}`);
                 return dispatch(removeFavoriteSong(result.data.deletedFavorited));
             }
         ).catch(
             error => {
-                console.log(error);
+                return error;
             }
         )
     }
 }
 
 const removeFavoriteSong = (songId) => {
-    console.log(`action songId: ${songId}`);
     return {
         type: REMOVE_FAVORITE_SONG,
         data: songId
