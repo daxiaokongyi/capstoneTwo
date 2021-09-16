@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {addSongToFavorite} from '../actions/users';
 import {removeSongFromFavorite} from '../actions/users'; 
 import {checkIfFavorited,fetchSongDetail} from '../actions/songs';
@@ -10,6 +10,8 @@ const SongDetail = () => {
     const params = useParams();
     const username = useSelector(st => st.users.user.username);
     const songId = params.songid;
+    const [faved, setfaved] = useState(false);
+
 
     // let name = '';
     // let artistName = '';
@@ -22,6 +24,7 @@ const SongDetail = () => {
             console.log(JSON.stringify(songDetailResult.data.songArtistName));
             // name = songDetailResult.data.songName;
             // artistName = songDetailResult.data.songArtistName;
+            setfaved(songDetailResult.data.favorited);
         }
         getSongDetail(songId, username);
     },[]);
@@ -33,7 +36,7 @@ const SongDetail = () => {
     let name = songDetail.songName;
     let artist = songDetail.songArtistName;
 
-    const isFavorited = useSelector(st => st.songs.songDetail.favorited);
+    // let isFavorited = useSelector(st => st.songs.songDetail.favorited);
 
     console.log(`song detail: ${JSON.stringify(songDetail)}`);
 
@@ -64,9 +67,11 @@ const SongDetail = () => {
 
     const handleAdd = (songId, name, artist, username, token) => {
         try {
-            console.log(`name and artist name ${name}, ${artist}`);
+            console.log(`song id, name and artist name, ${songId} ${name}, ${artist}`);
 
             dispatch(addSongToFavorite(songId, name, artist, username, token));
+            setfaved(true);
+
         } catch (error) {
             console.error(`song detail error about adding: ${error}`);
         }
@@ -74,8 +79,11 @@ const SongDetail = () => {
 
     // remove a favorite song from song's list
     const handleRemove = (username, songId, token) => {
+        console.log(`check username, songId, and token: ${username}, ${songId}, ${token}`);
+
         try {
             dispatch(removeSongFromFavorite(username, songId, token));
+            setfaved(false);
         } catch (error) {
             console.error(`song detail error about removing: ${error}`);
         }
@@ -90,8 +98,8 @@ const SongDetail = () => {
             ))}
             </p>
 
-            {isFavorited 
-                ? <button onClick={() => handleRemove(songId, name, artist, username, token)}>Undo the favorite</button>
+            {faved 
+                ? <button onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
                 : <button onClick={() => handleAdd(songId, name, artist, username, token)}>Add to Favorite</button>
             }
         </div>    

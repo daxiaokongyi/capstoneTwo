@@ -191,6 +191,8 @@ const addFavoriteSong = (checkFavorited) => {
 
 // remove a song from user's favorited list
 export const removeSongFromFavorite = (username, songId, token) => {
+    console.log(`check username, songId, and token: ${username}, ${songId}, ${token}`);
+
     return async function (dispatch) {
         await axios.delete(`${API_URL}/users/${username}/songs/${songId}`, {
             headers: {
