@@ -81,12 +81,12 @@ const UserDetail = () => {
     const showFavSongs = (favoritedSongs) => {
         console.log(favoritedSongs);
         if (favoritedSongs) {
-            return favoritedSongs.map(each => (
-                <p>
+            return favoritedSongs.map((each => (
+                <p key="{each}">
                     <a href={`/songs/${each[0]}`}>{each[1]}</a>
                     <span><b>Song Artist: </b> {each[2]} </span>
                 </p>
-            ))
+            )))
         }
     };
 

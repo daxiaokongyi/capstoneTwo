@@ -16,7 +16,6 @@ const {createToken} = require('../helpers/tokens');
 
 router.post('/token', async function(req, res, next) {
     try {
-        console.log('testing token, it works');
         // do the validator to check if username and password valid
         const validator = jsonschema.validate(req.body, userAuthSchema);
         // throw error message if invalid
@@ -27,9 +26,7 @@ router.post('/token', async function(req, res, next) {
         // get username and password from req.body if input valids
         const {username, password} = req.body;
         // return user info from database
-        console.log(username, password);
         const user = await User.authenticate(username, password);
-        console.log(`test user authenticate: ${user}`);
         const token = createToken(user);
         // return token with a format of json
         return res.json({token});
@@ -46,20 +43,15 @@ router.post('/token', async function(req, res, next) {
 
 router.post("/register", async function (req, res, next) {
     try {
-        console.log('register works so far!');
-        console.log(req.body);
         const validator = jsonschema.validate(req.body, userRegisterSchema);
-        console.log(validator.errors);
         if (!validator.valid) {
             const errors = validator.errors.map(e => e.stack);
-            console.log(errors);
             throw new BadRequestError(errors);
         }
         const newUser = await User.signup({...req.body, isAdmin: false});
         const token = createToken(newUser);
         return res.status(201).json({token});
     } catch (error) {
-        console.log(`error on the backend: ${error}`);
         return next(error);
     }
 });

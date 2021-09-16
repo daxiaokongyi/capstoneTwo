@@ -35,7 +35,7 @@ const Songs = () => {
 
     return (
         <div className="container">
-            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "border-radius": "0.6rem"}}>
+            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "borderRadius": "0.6rem"}}>
                 <p>Artists: </p>
                 {artists.map(artist => (
                     <div className="col">
@@ -46,7 +46,7 @@ const Songs = () => {
                                 </p>
                                 <p className="card-text">
                                     Genre Name: {artist.artistGenreNames.map(each => (
-                                        <span>{each}</span>
+                                        <span key="{each}">{each}</span>
                                     ))}
                                 </p>
                             </div>
@@ -54,7 +54,7 @@ const Songs = () => {
                     </div>
                 ))}
             </div>
-            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "border-radius": "0.6rem"}}>
+            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "borderRadius": "0.6rem"}}>
                 <p>Songs: </p>       
                 {songs.map(song => (
                     <div className="col">
@@ -77,7 +77,7 @@ const Songs = () => {
                     </div>
                 ))}
             </div>
-            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "border-radius": "0.6rem"}}>     
+            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "borderRadius": "0.6rem"}}>     
                 <p>Albums: </p>
                 {albums.map(album => (
                     <div className="col">
@@ -95,7 +95,7 @@ const Songs = () => {
                     </div>
                 ))}
             </div>
-            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "border-radius": "0.6rem"}}>     
+            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "borderRadius": "0.6rem"}}>     
                 <p>Playlists: </p>
                 {playlists.map(playlist => (
                     <div className="col">
@@ -112,7 +112,7 @@ const Songs = () => {
                     </div>
                 ))}
             </div>
-            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "border-radius": "0.6rem"}}>     
+            <div className="row" style={{"border": "blue 1px solid", "margin": "0.5rem 0", "padding": "0.5rem 0", "borderRadius": "0.6rem"}}>     
                 <p>Music Videos: </p>
                 {musicVideos.map(musicVideo => (
                     <div className="col">

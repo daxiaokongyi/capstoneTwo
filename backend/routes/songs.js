@@ -23,60 +23,87 @@ router.get("/:searchTerm", async function (req, res, next) {
                 'Authorization':`Bearer ${token}`
             }
         });
-        let resultSongs = result.data.results.songs.data;
-        let resultArtists = result.data.results.artists.data;
-        let resultAlbums = result.data.results.albums.data;
-        let resultPlaylists = result.data.results.playlists.data;
-        let resultMusicVideos = result.data.results["music-videos"].data;
-
+        let resultSongs = result.data.results.songs ? result.data.results.songs.data : [];
+        let resultArtists = result.data.results.artists ? result.data.results.artists.data : [];
+        let resultAlbums = result.data.results.albums ? result.data.results.albums.data : [];
+        let resultPlaylists = result.data.results.playlists ? result.data.results.playlists.data : [];
+        let resultMusicVideos = result.data.results["music-videos"] ? result.data.results["music-videos"].data : [];
 
         // console.log(`check albums data: ${JSON.stringify(resultAlbums)}`);
         // console.log(`check artists data: ${JSON.stringify(resultArtists)}`);
         // console.log(`check playlists data: ${JSON.stringify(resultPlaylists)}`);
         // console.log(`check Music Videos data: ${JSON.stringify(resultMusicVideos)}`);
 
-        resultSongs = resultSongs.map(song => ({
-            // console.log(`song route: ${song.id}`);
-            // console.log(`song name: ${song.attributes.name}`);
-            // console.log(`song artist name: ${song.attributes.artistName}`);
-            // console.log(`song genre name: ${song.attributes.genreNames[0]}`)
+        if (resultSongs.length !== 0) {
+            resultSongs = resultSongs.map(song => ({
+                // console.log(`song route: ${song.id}`);
+                // console.log(`song name: ${song.attributes.name}`);
+                // console.log(`song artist name: ${song.attributes.artistName}`);
+                // console.log(`song genre name: ${song.attributes.genreNames[0]}`)
 
-            // Song.addSongToDatabase(song.id, song.attributes.name, song.attributes.artistName, song.attributes.genreNames[0]);
-            songId : song.id,
-            songPreview: song.attributes.url,
-            songDownloadPreview: song.attributes.previews[0].url,
-            songName: song.attributes.name,
-            songArtist: song.attributes.artistName,
-            songGenreName: song.attributes.genreNames 
-        }));
+                // Song.addSongToDatabase(song.id, song.attributes.name, song.attributes.artistName, song.attributes.genreNames[0]);
+                songId : song.id,
+                songPreview: song.attributes.url,
+                songDownloadPreview: song.attributes.previews[0].url,
+                songName: song.attributes.name,
+                songArtist: song.attributes.artistName,
+                songGenreName: song.attributes.genreNames 
+            }));
+        } else {
+            resultSongs = []
+        }
 
-        resultArtists = resultArtists.map(artist => ({
-            artistUrl :artist.attributes.url,
-            artistName : artist.attributes.name,
-            artistGenreNames : artist.attributes.genreNames
-        }));
+        if (resultArtists.length !== 0) {
+            resultArtists = resultArtists.map(artist => ({
+                artistUrl :artist.attributes.url,
+                artistName : artist.attributes.name,
+                artistGenreNames : artist.attributes.genreNames
+            }));
+        } else {
+            resultArtists = []
+        }
 
-        resultAlbums = resultAlbums.map(album => ({
-            albumUrl : album.attributes.url,
-            albumArtist: album.attributes.artistName,
-            albumName: album.attributes.name,
-            albumReleaseDate: album.attributes.releaseDate
-        }));
+        if (resultAlbums.length !== 0) {
+            resultAlbums = resultAlbums.map(album => ({
+                albumUrl : album.attributes.url,
+                albumArtist: album.attributes.artistName,
+                albumName: album.attributes.name,
+                albumReleaseDate: album.attributes.releaseDate
+            }));
+        } else {
+                resultAlbums = []
+        }
 
-        resultPlaylists = resultPlaylists.map(playlist => ({
-            playlistUrl : playlist.attributes.url,
-            playlistName: playlist.attributes.name,
-            playlistDescription: playlist.attributes.description.standard
-        }));
+        // console.log(`check description standard: ${resultPlaylists[0].playlist.attributes.description.standard}`);
 
-        resultMusicVideos = resultMusicVideos.map(video => ({
-            videoPreviewUrl : video.attributes.previews[0].url,
-            videoHlsUrl : video.attributes.previews[0].hlsUrl,
-            videoUrl : video.attributes.url,
-            videoName: video.attributes.name,
-            videoDuration: video.attributes.durationInMillis,
-            videoReleaseDate: video.attributes.releaseDate
-        }));
+        // console.log(`check description standard: ${JSON.stringify(resultPlaylists[0].attributes.description.standard)}`);
+
+        if (resultPlaylists.length !== 0) {
+            // console.log(`check description standard: ${JSON.stringify(resultPlaylists[0].attributes.description.standard)}`);
+
+            console.log(`check description standard: ${JSON.stringify(resultPlaylists)}`);
+
+            resultPlaylists = resultPlaylists.map(playlist => ({
+                playlistDescription: playlist.attributes.description ? playlist.attributes.description.standard : "",
+                playlistUrl: playlist.attributes.url,
+                playlistName: playlist.attributes.name,
+            }));
+        } else {
+                resultPlaylists = []
+        }
+
+        if (resultMusicVideos.length !== 0) {
+            resultMusicVideos = resultMusicVideos.map(video => ({
+                videoPreviewUrl : video.attributes.previews[0].url,
+                videoHlsUrl : video.attributes.previews[0].hlsUrl,
+                videoUrl : video.attributes.url,
+                videoName: video.attributes.name,
+                videoDuration: video.attributes.durationInMillis,
+                videoReleaseDate: video.attributes.releaseDate
+            }));
+        } else {
+            resultMusicVideos = []
+        }
 
         // console.log(result.data.results.songs.data);
 
