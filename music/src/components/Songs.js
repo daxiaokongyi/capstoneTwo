@@ -12,6 +12,9 @@ const Songs = () => {
     const musicVideos = useSelector(store => store.songs.musicVideos);
     const history = useHistory();
 
+    // console.log(JSON.stringify(songs));
+    // console.log(JSON.stringify(playlists));
+
     const handleClick = (songId) => {
         history.push(`/songs/${songId}`);
     }
@@ -19,7 +22,7 @@ const Songs = () => {
     const makeImageTag = (url) => {
         // replace w for width and h for height
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
-        return <img src={url}/>
+        return <img src={url} alt="url"/>
     }
 
     return (
@@ -28,7 +31,7 @@ const Songs = () => {
                 <p>Artists: </p>
                 <p>See All</p>
                 {artists.map(artist => (
-                    <div className="col">
+                    <div className="col" key={artist.artistId}>
                         <div className="card" style={{width : "18rem"}}>
                             <div className="card-body">
                                 {makeImageTag(artist.artistImageUrl)}
@@ -49,7 +52,7 @@ const Songs = () => {
                 <p>Songs: </p>       
                 <p>See All</p>
                 {songs.map(song => (
-                    <div className="col">
+                    <div className="col" key={song.songId}>
                         <div className="card" style={{width : "18rem"}}>
                             <div className="card-body">
                                 {makeImageTag(song.songImageUrl)}
@@ -74,7 +77,7 @@ const Songs = () => {
                 <p>Albums: </p>
                 <p>See All</p>
                 {albums.map(album => (
-                    <div className="col">
+                    <div className="col" key={album.albumId}>
                         <div className="card" style={{width : "18rem"}}>
                             <div className="card-body">
                                 {makeImageTag(album.albumImageUrl)}
@@ -94,7 +97,7 @@ const Songs = () => {
                 <p>Playlists: </p>
                 <p>See All</p>
                 {playlists.map(playlist => (
-                    <div className="col">
+                    <div className="col" >
                         <div className="card" style={{width : "18rem"}}>
                             <div className="card-body">
                                 {makeImageTag(playlist.playlistImageUrl)}
@@ -113,7 +116,7 @@ const Songs = () => {
                 <p>Music Videos: </p>
                 <p>See All</p>
                 {musicVideos.map(musicVideo => (
-                    <div className="col">
+                    <div className="col" key={musicVideo.videoId}>
                         <div className="card" style={{width : "18rem"}}>
                             <div className="card-body">
                                 {makeImageTag(musicVideo.videosImageUrl)}

@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {addSongToFavorite} from '../actions/users';
 import {removeSongFromFavorite} from '../actions/users'; 
-import {fetchSongDetail} from '../actions/songs';
+import {fetchSongDetail, isFavBtnClicked} from '../actions/songs';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux'; 
 
 const SongDetail = () => {
     const params = useParams();
@@ -12,6 +12,8 @@ const SongDetail = () => {
     const songId = params.songid;
     const [faved, setfaved] = useState(false);
     const dispatch = useDispatch();
+    const history = useHistory();
+    const addFavErrs = useSelector(st => st.users.add_favorited_errors);
 
     useEffect(()=> {
         async function getSongDetail(songId, username) {
@@ -24,15 +26,24 @@ const SongDetail = () => {
     const songDetail = useSelector(st => st.songs.songDetail);
     let name = songDetail.songName;
     let artist = songDetail.songArtistName;
+    let genreName = songDetail.songGenreNames;
 
     const token = useSelector(st => st.users.token);
+
     const handleAdd = (songId, name, artist, username, token) => {
         try {
-            dispatch(addSongToFavorite(songId, name, artist, username, token));
-            setfaved(true);
+            // dispatch(isFavBtnClicked(true));
 
+            if (!token && Object.keys('addFavErrs').length !== 0) {
+                history.push('/signin');
+                // setFavErr(true)
+                // setfaved(false);
+            } else {
+                dispatch(addSongToFavorite(songId, name, artist, username, token));
+                setfaved(true);
+            }
         } catch (error) {
-            return error(`song detail error about adding: ${error}`);
+            return `song detail error about adding: ${error}`;
         }
     }
 
@@ -42,7 +53,7 @@ const SongDetail = () => {
             dispatch(removeSongFromFavorite(username, songId, token));
             setfaved(false);
         } catch (error) {
-            console.error(`song detail error about removing: ${error}`);
+            return `song detail error about removing: ${error}`;
         }
     }
 
@@ -50,10 +61,9 @@ const SongDetail = () => {
         <div className="container">
             <h1>{songDetail.songName}</h1>
             <p>{songDetail.songArtistName}</p>
-            <p>Genre Name: {songDetail.songGenreNames.map(each => (
-                <span>{each}</span>
-            ))}
+            <p>Genre Name: {songDetail.songGenreNames && songDetail.songGenreNames.map(each => (<span>{each}</span>))}
             </p>
+            {/* <p>Genre Names: {songDetail.songGenreNames[0]}</p> */}
 
             {faved 
                 ? <button onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
@@ -61,6 +71,10 @@ const SongDetail = () => {
             }
         </div>    
     )
+
+    return (
+        <div>hi</div>
+    );
 }
 
 export default SongDetail;

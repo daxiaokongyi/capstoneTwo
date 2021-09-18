@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER, GET_SIGNUP_ERRORS, GET_SIGNIN_ERRORS, ADD_FAVORITE_SONG, REMOVE_FAVORITE_SONG} from "./types";
+import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER, GET_SIGNUP_ERRORS, GET_SIGNIN_ERRORS, ADD_FAVORITE_SONG, REMOVE_FAVORITE_SONG, ADD_FAVORITED_ERRORS} from "./types";
 
 const API_URL = "http://localhost:3001";
 
@@ -137,11 +137,19 @@ export const addSongToFavorite =(songId, songName, songArtistName, username, tok
             }
         }).then(
             result => {
+                console.log(`${result}`);
                 return dispatch(addFavoriteSong(result.data.favorited));
             }
         ).catch(
-            error => {
-                return error;
+            err => {
+                console.log(`unauthorized error?`);
+                console.log(`${err.response.data.error.message}`);
+                console.log(`${err.response.data.error.status}`);
+
+                return dispatch(addFavoriteError({
+                    message: err.response.data.error.message,
+                    status: err.response.data.error.status
+                }));
             }
         )
     }
@@ -153,6 +161,15 @@ const addFavoriteSong = (checkFavorited) => {
         data: checkFavorited
     }
 }
+
+const addFavoriteError = (addFavErrs) => {
+    return {
+        type: ADD_FAVORITED_ERRORS,
+        data: addFavErrs
+    }
+}
+
+
 
 // remove a song from user's favorited list
 export const removeSongFromFavorite = (username, songId, token) => {

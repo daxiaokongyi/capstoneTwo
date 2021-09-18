@@ -20,16 +20,16 @@ const UserDetail = () => {
                     return error;
                 }
             }
-            setInfoLoaded(true);
+            // setInfoLoaded(true);
         }
-        setInfoLoaded(false);
+        // setInfoLoaded(false);
         getCurrentUser();
     }, [token, dispatch]);
 
     const save = (username, updatedUser) => {
         dispatch(sendEditToAPI(username, updatedUser, token));
         setEditable(false);
-        setSaveConfirmed(true);
+        // setSaveConfirmed(true);
         history.push(`/users/${user.username}`);
     }
 
@@ -47,11 +47,11 @@ const UserDetail = () => {
         email: user.email 
     });
 
-    const [infoLoaded, setInfoLoaded] = useState(false);
+    // const [infoLoaded, setInfoLoaded] = useState(false);
     const history = useHistory();
     const [editable, setEditable] = useState(false);
-    const [formErrors, setFormErrors] = useState([]);
-    const [saveConfirmed, setSaveConfirmed] = useState(false);
+    // const [formErrors, setFormErrors] = useState([]);
+    // const [saveConfirmed, setSaveConfirmed] = useState(false);
 
     // handlers for non-editable template
 
@@ -120,7 +120,7 @@ const UserDetail = () => {
             ...data,
             [name]: value
         }));
-        setFormErrors([]);
+        // setFormErrors([]);
     }
 
     // show edit form only when it's editable

@@ -62,6 +62,7 @@ function ensureCorrectUserOrAdmin(req, res, next) {
         }
         return next();
     } catch (error) {
+        console.log("unauthorized error");
         return next(error);
     }
 }

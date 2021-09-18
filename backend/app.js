@@ -36,6 +36,8 @@ app.use(function(err, req, res ,next) {
     let message = err.message;
 
     // set the status and alert the user
+    console.log(`status and message: ${status}, ${message}`);
+
     return res.status(status).json({
         error: {message, status},
     });

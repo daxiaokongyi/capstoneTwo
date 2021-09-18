@@ -6,6 +6,8 @@ import Alert from './Alert';
 const SigninForm = ({save}) => {
     const token = useSelector(st => st.users.token);   
     const signinErrors = useSelector(st => st.users.signin_errors);
+    const addFavErrs = useSelector(st => st.users.add_favorited_errors);
+    const favBtnClicked = useSelector(st => st.songs.isFavBtnClicked);
 
     const INITIAL_USERDATA = {
         username: "",
@@ -40,32 +42,35 @@ const SigninForm = ({save}) => {
     }
 
     return(
-        <form className="mb-4" onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label htmlFor="signin-username">user Name: </label>
-                <input 
-                    onChange={handleChange}
-                    id="signin-username"
-                    name="username"
-                    type="text" 
-                    className="form-control"
-                    value={formData.username}
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="signin-password">Password: </label>
-                <input 
-                    onChange={handleChange}
-                    id="signin-password"
-                    name="password"
-                    type="text" 
-                    className="form-control"
-                    value={formData.password}
-                />            
-            </div>
-            {formErrors.length ? <Alert type='danger' messages={formErrors}/> : null}
-            <button className="btn btn-primary mr-2">Save</button>
-        </form>
+        <div>
+            <form className="mb-4" onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label htmlFor="signin-username">user Name: </label>
+                    <input 
+                        onChange={handleChange}
+                        id="signin-username"
+                        name="username"
+                        type="text" 
+                        className="form-control"
+                        value={formData.username}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="signin-password">Password: </label>
+                    <input 
+                        onChange={handleChange}
+                        id="signin-password"
+                        name="password"
+                        type="text" 
+                        className="form-control"
+                        value={formData.password}
+                    />            
+                </div>
+                {formErrors.length ? <Alert type='danger' messages={formErrors}/> : null}
+                <button className="btn btn-primary mr-2">Save</button>
+            </form>
+            {(!token && Object.keys(addFavErrs).length !== 0 && favBtnClicked) ? <Alert type='danger' messages={addFavErrs.message}/> : null}
+        </div>
     )
 }
 

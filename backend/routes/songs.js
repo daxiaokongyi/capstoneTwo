@@ -29,7 +29,7 @@ router.get("/:searchTerm", async function (req, res, next) {
 
         if (resultSongs.length !== 0) {
             resultSongs = resultSongs.map(song => ({
-                songId : song.id,
+                songId: song.id,
                 songPreview: song.attributes.url,
                 songDownloadPreview: song.attributes.previews[0].url,
                 songName: song.attributes.name,
@@ -42,18 +42,24 @@ router.get("/:searchTerm", async function (req, res, next) {
         }
 
         if (resultArtists.length !== 0) {
-            resultArtists = resultArtists.map(artist => ({
-                artistUrl :artist.attributes.url,
-                artistName : artist.attributes.name,
-                artistGenreNames : artist.attributes.genreNames,
-                artistImageUrl: artist.relationships.albums.data[0].attributes ? artist.relationships.albums.data[0].attributes.artwork.url : ""
-            }));
+            resultArtists = resultArtists.map(artist => {
+                let artistWithImage = artist.hasOwnProperty('relationships') ? artist.relationships.albums.data.filter(each => each.hasOwnProperty('attributes')) : [];
+
+                return {
+                    // artistId: artist.id,
+                    artistUrl :artist.attributes.url,
+                    artistName : artist.attributes.name,
+                    artistGenreNames : artist.attributes.genreNames,
+                    artistImageUrl : artistWithImage.length !== 0 ? (artistWithImage[0].hasOwnProperty('attributes') ? artistWithImage[0].attributes.artwork.url : '') : (artist.hasOwnProperty('attributes') ? (artist.attributes.hasOwnProperty('artwork') ? artist.attributes.artwork.url : '') : '')
+                }
+            });
         } else {
             resultArtists = []
         }
 
         if (resultAlbums.length !== 0) {
             resultAlbums = resultAlbums.map(album => ({
+                // albumId: album.id,
                 albumUrl : album.attributes.url,
                 albumArtist: album.attributes.artistName,
                 albumName: album.attributes.name,
@@ -66,6 +72,7 @@ router.get("/:searchTerm", async function (req, res, next) {
 
         if (resultPlaylists.length !== 0) {
             resultPlaylists = resultPlaylists.map(playlist => ({
+                // playlistId: playlist.id, 
                 playlistDescription: playlist.attributes.description ? playlist.attributes.description.standard : "",
                 playlistUrl: playlist.attributes.url,
                 playlistName: playlist.attributes.name,
@@ -77,6 +84,7 @@ router.get("/:searchTerm", async function (req, res, next) {
 
         if (resultMusicVideos.length !== 0) {
             resultMusicVideos = resultMusicVideos.map(video => ({
+                // videoId: video.id,
                 videoPreviewUrl : video.attributes.previews[0].url,
                 videoHlsUrl : video.attributes.previews[0].hlsUrl,
                 videoUrl : video.attributes.url,
@@ -90,7 +98,6 @@ router.get("/:searchTerm", async function (req, res, next) {
         }
 
         return res.status(201).json({songs:resultSongs, artists: resultArtists, albums: resultAlbums, playlists: resultPlaylists, musicVideos: resultMusicVideos});
-
     } catch (error) {
         return next(error);
     }
