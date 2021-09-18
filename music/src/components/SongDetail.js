@@ -24,6 +24,13 @@ const SongDetail = () => {
     },[dispatch, songId, username]);
 
     const songDetail = useSelector(st => st.songs.songDetail);
+
+    console.log(`check detail: ${JSON.stringify(songDetail)}`);
+
+    if (Object.keys(songDetail).length === 0) {
+        history.push('/');
+    }
+
     let name = songDetail.songName;
     let artist = songDetail.songArtistName;
     let genreName = songDetail.songGenreNames;
@@ -32,7 +39,7 @@ const SongDetail = () => {
 
     const handleAdd = (songId, name, artist, username, token) => {
         try {
-            // dispatch(isFavBtnClicked(true));
+            dispatch(isFavBtnClicked(true));
 
             if (!token && Object.keys('addFavErrs').length !== 0) {
                 history.push('/signin');
@@ -63,18 +70,12 @@ const SongDetail = () => {
             <p>{songDetail.songArtistName}</p>
             <p>Genre Name: {songDetail.songGenreNames && songDetail.songGenreNames.map(each => (<span>{each}</span>))}
             </p>
-            {/* <p>Genre Names: {songDetail.songGenreNames[0]}</p> */}
-
             {faved 
                 ? <button onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
                 : <button onClick={() => handleAdd(songId, name, artist, username, token)}>Add to Favorite</button>
             }
         </div>    
     )
-
-    return (
-        <div>hi</div>
-    );
 }
 
 export default SongDetail;
