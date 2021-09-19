@@ -1,0 +1,21 @@
+.container {
+    padding: 0.6rem;
+    margin: 0.3rem auto;
+}
+
+.category {
+    padding: 0.6rem 0;
+    margin: 1rem 0;
+    /* border: blue 1px solid; */
+    border-radius: 0.6rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0.6rem 0.6rem rgba(0, 0, 0, 0.1); 
+}
+
+.card {
+    margin: 0.5rem 0.1rem;
+}
+
+.artistImage {
+    border-radius: 50%;
+}

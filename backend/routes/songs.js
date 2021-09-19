@@ -16,7 +16,7 @@ const BASIC_API_URL_SONG_DETAIL = "https://api.music.apple.com/v1/catalog/us/son
 
 router.get("/:searchTerm", async function (req, res, next) {
     try {
-        const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}&limit=8`, {
+        const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}&limit=25`, {
             headers: {
                 'Authorization':`Bearer ${token}`
             }
