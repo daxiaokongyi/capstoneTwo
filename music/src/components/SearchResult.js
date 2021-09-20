@@ -1,9 +1,9 @@
 import React from 'react';
-import {useSelector, } from 'react-redux';
-import {useHistory} from 'react-router-dom';
-import './Songs.css';
+import {useSelector } from 'react-redux';
+import {useHistory, NavLink} from 'react-router-dom';
+import './SearchResult.css';
 
-const Songs = () => {
+const SearchResult = () => {
     const IMAGE_DIMS = 150;
 
     const songs = useSelector(store => store.songs.songs);
@@ -11,10 +11,15 @@ const Songs = () => {
     const albums = useSelector(store => store.songs.albums);
     const playlists = useSelector(store => store.songs.playlists);
     const musicVideos = useSelector(store => store.songs.musicVideos);
+    const searchTerm = useSelector(store => store.songs.searchTerm);
     const history = useHistory();
+
+    console.log(`search terms: ${searchTerm}`);
 
     // console.log(JSON.stringify(songs));
     // console.log(JSON.stringify(playlists));
+
+    console.log('search result');
 
     const handleClick = (songId) => {
         history.push(`/songs/${songId}`);
@@ -34,14 +39,15 @@ const Songs = () => {
 
     return (
         <div className="container">
-            {songs.length === 0 ? null : 
+            {artists.length === 0 ? null : 
                 <div className="row category">
                     <div className="row justify-content-between">
                         <div className="col-2">
                             <span>Artists:</span>
                         </div>
                         <div className="col-2" >
-                            <a href="" style={{"text-decoration": "none"}}>See All</a>
+                            {/* <a href="/artists" style={{"text-decoration": "none"}}>See All</a> */}
+                            <NavLink to={`/artists/${searchTerm}`}>See All</NavLink>
                         </div>
                     </div>
                     {artists.map(artist => (
@@ -195,4 +201,4 @@ const Songs = () => {
     )
 }
 
-export default Songs;
+export default SearchResult;

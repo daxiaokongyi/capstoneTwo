@@ -37,7 +37,7 @@ const Navbar = () => {
             {/* <NavLink className="nav-link" to={`/`}>
               I-Music
             </NavLink> */}
-            <NavLink className="nav-link" to={`/${user.username}`}>
+            <NavLink className="nav-link" to={`/user/${user.username}`}>
               Hello {`${user.username}'s`}!
             </NavLink>
           </li>

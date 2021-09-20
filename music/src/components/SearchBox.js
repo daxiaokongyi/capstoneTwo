@@ -19,7 +19,13 @@ const SearchBox = () => {
         // searchFor(searchTerm.trim() || undefined);
         dispatch(fetchSongsFromAPI(searchTerm));
         setSearchTerm(searchTerm.trim());
-        history.push('/songs');
+        // console.log(`searchTerm: ${searchTerm}`);
+        history.push(`/search?term=${searchTerm}`);
+        // return (
+        //     <NavLink to={`/search?term=${searchTerm}`}>
+
+        //     </NavLink>
+        // )
     }
 
     return (

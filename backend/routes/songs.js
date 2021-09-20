@@ -16,7 +16,7 @@ const BASIC_API_URL_SONG_DETAIL = "https://api.music.apple.com/v1/catalog/us/son
 
 router.get("/:searchTerm", async function (req, res, next) {
     try {
-        const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}&limit=25`, {
+        const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}&limit=8`, {
             headers: {
                 'Authorization':`Bearer ${token}`
             }
@@ -122,6 +122,24 @@ router.post("/songDetail/:songId", async function (req, res, next) {
             songArtwork: songDetail.artwork,
             favorited : ifFavorited
         })
+    } catch (error) {
+        return next(error);
+    }
+});
+
+router.get("/artists/:searchArtistItem", async function (req, res, next) {
+    try {
+        console.log(`${req.params.searchArtistItem}`);
+
+        // const result = await axios.get(`${BASIC_API_URL}?types=artists&term=${req.params.searchArtistItem}`);
+        const result = await axios.get(`${BASIC_API_URL}?types=artists&term=${req.params.searchArtistItem}`, {
+            headers: {
+                'Authorization':`Bearer ${token}`
+            }
+        });
+
+        const allArtistsResult = result.data;
+        console.log(`${JSON.stringify(allArtistsResult)}`);
     } catch (error) {
         return next(error);
     }

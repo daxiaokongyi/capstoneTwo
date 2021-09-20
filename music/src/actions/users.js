@@ -83,7 +83,7 @@ export const logout = () => {
 }
 
 // action for getting current user 
-export const get_currentUser = (username, token) => {
+export const getCurrentUser = (username, token) => {
     return async function (dispatch) {
         const result = await axios.get(`${API_URL}/users/${username}`, {
             headers: {

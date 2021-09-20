@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS, GET_SONG_DETAIL, FAV_BUTTON_CLICKED} from '../actions/types';
+import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS, GET_SONG_DETAIL, FAV_BUTTON_CLICKED, GET_ALL_ARTISTS} from '../actions/types';
 const API_URL = "http://localhost:3001";
 
 // get songs based on song's name 
@@ -7,14 +7,17 @@ export function fetchSongsFromAPI(searchTerm) {
     return async function (dispatch) {
         const result = await axios.get(`${API_URL}/applemusic/songs/${searchTerm}`);
         // console.log(JSON.stringify(result.data));
-        return dispatch(getSongs(result.data));
+        return dispatch(getSongs({songs: result.data, searchTerm: `${searchTerm}`}));
     }
 }
 
-function getSongs (songs) {
+function getSongs (data) {
+    console.log(data.songs);
+    console.log(data.searchTerm);
+
     return {
         type: FETCH_SONGS,
-        data: songs
+        data: data
     }
 }
 
@@ -73,5 +76,21 @@ export function isFavBtnClicked(favBtnClicked) {
     return ({
         type: FAV_BUTTON_CLICKED,
         data: favBtnClicked
+    })
+}
+
+export function getArtists(searchTerm) {
+    return async function (dispatch) {
+        const result = await axios.get(`${API_URL}/applemusic/songs/artists/${searchTerm}`);
+
+        console.log(result.data);
+        return dispatch(getALLArtists(result.data));
+    }
+}
+
+function getALLArtists(data) {
+    return ({
+        type: GET_ALL_ARTISTS,
+        data: data
     })
 }

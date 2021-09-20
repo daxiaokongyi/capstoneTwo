@@ -19,6 +19,9 @@ const SongDetail = () => {
         async function getSongDetail(songId, username) {
             let songDetailResult = await dispatch(fetchSongDetail(songId, username));
             setfaved(songDetailResult.data.favorited);
+            if (Object.keys(songDetailResult.data).length === 0) {
+                history.push('/');
+            }
         }
         getSongDetail(songId, username);
     },[dispatch, songId, username]);
@@ -27,9 +30,9 @@ const SongDetail = () => {
 
     console.log(`check detail: ${JSON.stringify(songDetail)}`);
 
-    if (Object.keys(songDetail).length === 0) {
-        history.push('/');
-    }
+    // if (Object.keys(songDetail).length === 0) {
+    //     history.push('/');
+    // }
 
     let name = songDetail.songName;
     let artist = songDetail.songArtistName;

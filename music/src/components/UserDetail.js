@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { useDispatch } from 'react-redux';
-import {get_currentUser, sendEditToAPI} from '../actions/users';
+import {getCurrentUser, sendEditToAPI} from '../actions/users';
 import { useSelector } from 'react-redux';
 import jwt from 'jsonwebtoken';
 import { useHistory } from 'react-router-dom';
@@ -11,11 +11,11 @@ const UserDetail = () => {
     const dispatch = useDispatch();
 
     useEffect(function loadUserInfo() {
-        const getCurrentUser = async () => {
+        const getUser = async () => {
             if (token) {
                 try {
                     let {username} = jwt.decode(token);
-                    dispatch(get_currentUser(username, token));
+                    dispatch(getCurrentUser(username, token));
                 } catch (error) {
                     return error;
                 }
@@ -23,7 +23,7 @@ const UserDetail = () => {
             // setInfoLoaded(true);
         }
         // setInfoLoaded(false);
-        getCurrentUser();
+        getUser();
     }, [token, dispatch]);
 
     const save = (username, updatedUser) => {
