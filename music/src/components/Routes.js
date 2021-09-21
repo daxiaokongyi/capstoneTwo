@@ -8,6 +8,7 @@ import SongDetail from './SongDetail';
 import Suggestion from './Suggestion';
 import SearchResult from './SearchResult';
 import Artists from './Artists';
+import Songs from './Songs';
 
 const Routes = () => {
     return (
@@ -28,8 +29,11 @@ const Routes = () => {
                 <Route path="/artists/:name">
                     <Artists/>
                 </Route>
-                <Route path="/songs/:songid">
+                <Route path="/song/:songid">
                     <SongDetail/>
+                </Route>
+                <Route path="/songs/:name">
+                    <Songs/>
                 </Route>
                 <Route path="/search">
                     <SearchResult/>

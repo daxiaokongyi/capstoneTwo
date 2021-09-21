@@ -14,6 +14,7 @@ const SongDetail = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const addFavErrs = useSelector(st => st.users.add_favorited_errors);
+    const IMAGE_DIMS = 150;
 
     useEffect(()=> {
         async function getSongDetail(songId, username) {
@@ -67,16 +68,27 @@ const SongDetail = () => {
         }
     }
 
+    const makeImageTag = (url) => {
+        // console.log(`url: ${url}`);
+
+        // replace w for width and h for height
+        url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
+        return <img src={url} alt="url" className="image"/>
+    }
+
     return (
         <div className="container">
             <h1>{songDetail.songName}</h1>
             <p>{songDetail.songArtistName}</p>
             <p>Genre Name: {songDetail.songGenreNames && songDetail.songGenreNames.map(each => (<span>{each}</span>))}
             </p>
-            {faved 
-                ? <button onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
-                : <button onClick={() => handleAdd(songId, name, artist, username, token)}>Add to Favorite</button>
-            }
+            <div>{songDetail.songArtwork ? makeImageTag(songDetail.songArtwork.url) : null}</div>
+            <div>
+                {faved 
+                    ? <button onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
+                    : <button onClick={() => handleAdd(songId, name, artist, username, token)}>Add to Favorite</button>
+                }
+            </div>
         </div>    
     )
 }

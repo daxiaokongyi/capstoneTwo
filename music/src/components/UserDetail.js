@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import {getCurrentUser, sendEditToAPI} from '../actions/users';
 import { useSelector } from 'react-redux';
 import jwt from 'jsonwebtoken';
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 
 const UserDetail = () => {
     const token = useSelector(st => st.users.token);
@@ -74,7 +74,8 @@ const UserDetail = () => {
         if (favoritedSongs) {
             return favoritedSongs.map((each => (
                 <p key="{each}">
-                    <a href={`/songs/${each[0]}`}>{each[1]}</a>
+                    {/* <a href={`/songs/${each[0]}`}>{each[1]}</a> */}
+                    <NavLink to={`/song/${each[0]}`}>{each[1]}</NavLink>
                     <span><b>Song Artist: </b> {each[2]} </span>
                 </p>
             )))

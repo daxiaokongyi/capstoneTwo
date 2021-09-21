@@ -139,7 +139,26 @@ router.get("/artists/:searchArtistItem", async function (req, res, next) {
         });
 
         const allArtistsResult = result.data;
-        console.log(`${JSON.stringify(allArtistsResult)}`);
+        console.log(`${JSON.stringify(allArtistsResult.results)}`);
+        return res.status(201).json({artists: allArtistsResult.results.artists.data});
+    } catch (error) {
+        return next(error);
+    }
+});
+
+router.get("/songs/:searchSongItem", async function (req, res, next) {
+    try {
+        console.log(`testing to get all of songs: ${req.params.searchSongItem}`);
+
+        const result = await axios.get(`${BASIC_API_URL}?limit=25&types=songs&term=${req.params.searchSongItem}`, {
+            headers: {
+                'Authorization':`Bearer ${token}`
+            }
+        });
+
+        const allSongsResult = result.data;
+        console.log(`${JSON.stringify(allSongsResult.results.songs.data)}`);
+        return res.status(201).json({songs: allSongsResult.results.songs.data});
     } catch (error) {
         return next(error);
     }
