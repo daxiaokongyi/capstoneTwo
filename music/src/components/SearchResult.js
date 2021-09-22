@@ -187,7 +187,7 @@ const SearchResult = () => {
                         {musicVideos.length < 8 ? null : 
                             <div className="col-2" >
                                 {/* <a href="/artists" style={{"text-decoration": "none"}}>See All</a> */}
-                                <NavLink to={`/musicVideos/${searchTerm}`}>See All</NavLink>
+                                <NavLink to={`/videos/${searchTerm}`}>See All</NavLink>
                             </div>
                         }
                     </div>

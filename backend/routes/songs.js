@@ -148,7 +148,7 @@ router.get("/artists/:searchArtistItem", async function (req, res, next) {
 
 router.get("/songs/:searchSongItem", async function (req, res, next) {
     try {
-        console.log(`testing to get all of songs: ${req.params.searchSongItem}`);
+        // console.log(`testing to get all of songs: ${req.params.searchSongItem}`);
 
         const result = await axios.get(`${BASIC_API_URL}?limit=25&types=songs&term=${req.params.searchSongItem}`, {
             headers: {
@@ -157,8 +157,63 @@ router.get("/songs/:searchSongItem", async function (req, res, next) {
         });
 
         const allSongsResult = result.data;
-        console.log(`${JSON.stringify(allSongsResult.results.songs.data)}`);
+        // console.log(`${JSON.stringify(allSongsResult.results.songs.data)}`);
         return res.status(201).json({songs: allSongsResult.results.songs.data});
+    } catch (error) {
+        return next(error);
+    }
+});
+
+router.get("/albums/:searchAlbumItem", async function (req, res, next) {
+    try {
+        // console.log(`testing to get all of songs: ${req.params.searchAlbumItem}`);
+
+        const result = await axios.get(`${BASIC_API_URL}?limit=25&types=albums&term=${req.params.searchAlbumItem}`, {
+            headers: {
+                'Authorization':`Bearer ${token}`
+            }
+        });
+
+        const allAlbumsResult = result.data;
+        // console.log(`${JSON.stringify(allAlbumsResult.results.albums.data)}`);
+        return res.status(201).json({albums: allAlbumsResult.results.albums.data});
+    } catch (error) {
+        return next(error);
+    }
+});
+
+router.get("/playlists/:searchPlaylistItem", async function (req, res, next) {
+    try {
+        // console.log(`testing to get all of songs: ${req.params.searchAlbumItem}`);
+
+        const result = await axios.get(`${BASIC_API_URL}?limit=25&types=playlists&term=${req.params.searchPlaylistItem}`, {
+            headers: {
+                'Authorization':`Bearer ${token}`
+            }
+        });
+
+        const allPlaylistsResult = result.data;
+        // console.log(`${JSON.stringify(allAlbumsResult.results.albums.data)}`);
+        return res.status(201).json({playlists: allPlaylistsResult.results.playlists.data});
+    } catch (error) {
+        return next(error);
+    }
+});
+
+router.get("/videos/:searchVideoItem", async function (req, res, next) {
+    try {
+        console.log(`testing to get all of videos: ${req.params.searchVideoItem}`);
+
+        const result = await axios.get(`${BASIC_API_URL}?limit=25&types=music-videos&term=${req.params.searchVideoItem}`, {
+            headers: {
+                'Authorization':`Bearer ${token}`
+            }
+        });
+
+        const allVideosResult = result.data.results["music-videos"].data;
+        // console.log(`${JSON.stringify(allVideosResult)}`);
+        // console.log(`${JSON.stringify(allVideosResult.results["musicVideo"].data)}`);
+        return res.status(201).json({videos: allVideosResult});
     } catch (error) {
         return next(error);
     }

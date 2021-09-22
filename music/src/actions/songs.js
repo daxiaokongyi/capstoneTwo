@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS, GET_SONG_DETAIL, FAV_BUTTON_CLICKED, GET_ALL_ARTISTS, GET_ALL_SONGS} from '../actions/types';
+import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS, GET_SONG_DETAIL, FAV_BUTTON_CLICKED, GET_ALL_ARTISTS, GET_ALL_SONGS, GET_ALL_ALBUMS, GET_ALL_PLAYLISTS, GET_ALL_VIDEOS} from '../actions/types';
 const API_URL = "http://localhost:3001";
 
 // get songs based on song's name 
@@ -100,7 +100,7 @@ export function getSongs(searchTerm) {
     return async function (dispatch) {
         const result = await axios.get(`${API_URL}/applemusic/songs/songs/${searchTerm}`);
 
-        console.log(JSON.stringify(result.data.songs));
+        // console.log(JSON.stringify(result.data.songs));
         return dispatch(getAllSongs(result.data.songs));
     }
 }
@@ -108,6 +108,54 @@ export function getSongs(searchTerm) {
 function getAllSongs(data) {
     return ({
         type: GET_ALL_SONGS,
+        data: data
+    })
+}
+
+export function getAlbums(searchTerm) {
+    return async function (dispatch) {
+        const result = await axios.get(`${API_URL}/applemusic/songs/albums/${searchTerm}`);
+
+        // console.log(JSON.stringify(result.data.albums));
+        return dispatch(getAllAlbums(result.data.albums));
+    }
+}
+
+function getAllAlbums(data) {
+    return ({
+        type: GET_ALL_ALBUMS,
+        data: data
+    })
+}
+
+export function getPlaylists(searchTerm) {
+    return async function (dispatch) {
+        const result = await axios.get(`${API_URL}/applemusic/songs/playlists/${searchTerm}`);
+
+        console.log(JSON.stringify(result.data.playlists));
+        return dispatch(getAllPlaylists(result.data.playlists));
+    }
+}
+
+function getAllPlaylists(data) {
+    return ({
+        type: GET_ALL_PLAYLISTS,
+        data: data
+    })
+}
+
+export function getVideos(searchTerm) {
+    return async function (dispatch) {
+        const result = await axios.get(`${API_URL}/applemusic/songs/videos/${searchTerm}`);
+
+        console.log(JSON.stringify(result.data.videos));
+        return dispatch(getAllVideos(result.data.videos));
+    }
+}
+
+function getAllVideos(data) {
+    return ({
+        type: GET_ALL_VIDEOS,
         data: data
     })
 }

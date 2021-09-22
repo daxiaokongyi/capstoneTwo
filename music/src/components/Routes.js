@@ -9,6 +9,9 @@ import Suggestion from './Suggestion';
 import SearchResult from './SearchResult';
 import Artists from './Artists';
 import Songs from './Songs';
+import Albums from './Albums';
+import Playlists from './Playlists';
+import Videos from './Videos';
 
 const Routes = () => {
     return (
@@ -34,6 +37,15 @@ const Routes = () => {
                 </Route>
                 <Route path="/songs/:name">
                     <Songs/>
+                </Route>
+                <Route path="/albums/:name">
+                    <Albums/>
+                </Route>
+                <Route path="/playlists/:name">
+                    <Playlists/>
+                </Route>
+                <Route path="/videos/:name">
+                    <Videos/>
                 </Route>
                 <Route path="/search">
                     <SearchResult/>
