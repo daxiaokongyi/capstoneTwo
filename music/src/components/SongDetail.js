@@ -76,6 +76,10 @@ const SongDetail = () => {
         return <img src={url} alt="url" className="image"/>
     }
 
+    const handleClick = () => {
+        history.push(`/user/${username}`);
+    }
+
     return (
         <div className="container">
             <h1>{songDetail.songName}</h1>
@@ -88,6 +92,9 @@ const SongDetail = () => {
                     ? <button onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
                     : <button onClick={() => handleAdd(songId, name, artist, username, token)}>Add to Favorite</button>
                 }
+            </div>
+            <div>
+                <button onClick={handleClick}>Back To User's Page</button>
             </div>
         </div>    
     )

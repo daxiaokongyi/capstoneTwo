@@ -48,6 +48,7 @@ export const sendSigninToAPI = (username, password) => {
             password
         }).then(
             result => {
+                console.log(`sign in result: ${JSON.stringify(result.data)}`);
                 return dispatch(signin(result.data))
         }).catch(
             err => {

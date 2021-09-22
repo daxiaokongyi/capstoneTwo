@@ -22,7 +22,7 @@ const SigninForm = ({save}) => {
     useEffect(() => {
 
         if (token) {
-            history.push(`/users/${formData.username}`);
+            history.push(`/user/${formData.username}`);
         } else if (signinErrors.length !== 0) {
             setFormErrors(signinErrors);
         }

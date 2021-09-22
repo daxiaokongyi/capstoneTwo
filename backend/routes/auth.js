@@ -27,6 +27,8 @@ router.post('/token', async function(req, res, next) {
         const {username, password} = req.body;
         // return user info from database
         const user = await User.authenticate(username, password);
+        console.log(`check user data: ${user}`);
+
         const token = createToken(user);
         // return token with a format of json
         return res.json({token});
