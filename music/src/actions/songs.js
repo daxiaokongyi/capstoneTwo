@@ -61,7 +61,8 @@ export function fetchSongDetail(songId, username) {
             username
         });
 
-        return dispatch(getSongDetail(result.data));
+        console.log(`result data: ${JSON.stringify(result.data.songDetail)}`);
+        return dispatch(getSongDetail(result.data.songDetail));
     }
 }
 

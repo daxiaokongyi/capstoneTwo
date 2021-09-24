@@ -7,7 +7,7 @@ const INITIAL_STATE = {
     musicVideos: [],
     playlists: [],
     songDetail: {},
-    isFavorited: false,
+    // isFavorited: false,
     isFavBtnClicked: false,
     searchTerm: null,
     allArtists: [],
@@ -35,7 +35,7 @@ export default function songsReducer(state=INITIAL_STATE, action) {
                 // musicVideos: [],
                 // playlists: [],
                 // songDetail: {},
-                isFavorited: false,
+                // isFavorited: false,
                 isFavBtnClicked: false
             }
         case FAV_BUTTON_CLICKED:

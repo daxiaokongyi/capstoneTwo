@@ -22,7 +22,7 @@ const SignupForm = ({save}) => {
 
     useEffect(() => {
         if (token) {
-            history.push(`/users/${formData.username}`);
+            history.push(`/user/${formData.username}`);
         } else if (signupErrors.length !== 0) {
             setFormErrors(signupErrors);
         }

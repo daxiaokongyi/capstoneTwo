@@ -28,6 +28,7 @@ const SongDetail = () => {
     },[dispatch, songId, username]);
 
     const songDetail = useSelector(st => st.songs.songDetail);
+    // console.log(`chck url: ${songDetail.attributes.artwork.url}`);
 
     console.log(`check detail: ${JSON.stringify(songDetail)}`);
 
@@ -35,13 +36,13 @@ const SongDetail = () => {
     //     history.push('/');
     // }
 
-    let name = songDetail.songName;
-    let artist = songDetail.songArtistName;
-    let genreName = songDetail.songGenreNames;
+    let songName = songDetail.attributes ? songDetail.attributes.name : "";
+    let artist = songDetail.attributes ? songDetail.attributes.artistName : "";
+    // let genreName = songDetail.attributes.songGenreNames;
 
     const token = useSelector(st => st.users.token);
 
-    const handleAdd = (songId, name, artist, username, token) => {
+    const handleAdd = (songId, songName, artist, username, token) => {
         try {
             dispatch(isFavBtnClicked(true));
 
@@ -50,7 +51,7 @@ const SongDetail = () => {
                 // setFavErr(true)
                 // setfaved(false);
             } else {
-                dispatch(addSongToFavorite(songId, name, artist, username, token));
+                dispatch(addSongToFavorite(songId, songName, artist, username, token));
                 setfaved(true);
             }
         } catch (error) {
@@ -68,12 +69,12 @@ const SongDetail = () => {
         }
     }
 
-    const makeImageTag = (url) => {
-        // console.log(`url: ${url}`);
-
+    const makeImageTag = (url) => {    
         // replace w for width and h for height
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
-        return <img src={url} alt="url" className="image"/>
+        console.log(`url: ${url}`);
+
+        return <img src={url} className="image"/>
     }
 
     const handleClick = () => {
@@ -82,15 +83,19 @@ const SongDetail = () => {
 
     return (
         <div className="container">
-            <h1>{songDetail.songName}</h1>
-            <p>{songDetail.songArtistName}</p>
-            <p>Genre Name: {songDetail.songGenreNames && songDetail.songGenreNames.map(each => (<span>{each}</span>))}
+            <h1>{songDetail.attributes ? songDetail.attributes.name : ""}</h1>
+            <p>{songDetail.attributes ? songDetail.attributes.artistName: ""}</p>
+            {/* <img src={songDetail.attributes ? makeImageTag(songDetail.attributes.artwork.url) : ''} alt="url" /> */}
+            <p>Genre Name: {songDetail.attributes && songDetail.attributes.genreNames.map(each => (<span>{each} </span>))}
             </p>
-            <div>{songDetail.songArtwork ? makeImageTag(songDetail.songArtwork.url) : null}</div>
+            <p>Release Date: {songDetail.attributes && songDetail.attributes.releaseDate}</p>
+            <p>Album Name: {songDetail.attributes && songDetail.attributes.albumName}</p>
+            <p>Composer Name: {songDetail.attributes && songDetail.attributes.composerName}</p>
+            <div>{songDetail.attributes ? makeImageTag(songDetail.attributes.artwork.url) : null}</div>
             <div>
                 {faved 
                     ? <button onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
-                    : <button onClick={() => handleAdd(songId, name, artist, username, token)}>Add to Favorite</button>
+                    : <button onClick={() => handleAdd(songId, songName, artist, username, token)}>Add to Favorite</button>
                 }
             </div>
             <div>

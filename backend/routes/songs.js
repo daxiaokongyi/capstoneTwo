@@ -113,14 +113,22 @@ router.post("/songDetail/:songId", async function (req, res, next) {
 
         const ifFavorited = await Song.checkIfFavorited(req.params.songId, req.body.username);
 
-        const songDetail = result.data.data[0].attributes;
+        // const songDetail = result.data.data[0].attributes;
+        const songDetail = result.data.data[0];
+
+        // return res.status(201).json({
+        //     songName: songDetail.name,
+        //     songArtistName: songDetail.artistName,
+        //     songGenreNames: songDetail.genreNames,
+        //     songArtwork: songDetail.artwork,
+        //     favorited : ifFavorited
+        // })
 
         return res.status(201).json({
-            songName: songDetail.name,
-            songArtistName: songDetail.artistName,
-            songGenreNames: songDetail.genreNames,
-            songArtwork: songDetail.artwork,
-            favorited : ifFavorited
+            songDetail: {
+                ...songDetail,
+                favorited : ifFavorited
+            }
         })
     } catch (error) {
         return next(error);

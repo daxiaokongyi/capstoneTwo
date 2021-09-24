@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { fetchSongsFromAPI } from '../actions/songs'; 
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -9,6 +9,14 @@ const SearchBox = () => {
 
     const [searchTerm, setSearchTerm] = useState("");
 
+    // useEffect(() => {
+    //     async function getDefaultSongs() {
+    //         dispatch(fetchSongsFromAPI(`popular`));
+    //         history.push(`/search?term=${`popular`}`);       
+    //     }
+    //     getDefaultSongs();
+    // }, []);
+
     const handleChange = evt => {
         setSearchTerm(evt.target.value);
     }
@@ -17,10 +25,10 @@ const SearchBox = () => {
         evt.preventDefault();
         // do the search
         // searchFor(searchTerm.trim() || undefined);
-        dispatch(fetchSongsFromAPI(searchTerm));
+        dispatch(fetchSongsFromAPI(searchTerm || `popular`));
         setSearchTerm(searchTerm.trim());
         // console.log(`searchTerm: ${searchTerm}`);
-        history.push(`/search?term=${searchTerm}`);
+        history.push(`/search?term=${searchTerm || `popular`}`);
         // return (
         //     <NavLink to={`/search?term=${searchTerm}`}>
 
