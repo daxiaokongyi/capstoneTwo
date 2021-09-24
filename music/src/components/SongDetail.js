@@ -38,20 +38,25 @@ const SongDetail = () => {
 
     let songName = songDetail.attributes ? songDetail.attributes.name : "";
     let artist = songDetail.attributes ? songDetail.attributes.artistName : "";
-    // let genreName = songDetail.attributes.songGenreNames;
+    let genreNames = songDetail.attributes ? songDetail.attributes.genreNames[0]: "";
+
+    console.log(`genreName: ${genreNames}`);
 
     const token = useSelector(st => st.users.token);
 
-    const handleAdd = (songId, songName, artist, username, token) => {
+    const handleAdd = (songId, songName, artist, genreNames, username, token) => {
         try {
             dispatch(isFavBtnClicked(true));
 
             if (!token && Object.keys('addFavErrs').length !== 0) {
+                console.log(`check add favs`);
+                console.log(`genreName add action: ${genreNames}`);
+
                 history.push('/signin');
                 // setFavErr(true)
                 // setfaved(false);
             } else {
-                dispatch(addSongToFavorite(songId, songName, artist, username, token));
+                dispatch(addSongToFavorite(songId, songName, artist, genreNames,username, token));
                 setfaved(true);
             }
         } catch (error) {
@@ -95,7 +100,7 @@ const SongDetail = () => {
             <div>
                 {faved 
                     ? <button onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
-                    : <button onClick={() => handleAdd(songId, songName, artist, username, token)}>Add to Favorite</button>
+                    : <button onClick={() => handleAdd(songId, songName, artist, genreNames, username, token)}>Add to Favorite</button>
                 }
             </div>
             <div>

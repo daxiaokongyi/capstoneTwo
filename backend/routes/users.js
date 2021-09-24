@@ -126,6 +126,7 @@ router.post("/:username/songs/:id", ensureCorrectUserOrAdmin, async function(req
         const username = req.params.username;
         const songName = req.body.songName;
         const songArtistName = req.body.songArtistName; 
+        const genreNames = req.body.genreNames;
 
         console.log(`added song to db...`);
 
@@ -133,8 +134,10 @@ router.post("/:username/songs/:id", ensureCorrectUserOrAdmin, async function(req
         console.log(`user name: ${username}`);
         console.log(`song name: ${songName}`);
         console.log(`song artist name: ${songArtistName}`);
+        console.log(`song genre names: ${genreNames}`);
+        console.log(`song genre names: ${genreNames.length}`);
 
-        await Song.addSongToDatabase(songId, songName, songArtistName);
+        await Song.addSongToDatabase(songId, songName, songArtistName, genreNames);
         await User.setFavorite(username, songId);
         return res.json({favorited: true});
     } catch (error) {

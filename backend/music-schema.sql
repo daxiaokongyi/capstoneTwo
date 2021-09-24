@@ -12,7 +12,8 @@ CREATE TABLE songs (
     id SERIAL PRIMARY KEY,
     song_id INTEGER NOT NULL,
     song_name TEXT NOT NULL,
-    song_artist TEXT NOT NULL
+    song_artist TEXT NOT NULL,
+    song_genre_names TEXT
 );
 
 CREATE TABLE favorites (

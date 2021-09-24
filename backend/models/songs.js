@@ -5,7 +5,7 @@ const {NotFoundError} = require('../expressError');
 
 class Song {
     // Add songs fetched from API to song's database
-    static async addSongToDatabase(songId, songName, songArtistName) {
+    static async addSongToDatabase(songId, songName, songArtistName, genreNames) {
         // check if the selected song is already in the song's database
         const songPreviewCheck = await db.query(
             `SELECT song_id
@@ -14,17 +14,49 @@ class Song {
                 [songId],
         );
 
+        console.log(`add into models`);
+        console.log(`songId: ${songId}`);
+        console.log(`song name: ${songName}`);
+        console.log(`song artist name: ${songArtistName}`);
+        console.log(`song genre names: ${genreNames}`);
+
         if (songPreviewCheck.rows.length === 0) {
             await db.query(
                 `INSERT INTO songs
-                (song_id, song_name, song_artist)
-                VALUES ($1, $2, $3)
+                (song_id, song_name, song_artist, song_genre_names)
+                VALUES ($1, $2, $3, $4)
                 RETURNING
                     song_id AS "songId",
                     song_name AS "songName",
-                    song_artist AS "songArtistName"`,
-                [songId, songName, songArtistName],
+                    song_artist AS "songArtistName",
+                    song_genre_names AS "songGenreNames"`,
+                [songId, songName, songArtistName, genreNames],
             );
+
+        // if (songPreviewCheck.rows.length === 0) {
+        //     await db.query(
+        //         `INSERT INTO songs
+        //         (song_id, song_name, song_artist)
+        //         VALUES ($1, $2, $3, $4)
+        //         RETURNING
+        //             song_id AS "songId",
+        //             song_name AS "songName",
+        //             song_artist AS "songArtistName"`,
+        //         [songId, songName, songArtistName],
+        //     );
+
+
+            // await db.query(
+            //     `INSERT INTO songs
+            //     (song_id, song_name, song_artist, song_genre_names)
+            //     VALUES ($1, $2, $3, $4)
+            //     RETURNING
+            //         song_id AS "songId",
+            //         song_name AS "songName",
+            //         song_artist AS "songArtistName",
+            //         song_genre_name AS "songGenreNames"`
+            //     [songId, songName, songArtistName, genreNames],
+            // );
         } else {
             return;
         }

@@ -161,18 +161,20 @@ class User {
             const favDetails = await db.query(
                 `SELECT song_id AS "songId",
                         song_name AS "songName",
-                        song_artist AS "songArtist"       
+                        song_artist AS "songArtist",
+                        song_genre_names AS "songGenreNames"
                  FROM songs
                  WHERE id in (${songsId})`
             )
 
             user.favoriteSongs = favDetails.rows.map(
-                each => [each.songId, each.songName, each.songArtist]
+                each => [each.songId, each.songName, each.songArtist, each.songGenreNames]
             )
         } else {
             user.favoriteSongs = [];
         }
 
+        console.log(`current user: ${JSON.stringify(user)}`);
         return user;
     }
 

@@ -127,11 +127,12 @@ const editUser = (user, token) => {
     }
 }
 
-export const addSongToFavorite =(songId, songName, songArtistName, username, token) => {
+export const addSongToFavorite =(songId, songName, songArtistName, genreNames, username, token) => {
     return async function (dispatch) {
         await axios.post(`${API_URL}/users/${username}/songs/${songId}`, {
             songName,
-            songArtistName
+            songArtistName,
+            genreNames
         }, {
             headers: {
                 'Authorization': `Bearer ${token}`
