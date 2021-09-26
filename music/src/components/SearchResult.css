@@ -6,29 +6,51 @@
 .category {
     padding: 0.6rem 0;
     margin: 1rem 0;
-    /* border: blue 1px solid; */
-    border-radius: 0.6rem;
-    background-color: rgba(0, 0, 0, 0.1);
-    box-shadow: 0.6rem 0.6rem rgba(0, 0, 0, 0.1); 
+    border: #f94c57 0.1rem solid;
+    border-radius: 0.5rem;
+    box-shadow: 0.3rem 0.3rem #c2cad7; 
 }
 
 .card {
-    margin: 0.5rem 0.1rem;
-}
-
-.artistImage {
-    border-radius: 50%;
-}
-
-.artistImage {
-    height: 8rem;
-    width: 8rem;
-    border-radius: 50%;
-    /* border: 0.1rem blue solid; */
+    width: 12rem;
+    height: 12rem;
+    padding: 0.1rem;
+    margin: 0.5rem 0.5rem;
 }
 
 .image {
     height: 8rem;
     width: 8rem;
+    display: block;
+    margin: auto;
     border-radius: 0.3rem;
+}
+
+.artistImage {
+    height: 8rem;
+    width: 8rem;
+    border-radius: 50%;
+    display: block;
+    margin: auto;
+    cursor: pointer;
+}
+
+.artistImage:hover {
+    filter: brightness(70%);
+}
+
+.image:hover {
+    /* opacity: 0;
+    background-color: rgba(0,0,0,.5); */
+    filter: brightness(70%);
+}
+
+
+.card-text {
+    text-align: center;
+    margin: 0.2rem 0;
+}
+
+span {
+    color: rgba(0, 0, 0, 0.88);
 }

@@ -15,20 +15,11 @@ const SearchResult = () => {
     const searchTerm = useSelector(store => store.songs.searchTerm);
     const history = useHistory();
 
-    console.log(`search terms: ${searchTerm}`);
-
-    // console.log(JSON.stringify(songs));
-    // console.log(JSON.stringify(playlists));
-
-    console.log('search result');
-
     const handleClick = (songId) => {
         history.push(`/song/${songId}`);
     }
 
     const makeImageTag = (url) => {
-        // console.log(`url: ${url}`);
-
         // replace w for width and h for height
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
         return <img src={url} alt="url" className="image"/>
@@ -48,33 +39,33 @@ const SearchResult = () => {
                         <div className="col-2">
                             <span>Artists:</span>
                         </div>
-                        {artists.length < 8 ? null : 
-                            <div className="col-2" >
-                                {/* <a href="/artists" style={{"text-decoration": "none"}}>See All</a> */}
-                                <NavLink to={`/artists/${searchTerm}`}>See All</NavLink>
-                            </div>
-                        }
                     </div>
-                    {artists.map(artist => (
-                        <div className="col" key={artist.artistId}>
-                            <div className="card">
-                                <div className="card-body">
-                                    {/* {makeArtistImageTag(artist.artistImageUrl || 'https://www.iphonefaq.org/files/styles/large/public/apple_music.jpg')} */}
-                                    {/* {makeArtistImageTag(artist.artistImageUrl || {defaultImage})} */}
-                                    {artist.artistImageUrl ? makeArtistImageTag(artist.artistImageUrl) : <img src={defaultImage} alt="default-image" className="artistImage"/>}
+                    <div className="d-flex flex-wrap">
+                        {artists.map(artist => (
+                            <div key={artist.artistId}>
+                                <div className="card">
+                                    <div className="card-body">
+                                        {/* {makeArtistImageTag(artist.artistImageUrl || 'https://www.iphonefaq.org/files/styles/large/public/apple_music.jpg')} */}
+                                        {/* {makeArtistImageTag(artist.artistImageUrl || {defaultImage})} */}
 
-                                    <p className="card-title">
-                                        <a href={`${artist.artistUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">{artist.artistName}</a>
-                                    </p>
-                                    {/* <p className="card-text">
-                                        Genre Name: {artist.artistGenreNames.map(each => (
-                                            <span key="{each}">{each}</span>
-                                        ))}
-                                    </p> */}
+                                        <div>
+                                            <a href={`${artist.artistUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">
+                                                {artist.artistImageUrl ? makeArtistImageTag(artist.artistImageUrl) : <img src={defaultImage} alt="default-image" className="artistImage"/>}
+                                            </a>
+                                            <p className="card-text">
+                                                <span>{artist.artistName}</span>
+                                            </p>
+                                        </div>
+                                        {/* <p className="card-text">
+                                            Genre Name: {artist.artistGenreNames.map(each => (
+                                                <span key="{each}">{each}</span>
+                                            ))}
+                                        </p> */}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             }
 
@@ -87,31 +78,38 @@ const SearchResult = () => {
                         {songs.length < 8 ? null : 
                             <div className="col-2" >
                                 {/* <a href="/artists" style={{"text-decoration": "none"}}>See All</a> */}
-                                <NavLink to={`/songs/${searchTerm}`}>See All</NavLink>
+                                <NavLink to={`/songs/${searchTerm}`} style={{"textDecoration": "none", "color": "#f94c57"}}>See All</NavLink>
                             </div>
                         }
                     </div>
-                    {songs.map(song => (
-                        <div className="col" key={song.songId}>
-                            <div className="card" style={{width : "18rem"}}>
-                                <div className="card-body">
-                                    {makeImageTag(song.songImageUrl)}
-                                    <p>{song.songName} {song.songArtist}</p>
-                                    {/* <p>Song ID: {song.songId}</p> */}
-                                    {/* <h5 className="card-title">
-                                        <a href={`${song.songPreview}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Preivew</a>
-                                    </h5> */}
-                                    {/* <p className="card-text">
-                                        {song.songArtist}
-                                    </p> */}
-                                    {/* <p> Download Preview: <a href={song.songDownloadPreview}>{song.songName}</a>
-                                    </p> */}
-                                    {/* <img src={song.attributes.artwork.url} alt="" /> */}
-                                    <button onClick={() => handleClick(song.songId)}>Check Detail</button>
+                    <div className="d-flex flex-wrap">
+                        {songs.map(song => (
+                            <div key={song.songId}>
+                                <div className="card">
+                                    <div className="card-body">
+                                        {/* <p>{song.songName}-{song.songArtist}</p> */}
+                                        <div className="card-text">
+                                            <NavLink to={`/song/${song.songId}`} style={{textDecoration: "none"}}> 
+                                                {makeImageTag(song.songImageUrl)}
+                                            </NavLink>     
+                                            <p><span>{song.songName}-{song.songArtist}</span></p>
+                                        </div>
+                                        {/* <p>Song ID: {song.songId}</p> */}
+                                        {/* <h5 className="card-title">
+                                            <a href={`${song.songPreview}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Preivew</a>
+                                        </h5> */}
+                                        {/* <p className="card-text">
+                                            {song.songArtist}
+                                        </p> */}
+                                        {/* <p> Download Preview: <a href={song.songDownloadPreview}>{song.songName}</a>
+                                        </p> */}
+                                        {/* <img src={song.attributes.artwork.url} alt="" /> */}
+                                        {/* <button onClick={() => handleClick(song.songId)}>Check Detail</button> */}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             } 
 
@@ -124,26 +122,33 @@ const SearchResult = () => {
                         {albums.length < 8 ? null : 
                             <div className="col-2" >
                                 {/* <a href="/artists" style={{"text-decoration": "none"}}>See All</a> */}
-                                <NavLink to={`/albums/${searchTerm}`}>See All</NavLink>
+                                <NavLink to={`/albums/${searchTerm}`} style={{"textDecoration": "none", "color": "#f94c57"}}>See All</NavLink>
                             </div>
                         }
                     </div>
-                    {albums.map(album => (
-                        <div className="col" key={album.albumId}>
-                            <div className="card" style={{width : "18rem"}}>
-                                <div className="card-body">
-                                    {makeImageTag(album.albumImageUrl)}
-                                    <p className="card-title">
-                                        <a href={`${album.albumUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">{album.albumName} {album.albumArtist}</a>
-                                    </p>
-                                    {/* <p className="card-text">
-                                        Artist Name: 
-                                    </p> */}
-                                    <p>Release Date: {album.albumReleaseDate}</p>
+                    <div className="d-flex flex-wrap">
+                        {albums.map(album => (
+                            <div key={album.albumId}>
+                                <div className="card" style={{width : "18rem"}}>
+                                    <div className="card-body">
+                                        <div className="card-text">
+                                            <a href={`${album.albumUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">                                        
+                                            {makeImageTag(album.albumImageUrl)}
+                                            </a>
+                                            <p><span>{album.albumName}-{album.albumReleaseDate}</span></p>
+                                        </div>
+                                        {/* {makeImageTag(album.albumImageUrl)} */}
+                                        {/* <p className="card-text">
+                                            <a href={`${album.albumUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer"><span>{album.albumName}-{album.albumReleaseDate}</span></a>
+                                        </p> */}
+                                        {/* <p className="card-text">
+                                            Artist Name: 
+                                        </p> */}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             }
 
@@ -156,25 +161,25 @@ const SearchResult = () => {
                         {playlists.length < 8 ? null : 
                             <div className="col-2" >
                                 {/* <a href="/artists" style={{"text-decoration": "none"}}>See All</a> */}
-                                <NavLink to={`/playlists/${searchTerm}`}>See All</NavLink>
+                                <NavLink to={`/playlists/${searchTerm}`} style={{"textDecoration": "none", "color": "#f94c57"}}>See All</NavLink>
                             </div>
                         }
                     </div>
-                    {playlists.map(playlist => (
-                        <div className="col" >
-                            <div className="card" style={{width : "18rem"}}>
-                                <div className="card-body">
-                                    {makeImageTag(playlist.playlistImageUrl)}
-                                    <p className="card-title">
-                                        <a href={`${playlist.playlistUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Album: {playlist.playlistName}</a>
-                                    </p>
-                                    <p className="card-text">
-                                        Playlist Description: {playlist.playlistDescription}
-                                    </p>
+                    <div className="d-flex flex-wrap">
+                        {playlists.map(playlist => (
+                            <div>
+                                <div className="card" style={{width : "18rem"}}>
+                                    <div className="card-body">
+                                        <div className="card-text">
+                                            <a href={`${playlist.playlistUrl}`} style= {{textDecoration : "none", }} target="_blank" rel="noreferrer">                                        {makeImageTag(playlist.playlistImageUrl)}
+                                            </a>
+                                            <p><span>{playlist.playlistName}</span></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             }
 
@@ -187,34 +192,39 @@ const SearchResult = () => {
                         {musicVideos.length < 8 ? null : 
                             <div className="col-2" >
                                 {/* <a href="/artists" style={{"text-decoration": "none"}}>See All</a> */}
-                                <NavLink to={`/videos/${searchTerm}`}>See All</NavLink>
+                                <NavLink to={`/videos/${searchTerm}`} style={{"textDecoration": "none"}}>See All</NavLink>
                             </div>
                         }
                     </div>
-                    {musicVideos.map(musicVideo => (
-                        <div className="col" key={musicVideo.videoId}>
+                    <div className="d-flex flex-wrap">
+                        {musicVideos.map(musicVideo => (
+                        <div key={musicVideo.videoId}>
                             <div className="card" style={{width : "18rem"}}>
                                 <div className="card-body">
-                                    {makeImageTag(musicVideo.videosImageUrl)}
-                                    <p className="card-title">
-                                        <a href={`${musicVideo.videoUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Music Video: {musicVideo.videoName}</a>
-                                    </p>
-                                    <p className="card-title">
-                                        <a href={`${musicVideo.videoPreviewUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Music Video Preview</a>
-                                    </p>
-                                    {/* <p className="card-title">
-                                        <a href={`${musicVideo.videoHlsUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Music Video HLS Preview</a>
-                                    </p> */}
-                                    {/* <p className="card-text">
-                                        Music Video duration: {musicVideo.videoDuration}
-                                    </p> */}
-                                    {/* <p className="card-text">
-                                        Music Video Release Date: {musicVideo.videoReleaseDate}
-                                    </p> */}
+                                        <div className="card-text">
+                                            <a href={`${musicVideo.videoUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">
+                                                {makeImageTag(musicVideo.videosImageUrl)}
+                                            </a>
+                                            <p>
+                                                <span>{musicVideo.videoName} <a href={`${musicVideo.videoPreviewUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Preview</a>
+                                                </span>
+                                            </p>
+                                        </div>
+
+                                        {/* <p className="card-title">
+                                            <a href={`${musicVideo.videoHlsUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Music Video HLS Preview</a>
+                                        </p> */}
+                                        {/* <p className="card-text">
+                                            Music Video duration: {musicVideo.videoDuration}
+                                        </p> */}
+                                        {/* <p className="card-text">
+                                            Music Video Release Date: {musicVideo.videoReleaseDate}
+                                        </p> */}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             }           
         </div>

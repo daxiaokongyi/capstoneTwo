@@ -4,6 +4,7 @@ import {getCurrentUser, sendEditToAPI} from '../actions/users';
 import { useSelector } from 'react-redux';
 import jwt from 'jsonwebtoken';
 import { useHistory, NavLink } from 'react-router-dom';
+import './UserDetail.css';
 
 const UserDetail = () => {
     const token = useSelector(st => st.users.token);
@@ -72,30 +73,57 @@ const UserDetail = () => {
 
     const showFavSongs = (favoritedSongs) => {
         if (favoritedSongs) {
-            return favoritedSongs.map((each => (
-                <p key="{each}">
-                    {/* <a href={`/songs/${each[0]}`}>{each[1]}</a> */}
-                    <NavLink to={`/song/${each[0]}`}>{each[1]}</NavLink>
-                    <span><b>Song Artist: </b> {each[2]} </span>
-                </p>
-            )))
+            return (
+                favoritedSongs.map((each, index) => (
+                    <tr>
+                        <th scope="row">{index + 1}</th>
+                        <td><NavLink to={`/song/${each[0]}`}>{each[1]}</NavLink></td>
+                        <td>{each[2]}</td>
+                        <td>{each[3]}</td>
+                    </tr>
+                ))
+            )}
         }
-    };
 
     // show details only when it's not editable
     const nonEditable = () => {
         return (
-            <div className="card" style={{width: "18rem"}}>
-                <div className="card-body">
-                    <h5 className="card-title">{user.username}'s Info</h5>
-                    <h6 className="card-text">User Name: {user.username}</h6>
-                    <h6 className="card-text">First Name: {user.firstName}</h6>
-                    <h6 className="card-text">Last Name: {user.lastName}</h6>
-                    <h6 className="card-text">Email: {user.email}</h6>
+            <div className="container">
+                <div className="row">
+                    <div className="col-5">
+                        <div className="card" style={{width: "18rem"}}>
+                            <div className="card-body">
+                                <h5 className="card-title">{user.username}'s Info</h5>
+                                <h6 className="card-text">User Name: {user.username}</h6>
+                                <h6 className="card-text">First Name: {user.firstName}</h6>
+                                <h6 className="card-text">Last Name: {user.lastName}</h6>
+                                <h6 className="card-text">Email: {user.email}</h6>
+                            </div>
+                            <div className="d-flex justify-content-around">
+                                <button className="btn btn-primary btn-sm" type="button" onClick={handleClick}>Home Page</button>
+                                <button className="btn btn-primary btn-sm" type="button" onClick={handleEdit}>Edit Profile</button>
+                            </div>
+                        </div>  
+                    </div>
+                    {favoritedSongs && favoritedSongs.length === 0 ? null :
+                        <div className="col">
+                            <h3>Favorited Songs</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Song's Name</th>
+                                        <th scope="col">Song's Artist</th>
+                                        <th scope="col">Song's Genre Names</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {showFavSongs(favoritedSongs)}
+                                </tbody>
+                            </table>
+                        </div>
+                    }
                 </div>
-                <button onClick={handleClick}>Home Page</button>
-                <button onClick={handleEdit}>Edit Profile</button>
-                {showFavSongs(favoritedSongs)}
             </div>
         )
     }

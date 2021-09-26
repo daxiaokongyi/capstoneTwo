@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { fetchSongsFromAPI } from '../actions/songs'; 
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import './SearchBox.css';
 
 const SearchBox = () => {
     const dispatch = useDispatch();
@@ -37,21 +38,21 @@ const SearchBox = () => {
     }
 
     return (
-        <div className="SearchForm mb-4">
-            <form className="form-inline" onSubmit={handleSubmit}>
-                <input
-                    className="form-control form-control-lg flex-grow-1"
-                    type="text" 
-                    name="searchTerm"
-                    placeholder="Search ..."
-                    onChange={handleChange}
-                    value={searchTerm}
-                />
-                <button className="btn btn-lg btn-primary">
-                    Search
-                </button>
-            </form>
-        </div>
+        <form className="form-inline my-2 my-lg-0 search-box" onSubmit={handleSubmit}>
+            <input
+                // className="form-control form-control-lg flex-grow-1"
+                className="form-control mr-sm-2"
+                aria-label="Search"
+                type="search" 
+                name="searchTerm"
+                placeholder="Search ..."
+                onChange={handleChange}
+                value={searchTerm}
+            />
+            <button className="btn btn-primary" type="submit">
+                Search
+            </button>
+        </form>
     )
 }
 

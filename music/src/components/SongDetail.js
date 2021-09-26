@@ -89,6 +89,9 @@ const SongDetail = () => {
     return (
         <div className="container">
             <h1>{songDetail.attributes ? songDetail.attributes.name : ""}</h1>
+            <a href={songDetail.attributes && songDetail.attributes.url} style= {{textDecoration : "none", margin:0}} target="_blank" rel="noreferrer">
+                {songDetail.attributes ? makeImageTag(songDetail.attributes.artwork.url) : null}
+            </a>
             <p>{songDetail.attributes ? songDetail.attributes.artistName: ""}</p>
             {/* <img src={songDetail.attributes ? makeImageTag(songDetail.attributes.artwork.url) : ''} alt="url" /> */}
             <p>Genre Name: {songDetail.attributes && songDetail.attributes.genreNames.map(each => (<span>{each} </span>))}
@@ -96,15 +99,14 @@ const SongDetail = () => {
             <p>Release Date: {songDetail.attributes && songDetail.attributes.releaseDate}</p>
             <p>Album Name: {songDetail.attributes && songDetail.attributes.albumName}</p>
             <p>Composer Name: {songDetail.attributes && songDetail.attributes.composerName}</p>
-            <div>{songDetail.attributes ? makeImageTag(songDetail.attributes.artwork.url) : null}</div>
             <div>
                 {faved 
-                    ? <button onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
-                    : <button onClick={() => handleAdd(songId, songName, artist, genreNames, username, token)}>Add to Favorite</button>
+                    ? <button className="btn btn-primary" onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
+                    : <button className="btn btn-primary" onClick={() => handleAdd(songId, songName, artist, genreNames, username, token)}>Add to Favorite</button>
                 }
             </div>
             <div>
-                <button onClick={handleClick}>Back To User's Page</button>
+                <button className="btn btn-primary" onClick={handleClick}>Back To User's Page</button>
             </div>
         </div>    
     )
