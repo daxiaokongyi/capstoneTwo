@@ -6,6 +6,9 @@ import './SearchResult.css';
 
 const SearchResult = () => {
     const IMAGE_DIMS = 150;
+    const IMAGE_W_DIMS = 250;
+    const IMAGE_H_DIMS = 150;
+
 
     const songs = useSelector(store => store.songs.songs);
     const artists = useSelector(store => store.songs.artists);
@@ -29,6 +32,16 @@ const SearchResult = () => {
         // replace w for width and h for height
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
         return <img src={url} alt="url" className="artistImage"/>
+    }
+
+    const makeVideoImageTag = (url) => {
+        // replace w for width and h for height
+        console.log(url);
+        url = url.replace(/\{(w)\}/g, IMAGE_W_DIMS); 
+        console.log(url);
+        url = url.replace(/\{(h)\}/g, IMAGE_H_DIMS);
+        console.log(url);
+        return <img src={url} alt="url" className="videoImage"/>
     }
 
     return (
@@ -192,7 +205,7 @@ const SearchResult = () => {
                         {musicVideos.length < 8 ? null : 
                             <div className="col-2" >
                                 {/* <a href="/artists" style={{"text-decoration": "none"}}>See All</a> */}
-                                <NavLink to={`/videos/${searchTerm}`} style={{"textDecoration": "none"}}>See All</NavLink>
+                                <NavLink to={`/videos/${searchTerm}`} style={{"textDecoration": "none", "color": "#f94c57"}}>See All</NavLink>
                             </div>
                         }
                     </div>
@@ -203,7 +216,7 @@ const SearchResult = () => {
                                 <div className="card-body">
                                         <div className="card-text">
                                             <a href={`${musicVideo.videoUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">
-                                                {makeImageTag(musicVideo.videosImageUrl)}
+                                                {makeVideoImageTag(musicVideo.videosImageUrl)}
                                             </a>
                                             <p>
                                                 <span>{musicVideo.videoName} <a href={`${musicVideo.videoPreviewUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Preview</a>
