@@ -10,14 +10,18 @@ const Suggestion = () => {
     console.log(`genreRecommendArray: ${genreRecommendArray}`);
 
     let genreNameSelected = genreRecommendArray.length !== 0 ? genreRecommendArray[genreRecommendArray.length - 1][3] : 'popular';
+    console.log(`genreNameSelected: ${genreNameSelected}`);
 
     useEffect(()=> {
         async function getSuggestionSongs(genreName) {
-            dispatch(fetchSongsFromAPI(genreName));
+            console.log(`genreName: ${genreName}`);
+            // dispatch(fetchSongsFromAPI(genreName));
             history.push(`/search?term=${genreName}`);
         }
-        getSuggestionSongs(genreNameSelected);
-    },[]);
+        if (genreNameSelected) {
+            getSuggestionSongs(genreNameSelected);
+        }
+    },[genreNameSelected]);
     return(
         <div>
             Suggestion Page

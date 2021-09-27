@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useSelector } from 'react-redux';
-import {useHistory, NavLink} from 'react-router-dom';
+import {useHistory, NavLink, useLocation} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import defaultImage from '../common/appleMusicDefault.jpeg';
+import { fetchSongsFromAPI } from '../actions/songs'; 
 import './SearchResult.css';
 
 const SearchResult = () => {
@@ -9,14 +11,24 @@ const SearchResult = () => {
     const IMAGE_W_DIMS = 250;
     const IMAGE_H_DIMS = 150;
 
+    const search = useLocation().search;
+    const searchTerm = new URLSearchParams(search).get('term');
+    console.log(`search item: ${searchTerm}`);
+    // const searchTerm = 'Jaychou';
 
     const songs = useSelector(store => store.songs.songs);
     const artists = useSelector(store => store.songs.artists);
     const albums = useSelector(store => store.songs.albums);
     const playlists = useSelector(store => store.songs.playlists);
     const musicVideos = useSelector(store => store.songs.musicVideos);
-    const searchTerm = useSelector(store => store.songs.searchTerm);
+    // const searchTerm = useSelector(store => store.songs.searchTerm);
     const history = useHistory();
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchSongsFromAPI(searchTerm || `popular`));
+    }, [dispatch, searchTerm])
 
     const handleClick = (songId) => {
         history.push(`/song/${songId}`);
@@ -36,11 +48,11 @@ const SearchResult = () => {
 
     const makeVideoImageTag = (url) => {
         // replace w for width and h for height
-        console.log(url);
+        // console.log(url);
         url = url.replace(/\{(w)\}/g, IMAGE_W_DIMS); 
-        console.log(url);
+        // console.log(url);
         url = url.replace(/\{(h)\}/g, IMAGE_H_DIMS);
-        console.log(url);
+        // console.log(url);
         return <img src={url} alt="url" className="videoImage"/>
     }
 

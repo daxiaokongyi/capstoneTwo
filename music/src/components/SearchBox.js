@@ -26,10 +26,11 @@ const SearchBox = () => {
         evt.preventDefault();
         // do the search
         // searchFor(searchTerm.trim() || undefined);
-        dispatch(fetchSongsFromAPI(searchTerm || `popular`));
+        // dispatch(fetchSongsFromAPI(searchTerm || `popular`));
         setSearchTerm(searchTerm.trim());
         // console.log(`searchTerm: ${searchTerm}`);
-        history.push(`/search?term=${searchTerm || `popular`}`);
+        // history.push(`/search?term=${searchTerm || `popular`}`);
+        history.push(`/search?term=${searchTerm}`);
         // return (
         //     <NavLink to={`/search?term=${searchTerm}`}>
 
