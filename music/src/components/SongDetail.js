@@ -5,6 +5,7 @@ import {fetchSongDetail, isFavBtnClicked} from '../actions/songs';
 import { useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux'; 
+import './SongDetail.css';
 
 const SongDetail = () => {
     const params = useParams();
@@ -79,7 +80,7 @@ const SongDetail = () => {
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
         console.log(`url: ${url}`);
 
-        return <img src={url} className="image"/>
+        return <img src={url} className="song-detail-img"/>
     }
 
     const handleClick = () => {
@@ -92,20 +93,19 @@ const SongDetail = () => {
             <a href={songDetail.attributes && songDetail.attributes.url} style= {{textDecoration : "none", margin:0}} target="_blank" rel="noreferrer">
                 {songDetail.attributes ? makeImageTag(songDetail.attributes.artwork.url) : null}
             </a>
-            <p>{songDetail.attributes ? songDetail.attributes.artistName: ""}</p>
-            {/* <img src={songDetail.attributes ? makeImageTag(songDetail.attributes.artwork.url) : ''} alt="url" /> */}
-            <p>Genre Name: {songDetail.attributes && songDetail.attributes.genreNames.map(each => (<span>{each} </span>))}
-            </p>
-            <p>Release Date: {songDetail.attributes && songDetail.attributes.releaseDate}</p>
-            <p>Album Name: {songDetail.attributes && songDetail.attributes.albumName}</p>
-            <p>Composer Name: {songDetail.attributes && songDetail.attributes.composerName}</p>
+            <div className="song-detail-info">
+                <p><b>Artist Name:</b> {songDetail.attributes ? songDetail.attributes.artistName: ""}</p>
+                {/* <img src={songDetail.attributes ? makeImageTag(songDetail.attributes.artwork.url) : ''} alt="url" /> */}
+                <p><b>Composer Name</b>: {songDetail.attributes && songDetail.attributes.composerName}</p>
+                <p><b>Album Name:</b> {songDetail.attributes && songDetail.attributes.albumName}</p>
+                <p><b>Release Date:</b> {songDetail.attributes && songDetail.attributes.releaseDate}</p>
+                <p><b>Genre Name:</b> {songDetail.attributes && songDetail.attributes.genreNames.map(each => (<span>{each} </span>))}</p>
+            </div>
             <div>
                 {faved 
                     ? <button className="btn btn-primary" onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
                     : <button className="btn btn-primary" onClick={() => handleAdd(songId, songName, artist, genreNames, username, token)}>Add to Favorite</button>
                 }
-            </div>
-            <div>
                 <button className="btn btn-primary" onClick={handleClick}>Back To User's Page</button>
             </div>
         </div>    

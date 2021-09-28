@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink} from 'react-router-dom';
 import Alert from './Alert';
 import { useSelector } from 'react-redux';
+import './SignupForm.css';
 
 const SignupForm = ({save}) => {
     const token = useSelector(st => st.users.token);
@@ -101,7 +102,12 @@ const SignupForm = ({save}) => {
 
             {formErrors.length ? <Alert type='danger' messages={formErrors}/> : null}
 
-            <button className="btn btn-primary mr-2">Save</button>
+            <div style={{"margin": "0.3rem auto"}}>
+                <button className="btn btn-primary btn-sm">Sign Up</button> 
+                <p style={{"display":"inline"}}>Already have an account? 
+                    <NavLink to={'/signin'} style={{"textDecoration":"none", "color":"#fc3c44"}}> Sign In</NavLink>
+                </p>
+            </div>
         </form>
     )
 }

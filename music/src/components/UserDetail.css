@@ -1,5 +1,26 @@
 .btn {
     background-color: #d60017 !important;
-    border: none;
-    margin: 0.3rem;
+    border: none !important;
+}
+
+.buttons {
+    margin: 0.5rem;
+    padding: 0.1rem;
+}
+
+.btn {
+    margin-right: 1.5rem;
+}
+
+.card-body {
+    padding: 0.8rem !important;
+}
+
+.card-title {
+    margin-bottom: 0.3rem;
+}
+
+.card-title, .card-text {
+    text-align: left !important;
+    margin: auto 0.5rem !important;
 }

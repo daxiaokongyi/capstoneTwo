@@ -2,6 +2,7 @@
     display: flex;
 }
 
-form button {
-    margin: 0 0.8rem !important;
+.search-box-btn {
+    margin-left: 0.6rem !important;
+    border: none !important;
 }

@@ -10,6 +10,7 @@ const UserDetail = () => {
     const token = useSelector(st => st.users.token);
     const favoritedSongs = useSelector(st => st.users.user.favoriteSongs);
     const dispatch = useDispatch();
+    const IMAGE_DIMS = 150;
 
     useEffect(function loadUserInfo() {
         const getUser = async () => {
@@ -31,7 +32,7 @@ const UserDetail = () => {
         dispatch(sendEditToAPI(username, updatedUser, token));
         setEditable(false);
         // setSaveConfirmed(true);
-        history.push(`/users/${user.username}`);
+        history.push(`/user/${user.username}`);
     }
 
     const cancel = () => {
@@ -57,7 +58,7 @@ const UserDetail = () => {
     // handlers for non-editable template
 
     const handleClick = () => {
-        history.push("/");
+        history.push("/search");
     }
 
     const handleEdit = () => {
@@ -90,18 +91,19 @@ const UserDetail = () => {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-5">
+                    <div className="col-4">
                         <div className="card" style={{width: "18rem"}}>
                             <div className="card-body">
                                 <h5 className="card-title">{user.username}'s Info</h5>
-                                <h6 className="card-text">User Name: {user.username}</h6>
-                                <h6 className="card-text">First Name: {user.firstName}</h6>
-                                <h6 className="card-text">Last Name: {user.lastName}</h6>
-                                <h6 className="card-text">Email: {user.email}</h6>
-                            </div>
-                            <div className="d-flex justify-content-around">
-                                <button className="btn btn-primary btn-sm" type="button" onClick={handleClick}>Home Page</button>
-                                <button className="btn btn-primary btn-sm" type="button" onClick={handleEdit}>Edit Profile</button>
+                                <p className="card-text">User Name: {user.username}</p>
+                                <p className="card-text">First Name: {user.firstName}</p>
+                                <p className="card-text">Last Name: {user.lastName}</p>
+                                <p className="card-text">Email: {user.email}</p>
+                                {/* <div className="d-flex justify-content-around buttons"> */}
+                                <div className="buttons">
+                                    <button className="btn btn-primary btn-sm" type="button" onClick={handleClick}>Home Page</button>
+                                    <button className="btn btn-primary btn-sm" type="button" onClick={handleEdit}>Edit Profile</button>
+                                </div>
                             </div>
                         </div>  
                     </div>

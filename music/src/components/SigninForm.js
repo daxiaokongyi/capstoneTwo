@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { useSelector} from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 import Alert from './Alert';
+import './SigninForm.css';
 
 const SigninForm = ({save}) => {
     const token = useSelector(st => st.users.token);   
@@ -20,7 +21,6 @@ const SigninForm = ({save}) => {
     const history = useHistory();
 
     useEffect(() => {
-
         if (token) {
             history.push(`/user/${formData.username}`);
         } else if (signinErrors.length !== 0) {
@@ -43,6 +43,7 @@ const SigninForm = ({save}) => {
 
     return(
         <div>
+            {formErrors.length ? <Alert type='danger' messages={formErrors}/> : null}
             <form className="mb-4" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="signin-username">user Name: </label>
@@ -66,8 +67,12 @@ const SigninForm = ({save}) => {
                         value={formData.password}
                     />            
                 </div>
-                {formErrors.length ? <Alert type='danger' messages={formErrors}/> : null}
-                <button className="btn btn-primary mr-2">Save</button>
+                <div style={{"margin": "0.3rem auto"}}>
+                    <button className="btn btn-primary btn-sm">Login</button>
+                    <p style={{"display":"inline"}}>New to I-Music? 
+                        <NavLink to={'/signup'} style={{"textDecoration":"none", "color":"#fc3c44"}}> Sign up</NavLink>
+                    </p>
+                </div>
             </form>
             {(!token && Object.keys(addFavErrs).length !== 0 && favBtnClicked) ? <Alert type='danger' messages={addFavErrs.message}/> : null}
         </div>

@@ -189,6 +189,8 @@ class User {
     static async update(username, data) {
         // hash the input password
         if (data.password) {
+            console.log(`data: ${JSON.stringify(data)}`);
+            console.log(`password in model: ${data.password}`);
             data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
         }
 
@@ -218,6 +220,36 @@ class User {
 
         // check if user exists
         if(!user) throw new NotFoundError(`No user ${username} found`);
+
+        // get all existing user's favourite songs
+        const userSongsResult = await db.query(
+            `SELECT f.songs_id
+             FROM favorites AS f
+             WHERE f.username = $1`,
+             [username]
+        ) 
+
+        if (userSongsResult.rows.length !== 0) {
+
+            const songsId = userSongsResult.rows.map(each => {
+                return parseInt(each.songs_id);
+            })
+
+            const favDetails = await db.query(
+                `SELECT song_id AS "songId",
+                        song_name AS "songName",
+                        song_artist AS "songArtist",
+                        song_genre_names AS "songGenreNames"
+                 FROM songs
+                 WHERE id in (${songsId})`
+            )
+
+            user.favoriteSongs = favDetails.rows.map(
+                each => [each.songId, each.songName, each.songArtist, each.songGenreNames]
+            )
+        } else {
+            user.favoriteSongs = [];
+        }
 
         delete user.password;
         return user;

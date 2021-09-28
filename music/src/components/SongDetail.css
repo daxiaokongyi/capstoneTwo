@@ -1,0 +1,12 @@
+.song-detail-img {
+    margin: 0;
+    border-radius: 0.5rem;
+}
+
+.song-detail-img:hover {
+    filter: brightness(70%);
+}
+
+.song-detail-info {
+    margin: 2rem 0;
+}
