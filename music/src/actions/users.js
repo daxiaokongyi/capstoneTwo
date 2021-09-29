@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER, GET_SIGNUP_ERRORS, GET_SIGNIN_ERRORS, ADD_FAVORITE_SONG, REMOVE_FAVORITE_SONG, ADD_FAVORITED_ERRORS} from "./types";
+import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER, GET_SIGNUP_ERRORS, GET_SIGNIN_ERRORS, ADD_FAVORITE_SONG, REMOVE_FAVORITE_SONG, ADD_FAVORITED_ERRORS, GET_EDIT_ERRORS} from "./types";
 
 const API_URL = "http://localhost:3001";
 
@@ -107,13 +107,31 @@ const getUser = (user, token) => {
 
 // action for editting current use
 export const sendEditToAPI = (username, updatedUserData, token) => {
+    // return async function (dispatch) {
+    //     const result = await axios.patch(`${API_URL}/users/${username}`, updatedUserData, {
+    //         headers: {
+    //             'Authorization': `Bearer ${token}`
+    //         }
+    //     });
+    //     return dispatch(editUser(result.data.user, token));
+    // }
+
     return async function (dispatch) {
-        const result = await axios.patch(`${API_URL}/users/${username}`, updatedUserData, {
+        await axios.patch(`${API_URL}/users/${username}`, updatedUserData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
-        });
-        return dispatch(editUser(result.data.user, token));
+        }).then(
+            result => {
+                return dispatch(editUser(result.data.user, token));
+            }
+        ).catch(
+            error => {
+                console.log(`error in edit: ${JSON.stringify(error.response.data.error)}`);
+                return dispatch(getEditErrors(error.response.data.error.message));
+            }
+        );
+        // return dispatch(editUser(result.data.user, token));
     }
 }
 
@@ -123,6 +141,15 @@ const editUser = (user, token) => {
         data: {
             user,    
             token,
+        }
+    }
+}
+
+const getEditErrors = (errorMessage) => {
+    return {
+        type: GET_EDIT_ERRORS,
+        errs: {
+            editErrs: errorMessage
         }
     }
 }

@@ -19,3 +19,4 @@ export const GET_ALL_SONGS = `GET_ALL_SONGS`;
 export const GET_ALL_ALBUMS = `GET_ALL_ALBUMS`;
 export const GET_ALL_PLAYLISTS = `GET_ALL_PLAYLISTS`;
 export const GET_ALL_VIDEOS = `GET_ALL_VIDEOS`;
+export const GET_EDIT_ERRORS = `GET_EDIT_ERRORS`;

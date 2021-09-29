@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSongsFromAPI } from '../actions/songs'; 
+import LoadingSpinner from '../common/LoadingSpinner';
 import { useHistory } from 'react-router-dom';
 
 const Suggestion = () => {
@@ -22,10 +23,9 @@ const Suggestion = () => {
             getSuggestionSongs(genreNameSelected);
         }
     },[genreNameSelected]);
+
     return(
-        <div>
-            Suggestion Page
-        </div>
+        <LoadingSpinner/>
     )
 }
 

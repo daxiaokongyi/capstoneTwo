@@ -1,9 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector } from 'react-redux';
 import {useHistory, NavLink, useLocation} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import defaultImage from '../common/appleMusicDefault.jpeg';
 import { fetchSongsFromAPI } from '../actions/songs'; 
+import LoadingSpinner from '../common/LoadingSpinner';
 import './SearchResult.css';
 
 const SearchResult = () => {
@@ -16,19 +17,42 @@ const SearchResult = () => {
     console.log(`search item: ${searchTerm}`);
     // const searchTerm = 'Jaychou';
 
-    const songs = useSelector(store => store.songs.songs);
-    const artists = useSelector(store => store.songs.artists);
-    const albums = useSelector(store => store.songs.albums);
-    const playlists = useSelector(store => store.songs.playlists);
-    const musicVideos = useSelector(store => store.songs.musicVideos);
+    const fetchResult = useSelector(store => store.songs);
+    // const songs = useSelector(store => store.songs.songs);
+    // const artists = useSelector(store => store.songs.artists);
+    // const albums = useSelector(store => store.songs.albums);
+    // const playlists = useSelector(store => store.songs.playlists);
+    // const musicVideos = useSelector(store => store.songs.musicVideos);
+    const songs = fetchResult.songs;
+    const artists = fetchResult.artists;
+    const albums = fetchResult.albums;
+    const playlists = fetchResult.playlists;
+    const musicVideos = fetchResult.musicVideos;
+
     // const searchTerm = useSelector(store => store.songs.searchTerm);
     const history = useHistory();
 
     const dispatch = useDispatch();
 
+    const [loading, setLoading] = useState(true);
+    console.log(`loading: ${loading}`)
+
+    // useEffect(() => {
+    //     dispatch(fetchSongsFromAPI(searchTerm || `popular`));
+    //     setLoading(false);
+    //     console.log(`loading: ${loading}`)
+    // }, [dispatch, searchTerm, loading]);
+
     useEffect(() => {
-        dispatch(fetchSongsFromAPI(searchTerm || `popular`));
-    }, [dispatch, searchTerm])
+        async function fetchResults() {
+            await dispatch(fetchSongsFromAPI(searchTerm || `popular`));
+            setLoading(false);
+        }
+
+        if (loading) {
+            fetchResults();
+        }
+    }, [dispatch, searchTerm, loading]);
 
     const handleClick = (songId) => {
         history.push(`/song/${songId}`);
@@ -56,6 +80,8 @@ const SearchResult = () => {
         return <img src={url} alt="url" className="videoImage"/>
     }
 
+    if (loading) return <LoadingSpinner/>;
+
     return (
         <div className="container">
             {artists.length === 0 ? null : 
@@ -77,7 +103,7 @@ const SearchResult = () => {
                                             <a href={`${artist.artistUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">
                                                 {artist.artistImageUrl ? makeArtistImageTag(artist.artistImageUrl) : <img src={defaultImage} alt="default-image" className="artistImage"/>}
                                             </a>
-                                            <p className="card-text">
+                                            <p className="text">
                                                 <span>{artist.artistName}</span>
                                             </p>
                                         </div>
@@ -117,7 +143,7 @@ const SearchResult = () => {
                                             <NavLink to={`/song/${song.songId}`} style={{textDecoration: "none"}}> 
                                                 {makeImageTag(song.songImageUrl)}
                                             </NavLink>     
-                                            <p><span>{song.songName}-{song.songArtist}</span></p>
+                                            <p className="text"><span>{song.songName}</span></p>
                                         </div>
                                         {/* <p>Song ID: {song.songId}</p> */}
                                         {/* <h5 className="card-title">
@@ -160,7 +186,7 @@ const SearchResult = () => {
                                             <a href={`${album.albumUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">                                        
                                             {makeImageTag(album.albumImageUrl)}
                                             </a>
-                                            <p><span>{album.albumName}-{album.albumReleaseDate}</span></p>
+                                            <p className="text"><span>{album.albumName}-{album.albumReleaseDate}</span></p>
                                         </div>
                                         {/* {makeImageTag(album.albumImageUrl)} */}
                                         {/* <p className="card-text">
@@ -198,7 +224,7 @@ const SearchResult = () => {
                                         <div className="card-text">
                                             <a href={`${playlist.playlistUrl}`} style= {{textDecoration : "none", }} target="_blank" rel="noreferrer">                                        {makeImageTag(playlist.playlistImageUrl)}
                                             </a>
-                                            <p><span>{playlist.playlistName}</span></p>
+                                            <p className="text"><span>{playlist.playlistName}</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -227,12 +253,11 @@ const SearchResult = () => {
                             <div className="card" style={{width : "18rem"}}>
                                 <div className="card-body">
                                         <div className="card-text">
-                                            <a href={`${musicVideo.videoUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">
+                                            <a href={`${musicVideo.videoPreviewUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">
                                                 {makeVideoImageTag(musicVideo.videosImageUrl)}
                                             </a>
-                                            <p>
-                                                <span>{musicVideo.videoName} <a href={`${musicVideo.videoPreviewUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Preview</a>
-                                                </span>
+                                            <p className="text">
+                                                <a href={`${musicVideo.videoUrl}`} style={{textDecoration : "none"}} target="_blank" rel="noreferrer"><span>{musicVideo.videoName}</span></a>
                                             </p>
                                         </div>
 

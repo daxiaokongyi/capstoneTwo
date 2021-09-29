@@ -19,8 +19,8 @@
 }
 
 .image {
-    /* height: 8rem;
-    width: 8rem; */
+    height: 8rem;
+    width: 8rem;
     display: block;
     margin: auto;
     border-radius: 0.3rem;
@@ -62,3 +62,11 @@
 span {
     color: rgba(0, 0, 0, 0.88);
 }
+
+.text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+}
+

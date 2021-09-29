@@ -4,29 +4,40 @@ import {getCurrentUser, sendEditToAPI} from '../actions/users';
 import { useSelector } from 'react-redux';
 import jwt from 'jsonwebtoken';
 import { useHistory, NavLink } from 'react-router-dom';
+import Alert from './Alert';
 import './UserDetail.css';
 
 const UserDetail = () => {
     const token = useSelector(st => st.users.token);
     const favoritedSongs = useSelector(st => st.users.user.favoriteSongs);
+    const editErrors = useSelector(st => st.users.edit_errors);
     const dispatch = useDispatch();
     const IMAGE_DIMS = 150;
 
+    const [formErrors, setFormErrors] = useState([]);
+
     useEffect(function loadUserInfo() {
         const getUser = async () => {
-            if (token) {
-                try {
-                    let {username} = jwt.decode(token);
-                    dispatch(getCurrentUser(username, token));
-                } catch (error) {
-                    return error;
-                }
+            // if (token) {
+            //     try {
+            //         let {username} = jwt.decode(token);
+            //         dispatch(getCurrentUser(username, token));
+            //     } catch (error) {
+            //         return error;
+            //     }
+            // }
+            // // setInfoLoaded(true);
+            if (editErrors.length !== 0) {
+                setFormErrors(editErrors);
+            } else {
+                let {username} = jwt.decode(token);
+                dispatch(getCurrentUser(username, token));
+                setFormErrors(editErrors);
             }
-            // setInfoLoaded(true);
         }
         // setInfoLoaded(false);
         getUser();
-    }, [token, dispatch]);
+    }, [token, dispatch, editErrors]);
 
     const save = (username, updatedUser) => {
         dispatch(sendEditToAPI(username, updatedUser, token));
@@ -135,10 +146,10 @@ const UserDetail = () => {
         evt.preventDefault();
 
         let updatedUserData = {
-            password: formData.password,
             firstName: formData.firstName,  
             lastName: formData.lastName,
-            email: formData.email
+            email: formData.email,
+            password: formData.password
         }
 
         let username = user.username;        
@@ -158,70 +169,71 @@ const UserDetail = () => {
     const Editable = () => {
         return (
             <form className="mb-4" onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label htmlFor="edit-username">User Name: </label>
-                <input
-                    onChange={handleChange}
-                    id="edit-username"
-                    name="username"
-                    type="text"
-                    className="form-control"
-                    value={formData.username}
-                    disabled={true}
-                />
-            </div>
-            <div className="form-group">
-                <label htmlFor="edit-firstname">First Name: </label>
-                <input 
-                    onChange={handleChange}
-                    id="edit-firstname"
-                    name="firstName"
-                    type="text"
-                    className="form-control"
-                    value={formData.firstName}
-                />                            
-            </div>
-            <div className="form-group">
-                <label htmlFor="edit-lastname">Last Name: </label>
-                <input 
-                    onChange={handleChange}
-                    id="edit-lastname"
-                    name="lastName"
-                    type="text"
-                    className="form-control"
-                    value={formData.lastName}
-                />                                       
-            </div>
-            <div className="form-group">
-                <label htmlFor="edit-email">Email: </label>
-                <input 
-                    onChange={handleChange}
-                    id="edit-email"
-                    name="email"
-                    type="text"
-                    className="form-control"
-                    value={formData.email}
-                />                         
-            </div>
-            <div className="form-group">
-                <label htmlFor="edit-password"> Confirm Password: </label>
-                <input 
-                    onChange={handleChange}
-                    id="edit-password"
-                    name="password"
-                    type="text"
-                    className="form-control"
-                    value={formData.password}
-                />                              
-            </div> 
-            <button className="btn btn-primary mr-2">Save</button>
-            <button className="btn btn-secondary" onClick={cancel}>Cancel</button>
-        </form>
+                <div className="form-group">
+                    <label htmlFor="edit-username">User Name: </label>
+                    <input
+                        onChange={handleChange}
+                        id="edit-username"
+                        name="username"
+                        type="text"
+                        className="form-control"
+                        value={formData.username}
+                        disabled={true}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="edit-firstname">First Name: </label>
+                    <input 
+                        onChange={handleChange}
+                        id="edit-firstname"
+                        name="firstName"
+                        type="text"
+                        className="form-control"
+                        value={formData.firstName}
+                    />                            
+                </div>
+                <div className="form-group">
+                    <label htmlFor="edit-lastname">Last Name: </label>
+                    <input 
+                        onChange={handleChange}
+                        id="edit-lastname"
+                        name="lastName"
+                        type="text"
+                        className="form-control"
+                        value={formData.lastName}
+                    />                                       
+                </div>
+                <div className="form-group">
+                    <label htmlFor="edit-email">Email: </label>
+                    <input 
+                        onChange={handleChange}
+                        id="edit-email"
+                        name="email"
+                        type="text"
+                        className="form-control"
+                        value={formData.email}
+                    />                         
+                </div>
+                <div className="form-group">
+                    <label htmlFor="edit-password"> Confirm Password: </label>
+                    <input 
+                        onChange={handleChange}
+                        id="edit-password"
+                        name="password"
+                        type="text"
+                        className="form-control"
+                        value={formData.password}
+                    />                              
+                </div> 
+                <button className="btn btn-primary mr-2">Save</button>
+                <button className="btn btn-secondary" onClick={cancel}>Cancel</button>
+            </form>
         )
     }
 
     return (
         <div>
+            {formErrors.length !== 0 ? <Alert type='danger' messages={formErrors}/> : null}
             {editable ? Editable() : nonEditable()}
         </div>
     )

@@ -8,6 +8,7 @@ const {UnauthorizedError,
        BadRequestError, 
        NotFoundError
 } = require('../expressError');
+const { password } = require('pg/lib/defaults');
 
 
 /** create a class with function for users */
@@ -187,12 +188,33 @@ class User {
      */
 
     static async update(username, data) {
-        // hash the input password
-        if (data.password) {
-            console.log(`data: ${JSON.stringify(data)}`);
-            console.log(`password in model: ${data.password}`);
+        // get the current user's password
+        const currentUser = await db.query(
+            `SELECT password
+            FROM users
+            WHERE username = $1`,
+            [username]
+        );
+
+        console.log(JSON.stringify(currentUser.rows[0]));
+
+        console.log(`current user's password: ${currentUser.rows[0].password}`);
+        console.log(`input password: ${data.password}`);
+        const validPasword = await bcrypt.compare(data.password, currentUser.rows[0].password);
+        console.log(`check if same: ${validPasword}`);
+
+        if (!validPasword) {
+            throw new NotFoundError(`Password is incorrect. Please try again`);
+        } else {
             data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
         }
+        // hash the input password
+        // if (data.password) {
+        //     console.log(`data: ${JSON.stringify(data)}`);
+        //     console.log(`password in model: ${data.password}`);
+        //     // const isSame = bcrypt.check_password_hash()
+        //     data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
+        // }
 
         const {setCols, values} = sqlForPartialUpdate(
             data, 

@@ -100,7 +100,7 @@ const SignupForm = ({save}) => {
                 />                              
             </div> 
 
-            {formErrors.length ? <Alert type='danger' messages={formErrors}/> : null}
+            {formErrors.length !== 0 ? <Alert type='danger' messages={formErrors}/> : null}
 
             <div style={{"margin": "0.3rem auto"}}>
                 <button className="btn btn-primary btn-sm">Sign Up</button> 

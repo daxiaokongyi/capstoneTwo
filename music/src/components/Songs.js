@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { getSongs } from '../actions/songs';
 import { NavLink } from 'react-router-dom';
+import './Songs.css';
 
 const Songs = () => {
     const IMAGE_DIMS = 150;
@@ -48,7 +49,7 @@ const Songs = () => {
                     <td><a href={`${song.attributes.url}`}  style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Check</a></td> 
                     {/* <td><a href={`${song.href}`}  style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Check</a></td>  */}
                     {/* <td><a href={`${album.attributes.url}`}  style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">...</a></td> */}
-                    <td><NavLink to={`/song/${song.id}`}>...</NavLink></td>
+                    <td><NavLink to={`/song/${song.id}`} className="songtDetail">...</NavLink></td>
                 </tr> 
             </tbody>
         ))
@@ -59,13 +60,13 @@ const Songs = () => {
             <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Cover Image</th>
-                    <th scope="col">Song Name</th>
-                    <th scope="col">Artist Name</th>
-                    <th scope="col">Release Date</th>
-                    <th scope="col">Check Song</th>
-                    <th scope="col">Details</th>
+                        <th scope="col">#</th>
+                        <th scope="col">Cover Image</th>
+                        <th scope="col">Song Name</th>
+                        <th scope="col">Artist Name</th>
+                        <th scope="col">Release Date</th>
+                        <th scope="col">Check Song</th>
+                        <th scope="col">Details</th>
                     </tr>
                 </thead>
                 {showTableBody(songResults)}

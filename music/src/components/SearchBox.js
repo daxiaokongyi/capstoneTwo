@@ -50,7 +50,7 @@ const SearchBox = () => {
                 onChange={handleChange}
                 value={searchTerm}
             />
-            <button className="btn btn-primary" type="submit">
+            <button className="btn btn-primary search-box-btn" type="submit">
                 Search
             </button>
         </form>
