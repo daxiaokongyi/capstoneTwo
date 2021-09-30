@@ -1,7 +1,6 @@
 "use strict"
 
 const db = require('../db');
-const {NotFoundError} = require('../expressError');
 
 class Song {
     // Add songs fetched from API to song's database
@@ -13,12 +12,6 @@ class Song {
                 WHERE song_id = $1`,
                 [songId],
         );
-
-        // console.log(`add into models`);
-        // console.log(`songId: ${songId}`);
-        // console.log(`song name: ${songName}`);
-        // console.log(`song artist name: ${songArtistName}`);
-        // console.log(`song genre names: ${genreNames}`);
 
         // add the selected song into database if it's new
         if (songPreviewCheck.rows.length === 0) {
@@ -33,31 +26,6 @@ class Song {
                     song_genre_names AS "songGenreNames"`,
                 [songId, songName, songArtistName, genreNames],
             );
-
-        // if (songPreviewCheck.rows.length === 0) {
-        //     await db.query(
-        //         `INSERT INTO songs
-        //         (song_id, song_name, song_artist)
-        //         VALUES ($1, $2, $3, $4)
-        //         RETURNING
-        //             song_id AS "songId",
-        //             song_name AS "songName",
-        //             song_artist AS "songArtistName"`,
-        //         [songId, songName, songArtistName],
-        //     );
-
-
-            // await db.query(
-            //     `INSERT INTO songs
-            //     (song_id, song_name, song_artist, song_genre_names)
-            //     VALUES ($1, $2, $3, $4)
-            //     RETURNING
-            //         song_id AS "songId",
-            //         song_name AS "songName",
-            //         song_artist AS "songArtistName",
-            //         song_genre_name AS "songGenreNames"`
-            //     [songId, songName, songArtistName, genreNames],
-            // );
         } else {
             return;
         }
@@ -72,10 +40,9 @@ class Song {
              [songId]
         )
 
-        // check if this song is in a favorited list
+        // check if this song is in a favorited list, return false if not
         if (songIdInDatabase.rows.length === 0) {
             return false;
-            // throw new NotFoundError()
         }
 
         songIdInDatabase = songIdInDatabase.rows[0].id;

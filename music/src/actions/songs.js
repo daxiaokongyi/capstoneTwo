@@ -6,15 +6,11 @@ const API_URL = "http://localhost:3001";
 export function fetchSongsFromAPI(searchTerm) {
     return async function (dispatch) {
         const result = await axios.get(`${API_URL}/applemusic/songs/${searchTerm}`);
-        // console.log(JSON.stringify(result.data));
         return dispatch(getSongsInfo({songs: result.data, searchTerm: `${searchTerm}`}));
     }
 }
 
 function getSongsInfo (data) {
-    console.log(data.songs);
-    console.log(data.searchTerm);
-
     return {
         type: FETCH_SONGS,
         data: data
@@ -61,7 +57,6 @@ export function fetchSongDetail(songId, username) {
             username
         });
 
-        console.log(`result data: ${JSON.stringify(result.data.songDetail)}`);
         return dispatch(getSongDetail(result.data.songDetail));
     }
 }
@@ -80,28 +75,9 @@ export function isFavBtnClicked(favBtnClicked) {
     })
 }
 
-export function getArtists(searchTerm) {
-    return async function (dispatch) {
-        const result = await axios.get(`${API_URL}/applemusic/songs/artists/${searchTerm}`);
-
-        console.log(result);
-        return 'hi';
-        // return dispatch(getALLArtists(result.allArtists.artists.data));
-    }
-}
-
-function getALLArtists(data) {
-    return ({
-        type: GET_ALL_ARTISTS,
-        data: data
-    })
-}
-
 export function getSongs(searchTerm) {
     return async function (dispatch) {
         const result = await axios.get(`${API_URL}/applemusic/songs/songs/${searchTerm}`);
-
-        // console.log(JSON.stringify(result.data.songs));
         return dispatch(getAllSongs(result.data.songs));
     }
 }
@@ -116,8 +92,6 @@ function getAllSongs(data) {
 export function getAlbums(searchTerm) {
     return async function (dispatch) {
         const result = await axios.get(`${API_URL}/applemusic/songs/albums/${searchTerm}`);
-
-        // console.log(JSON.stringify(result.data.albums));
         return dispatch(getAllAlbums(result.data.albums));
     }
 }
@@ -132,8 +106,6 @@ function getAllAlbums(data) {
 export function getPlaylists(searchTerm) {
     return async function (dispatch) {
         const result = await axios.get(`${API_URL}/applemusic/songs/playlists/${searchTerm}`);
-
-        console.log(JSON.stringify(result.data.playlists));
         return dispatch(getAllPlaylists(result.data.playlists));
     }
 }
@@ -148,8 +120,6 @@ function getAllPlaylists(data) {
 export function getVideos(searchTerm) {
     return async function (dispatch) {
         const result = await axios.get(`${API_URL}/applemusic/songs/videos/${searchTerm}`);
-
-        console.log(JSON.stringify(result.data.videos));
         return dispatch(getAllVideos(result.data.videos));
     }
 }

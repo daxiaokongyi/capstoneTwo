@@ -4,63 +4,12 @@ const jsonschema = require('jsonschema');
 const express = require('express');
 
 const router = express.Router();
-const {ensureAdmin, ensureCorrectUser} = require('../middleware/auth');
-// const userNewSchema = require('../schemas/userNew.json');
+const {ensureCorrectUser} = require('../middleware/auth');
 const userUpdateSchema = require('../schemas/userUpdate.json');
 
 const {BadRequestError} = require('../expressError');
 const User = require('../models/users');
 const Song = require('../models/songs');
-const {createToken} = require('../helpers/tokens');
-
-/** POST / { user }  => { user, token }
- *
- * Adds a new user. This is not the registration endpoint --- instead, this is
- * only for admin users to add new users. The new user being added can be an
- * admin.
- *
- * This returns the newly created user and an authentication token for them:
- *  {user: { username, firstName, lastName, email, isAdmin }, token }
- *
- * Authorization required: admin
- **/
-
-// router.post("/", async function (req, res, next) {
-// // router.post("/", ensureAdmin, async function (req, res, next) {
-//     try {
-//         // check user schema
-//         const validator = jsonschema.validate(req.body, userNewSchema);
-//         // return error if validator is invalid
-//         if (!validator.valid) {
-//             const errors = validator.errors.map(e => e.stack);
-//             throw new BadRequestError(errors);
-//         }
-//         // add user if no errors on user new schema
-//         const user = await User.signup(req.body);
-//         const token = createToken(user);
-//         // return response with status of 201 and user and token with json format
-//         return res.status(201).json({user, token});
-//     } catch (error) {
-//         return next(error);
-//     }
-// });
-
-/** GET / => { users: [ {username, firstName, lastName, email }, ... ] }
- *
- * Returns list of all users.
- *
- * Authorization required: admin
- **/
-
-// router.get("/", async function (req, res, next) {
-// // router.get("/", ensureAdmin, async function (req, res, next) {
-//     try {
-//         const users = await User.findAll();
-//         return res.json({user});
-//     } catch (error) {
-//         return next(error);
-//     }
-// })
 
 /** GET /[username] => { user }
  * Authorization required: same user-as-:username
@@ -87,9 +36,7 @@ router.get("/:username", ensureCorrectUser, async function (req, res, next) {
 
 router.patch("/:username", ensureCorrectUser, async function (req, res, next) {
     try {
-        console.log(`data: ${JSON.stringify(req.body)}`);
         const validator = jsonschema.validate(req.body, userUpdateSchema);
-        // console.log(`data: ${JSON.stringify(req.body)}`);
 
         if (!validator.valid) {
             const errors = validator.errors.map(e => e.stack);
@@ -98,24 +45,9 @@ router.patch("/:username", ensureCorrectUser, async function (req, res, next) {
         const user = await User.update(req.params.username, req.body);
         return res.json({user});
     } catch (error) {
-        console.log(error);
         return next(error);
     }
 });
-
-// /** DELETE /[username]  =>  { deleted: username }
-//  *
-//  * Authorization required: admin or same-user-as-:username
-//  **/
-
-// router.delete("/:username", ensureCorrectUser, async function(req, res, next) {
-//     try {
-//         await User.remove(req.params.username);
-//         return res.json({deleted: req.params.username});
-//     } catch (error) {
-//         return next(error);
-//     }
-// });
 
 /** POST /[username]/songs/[id]  
  *
@@ -131,15 +63,6 @@ router.post("/:username/songs/:id", ensureCorrectUser, async function(req, res, 
         const songName = req.body.songName;
         const songArtistName = req.body.songArtistName; 
         const genreNames = req.body.genreNames;
-
-        console.log(`added song to db...`);
-
-        console.log(`songId: ${songId}`);
-        console.log(`user name: ${username}`);
-        console.log(`song name: ${songName}`);
-        console.log(`song artist name: ${songArtistName}`);
-        console.log(`song genre names: ${genreNames}`);
-        console.log(`song genre names: ${genreNames.length}`);
 
         await Song.addSongToDatabase(songId, songName, songArtistName, genreNames);
         await User.setFavorite(username, songId);

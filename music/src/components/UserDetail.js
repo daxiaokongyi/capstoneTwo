@@ -18,15 +18,6 @@ const UserDetail = () => {
 
     useEffect(function loadUserInfo() {
         const getUser = async () => {
-            // if (token) {
-            //     try {
-            //         let {username} = jwt.decode(token);
-            //         dispatch(getCurrentUser(username, token));
-            //     } catch (error) {
-            //         return error;
-            //     }
-            // }
-            // // setInfoLoaded(true);
             if (editErrors.length !== 0) {
                 setFormErrors(editErrors);
             } else {
@@ -35,14 +26,12 @@ const UserDetail = () => {
                 setFormErrors(editErrors);
             }
         }
-        // setInfoLoaded(false);
         getUser();
     }, [token, dispatch, editErrors]);
 
     const save = (username, updatedUser) => {
         dispatch(sendEditToAPI(username, updatedUser, token));
         setEditable(false);
-        // setSaveConfirmed(true);
         history.push(`/user/${user.username}`);
     }
 
@@ -60,14 +49,10 @@ const UserDetail = () => {
         email: user.email 
     });
 
-    // const [infoLoaded, setInfoLoaded] = useState(false);
     const history = useHistory();
     const [editable, setEditable] = useState(false);
-    // const [formErrors, setFormErrors] = useState([]);
-    // const [saveConfirmed, setSaveConfirmed] = useState(false);
 
     // handlers for non-editable template
-
     const handleClick = () => {
         history.push("/search");
     }
@@ -110,7 +95,6 @@ const UserDetail = () => {
                                 <p className="card-text">First Name: {user.firstName}</p>
                                 <p className="card-text">Last Name: {user.lastName}</p>
                                 <p className="card-text">Email: {user.email}</p>
-                                {/* <div className="d-flex justify-content-around buttons"> */}
                                 <div className="buttons">
                                     <button className="btn btn-primary btn-sm" type="button" onClick={handleClick}>Home Page</button>
                                     <button className="btn btn-primary btn-sm" type="button" onClick={handleEdit}>Edit Profile</button>
@@ -162,7 +146,6 @@ const UserDetail = () => {
             ...data,
             [name]: value
         }));
-        // setFormErrors([]);
     }
 
     // show edit form only when it's editable

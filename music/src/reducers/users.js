@@ -30,7 +30,7 @@ export default function rootReducer (state = INITIAL_STATE, action) {
         case GET_SIGNIN_ERRORS:
             return {...state, token: null, signin_errors: errs.signinErrs, signup_errors: [], edit_errors: []};
         case ADD_FAVORITE_SONG:
-            return {...state, user: {...state.user, favoriteSongs: [...state.user.favoriteSongs ,data]}}
+            return {...state, user: {...state.user, favoriteSongs: [...state.user.favoriteSongs]}}
         case REMOVE_FAVORITE_SONG:
             let newFavoriteSongs = [...state.user.favoriteSongs].filter(song => song !== data);
             return {...state, user: {...state.user, favoriteSongs: [...newFavoriteSongs]}}

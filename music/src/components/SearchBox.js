@@ -10,38 +10,19 @@ const SearchBox = () => {
 
     const [searchTerm, setSearchTerm] = useState("");
 
-    // useEffect(() => {
-    //     async function getDefaultSongs() {
-    //         dispatch(fetchSongsFromAPI(`popular`));
-    //         history.push(`/search?term=${`popular`}`);       
-    //     }
-    //     getDefaultSongs();
-    // }, []);
-
     const handleChange = evt => {
         setSearchTerm(evt.target.value);
     }
 
     const handleSubmit = evt => {
         evt.preventDefault();
-        // do the search
-        // searchFor(searchTerm.trim() || undefined);
-        // dispatch(fetchSongsFromAPI(searchTerm || `popular`));
         setSearchTerm(searchTerm.trim());
-        // console.log(`searchTerm: ${searchTerm}`);
-        // history.push(`/search?term=${searchTerm || `popular`}`);
         history.push(`/search?term=${searchTerm}`);
-        // return (
-        //     <NavLink to={`/search?term=${searchTerm}`}>
-
-        //     </NavLink>
-        // )
     }
 
     return (
         <form className="form-inline my-2 my-lg-0 search-box" onSubmit={handleSubmit}>
             <input
-                // className="form-control form-control-lg flex-grow-1"
                 className="form-control mr-sm-2"
                 aria-label="Search"
                 type="search" 

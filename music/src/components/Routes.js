@@ -7,7 +7,6 @@ import Signin from './Signin';
 import SongDetail from './SongDetail';
 import Suggestion from './Suggestion';
 import SearchResult from './SearchResult';
-import Artists from './Artists';
 import Songs from './Songs';
 import Albums from './Albums';
 import Playlists from './Playlists';
@@ -29,9 +28,6 @@ const Routes = () => {
                 <Route exact path="/signup">
                     <Signup/>
                 </Route> 
-                <Route path="/artists/:name">
-                    <Artists/>
-                </Route>
                 <Route path="/song/:songid">
                     <SongDetail/>
                 </Route>

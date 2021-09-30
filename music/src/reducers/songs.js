@@ -7,7 +7,6 @@ const INITIAL_STATE = {
     musicVideos: [],
     playlists: [],
     songDetail: {},
-    // isFavorited: false,
     isFavBtnClicked: false,
     searchTerm: null,
     allArtists: [],
@@ -19,8 +18,6 @@ const INITIAL_STATE = {
 
 export default function songsReducer(state=INITIAL_STATE, action) {
     let {data, type} = action;
-    // console.log(`songs: ${data.songs}`);
-    // console.log(`songs search term: ${data.searchTerm}`);
 
     switch (type) {
         case FETCH_SONGS:
@@ -29,13 +26,6 @@ export default function songsReducer(state=INITIAL_STATE, action) {
             return {...state, songDetail: {...data}}
         case LOG_OUT:
             return {...state, 
-                // songs: [], 
-                // artists: [], 
-                // albums: [], 
-                // musicVideos: [],
-                // playlists: [],
-                // songDetail: {},
-                // isFavorited: false,
                 isFavBtnClicked: false
             }
         case FAV_BUTTON_CLICKED:

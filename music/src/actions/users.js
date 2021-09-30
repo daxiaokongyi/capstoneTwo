@@ -48,7 +48,6 @@ export const sendSigninToAPI = (username, password) => {
             password
         }).then(
             result => {
-                console.log(`sign in result: ${JSON.stringify(result.data)}`);
                 return dispatch(signin(result.data))
         }).catch(
             err => {
@@ -107,15 +106,6 @@ const getUser = (user, token) => {
 
 // action for editting current use
 export const sendEditToAPI = (username, updatedUserData, token) => {
-    // return async function (dispatch) {
-    //     const result = await axios.patch(`${API_URL}/users/${username}`, updatedUserData, {
-    //         headers: {
-    //             'Authorization': `Bearer ${token}`
-    //         }
-    //     });
-    //     return dispatch(editUser(result.data.user, token));
-    // }
-
     return async function (dispatch) {
         await axios.patch(`${API_URL}/users/${username}`, updatedUserData, {
             headers: {
@@ -127,11 +117,9 @@ export const sendEditToAPI = (username, updatedUserData, token) => {
             }
         ).catch(
             error => {
-                console.log(`error in edit: ${JSON.stringify(error.response.data.error)}`);
                 return dispatch(getEditErrors(error.response.data.error.message));
             }
         );
-        // return dispatch(editUser(result.data.user, token));
     }
 }
 
@@ -166,15 +154,10 @@ export const addSongToFavorite =(songId, songName, songArtistName, genreNames, u
             }
         }).then(
             result => {
-                console.log(`${result}`);
                 return dispatch(addFavoriteSong(result.data.favorited));
             }
         ).catch(
             err => {
-                console.log(`unauthorized error?`);
-                console.log(`${err.response.data.error.message}`);
-                console.log(`${err.response.data.error.status}`);
-
                 return dispatch(addFavoriteError({
                     message: err.response.data.error.message,
                     status: err.response.data.error.status
@@ -187,7 +170,7 @@ export const addSongToFavorite =(songId, songName, songArtistName, genreNames, u
 const addFavoriteSong = (checkFavorited) => {
     return {
         type: ADD_FAVORITE_SONG,
-        data: checkFavorited
+        data: checkFavorited 
     }
 }
 

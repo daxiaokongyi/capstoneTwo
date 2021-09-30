@@ -19,7 +19,6 @@ app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/applemusic/songs", songsRoutes);
 
-const appleToken = require('./getToken');
 const { NotFoundError } = require('./expressError');
 const { stat } = require('fs');
 
@@ -34,9 +33,6 @@ app.use(function(err, req, res ,next) {
     if (process.env.NODE_ENV !== "test") console.error(err.stack);
     let status = err.status || 500;
     let message = err.message;
-
-    // set the status and alert the user
-    console.log(`status and message: ${status}, ${message}`);
 
     return res.status(status).json({
         error: {message, status},

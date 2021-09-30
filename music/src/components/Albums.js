@@ -1,24 +1,18 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { getAlbums } from '../actions/songs';
-import { NavLink } from 'react-router-dom';
-import SongDetail from './SongDetail';
 
 const Albums = () => {
     const IMAGE_DIMS = 150;
     const dispatch = useDispatch();
     const searchTerm = useSelector(st => st.songs.searchTerm);
 
-    console.log(`search term in artists component: ${searchTerm}`);
     // const search
     const albumResults = useSelector(st => st.songs.allAlbums);
-    console.log(`album results: ${albumResults}`);
-
 
     useEffect(() => {
         const getAllAlbums = async (searchTerm) => {
             try {
-                console.log(`search term: ${searchTerm}`)
                 dispatch(getAlbums(searchTerm));
             } catch (error) {
                 return error;
@@ -27,11 +21,7 @@ const Albums = () => {
         getAllAlbums(searchTerm);
     }, [searchTerm, dispatch])
 
-    // const songResults = useSelector(st => st.songs.allSongs);
-    // console.log(`song results: ${songResults}`);
     const makeImageTag = (url) => {
-        // console.log(`url: ${url}`);
-
         // replace w for width and h for height
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
         return <img src={url} alt="url" className="image"/>

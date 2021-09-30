@@ -1,11 +1,9 @@
-// const jsonschema = require('jsonschema');
 const { default: axios } = require('axios');
 const { Router } = require('express');
 const express = require('express'); 
 const router = new express.Router();
 const token = require('../getToken');
 const Song = require('../models/songs');
-// const songSearchSchema = require('../schemas/songSearch.json');
 
 // basic Apple API URL
 const BASIC_API_URL = "https://api.music.apple.com/v1/catalog/us/search";
@@ -46,7 +44,6 @@ router.get("/:searchTerm", async function (req, res, next) {
                 let artistWithImage = artist.hasOwnProperty('relationships') ? artist.relationships.albums.data.filter(each => each.hasOwnProperty('attributes')) : [];
 
                 return {
-                    // artistId: artist.id,
                     artistUrl :artist.attributes.url,
                     artistName : artist.attributes.name,
                     artistGenreNames : artist.attributes.genreNames,
@@ -59,7 +56,6 @@ router.get("/:searchTerm", async function (req, res, next) {
 
         if (resultAlbums.length !== 0) {
             resultAlbums = resultAlbums.map(album => ({
-                // albumId: album.id,
                 albumUrl : album.attributes.url,
                 albumArtist: album.attributes.artistName,
                 albumName: album.attributes.name,
@@ -72,7 +68,6 @@ router.get("/:searchTerm", async function (req, res, next) {
 
         if (resultPlaylists.length !== 0) {
             resultPlaylists = resultPlaylists.map(playlist => ({
-                // playlistId: playlist.id, 
                 playlistDescription: playlist.attributes.description ? playlist.attributes.description.standard : "",
                 playlistUrl: playlist.attributes.url,
                 playlistName: playlist.attributes.name,
@@ -84,7 +79,6 @@ router.get("/:searchTerm", async function (req, res, next) {
 
         if (resultMusicVideos.length !== 0) {
             resultMusicVideos = resultMusicVideos.map(video => ({
-                // videoId: video.id,
                 videoPreviewUrl : video.attributes.previews[0].url,
                 videoHlsUrl : video.attributes.previews[0].hlsUrl,
                 videoUrl : video.attributes.url,
@@ -113,16 +107,7 @@ router.post("/songDetail/:songId", async function (req, res, next) {
 
         const ifFavorited = await Song.checkIfFavorited(req.params.songId, req.body.username);
 
-        // const songDetail = result.data.data[0].attributes;
         const songDetail = result.data.data[0];
-
-        // return res.status(201).json({
-        //     songName: songDetail.name,
-        //     songArtistName: songDetail.artistName,
-        //     songGenreNames: songDetail.genreNames,
-        //     songArtwork: songDetail.artwork,
-        //     favorited : ifFavorited
-        // })
 
         return res.status(201).json({
             songDetail: {
@@ -137,9 +122,6 @@ router.post("/songDetail/:songId", async function (req, res, next) {
 
 router.get("/artists/:searchArtistItem", async function (req, res, next) {
     try {
-        // console.log(`${req.params.searchArtistItem}`);
-
-        // const result = await axios.get(`${BASIC_API_URL}?types=artists&term=${req.params.searchArtistItem}`);
         const result = await axios.get(`${BASIC_API_URL}?types=artists&term=${req.params.searchArtistItem}`, {
             headers: {
                 'Authorization':`Bearer ${token}`
@@ -147,7 +129,6 @@ router.get("/artists/:searchArtistItem", async function (req, res, next) {
         });
 
         const allArtistsResult = result.data;
-        console.log(`${JSON.stringify(allArtistsResult.results)}`);
         return res.status(201).json({artists: allArtistsResult.results.artists.data});
     } catch (error) {
         return next(error);
@@ -156,8 +137,6 @@ router.get("/artists/:searchArtistItem", async function (req, res, next) {
 
 router.get("/songs/:searchSongItem", async function (req, res, next) {
     try {
-        // console.log(`testing to get all of songs: ${req.params.searchSongItem}`);
-
         const result = await axios.get(`${BASIC_API_URL}?limit=25&types=songs&term=${req.params.searchSongItem}`, {
             headers: {
                 'Authorization':`Bearer ${token}`
@@ -165,7 +144,7 @@ router.get("/songs/:searchSongItem", async function (req, res, next) {
         });
 
         const allSongsResult = result.data;
-        // console.log(`${JSON.stringify(allSongsResult.results.songs.data)}`);
+
         return res.status(201).json({songs: allSongsResult.results.songs.data});
     } catch (error) {
         return next(error);
@@ -174,8 +153,6 @@ router.get("/songs/:searchSongItem", async function (req, res, next) {
 
 router.get("/albums/:searchAlbumItem", async function (req, res, next) {
     try {
-        // console.log(`testing to get all of songs: ${req.params.searchAlbumItem}`);
-
         const result = await axios.get(`${BASIC_API_URL}?limit=25&types=albums&term=${req.params.searchAlbumItem}`, {
             headers: {
                 'Authorization':`Bearer ${token}`
@@ -183,7 +160,6 @@ router.get("/albums/:searchAlbumItem", async function (req, res, next) {
         });
 
         const allAlbumsResult = result.data;
-        // console.log(`${JSON.stringify(allAlbumsResult.results.albums.data)}`);
         return res.status(201).json({albums: allAlbumsResult.results.albums.data});
     } catch (error) {
         return next(error);
@@ -192,8 +168,6 @@ router.get("/albums/:searchAlbumItem", async function (req, res, next) {
 
 router.get("/playlists/:searchPlaylistItem", async function (req, res, next) {
     try {
-        // console.log(`testing to get all of songs: ${req.params.searchAlbumItem}`);
-
         const result = await axios.get(`${BASIC_API_URL}?limit=25&types=playlists&term=${req.params.searchPlaylistItem}`, {
             headers: {
                 'Authorization':`Bearer ${token}`
@@ -201,7 +175,6 @@ router.get("/playlists/:searchPlaylistItem", async function (req, res, next) {
         });
 
         const allPlaylistsResult = result.data;
-        // console.log(`${JSON.stringify(allAlbumsResult.results.albums.data)}`);
         return res.status(201).json({playlists: allPlaylistsResult.results.playlists.data});
     } catch (error) {
         return next(error);
@@ -210,8 +183,6 @@ router.get("/playlists/:searchPlaylistItem", async function (req, res, next) {
 
 router.get("/videos/:searchVideoItem", async function (req, res, next) {
     try {
-        console.log(`testing to get all of videos: ${req.params.searchVideoItem}`);
-
         const result = await axios.get(`${BASIC_API_URL}?limit=25&types=music-videos&term=${req.params.searchVideoItem}`, {
             headers: {
                 'Authorization':`Bearer ${token}`
@@ -219,8 +190,6 @@ router.get("/videos/:searchVideoItem", async function (req, res, next) {
         });
 
         const allVideosResult = result.data.results["music-videos"].data;
-        // console.log(`${JSON.stringify(allVideosResult)}`);
-        // console.log(`${JSON.stringify(allVideosResult.results["musicVideo"].data)}`);
         return res.status(201).json({videos: allVideosResult});
     } catch (error) {
         return next(error);

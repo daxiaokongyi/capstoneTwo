@@ -8,17 +8,11 @@ const Songs = () => {
     const IMAGE_DIMS = 150;
     const dispatch = useDispatch();
     const searchTerm = useSelector(st => st.songs.searchTerm);
-
-    console.log(`search term in artists component: ${searchTerm}`);
-    // const search
     const songResults = useSelector(st => st.songs.allSongs);
-    console.log(`song results: ${songResults}`);
-
 
     useEffect(() => {
         const getAllSongs = async (searchTerm) => {
             try {
-                console.log(`search term: ${searchTerm}`)
                 dispatch(getSongs(searchTerm));
             } catch (error) {
                 return error;
@@ -27,11 +21,7 @@ const Songs = () => {
         getAllSongs(searchTerm);
     }, [searchTerm, dispatch])
 
-    // const songResults = useSelector(st => st.songs.allSongs);
-    // console.log(`song results: ${songResults}`);
     const makeImageTag = (url) => {
-        // console.log(`url: ${url}`);
-
         // replace w for width and h for height
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
         return <img src={url} alt="url" className="image"/>
@@ -47,8 +37,6 @@ const Songs = () => {
                     <td>{song.attributes.artistName}</td>
                     <td>{song.attributes.releaseDate}</td>
                     <td><a href={`${song.attributes.url}`}  style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Check</a></td> 
-                    {/* <td><a href={`${song.href}`}  style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">Check</a></td>  */}
-                    {/* <td><a href={`${album.attributes.url}`}  style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">...</a></td> */}
                     <td><NavLink to={`/song/${song.id}`} className="songtDetail">...</NavLink></td>
                 </tr> 
             </tbody>

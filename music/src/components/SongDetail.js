@@ -14,7 +14,6 @@ const SongDetail = () => {
     const [faved, setfaved] = useState(false);
     const dispatch = useDispatch();
     const history = useHistory();
-    const addFavErrs = useSelector(st => st.users.add_favorited_errors);
     const IMAGE_DIMS = 150;
 
     useEffect(()=> {
@@ -29,19 +28,10 @@ const SongDetail = () => {
     },[dispatch, songId, username]);
 
     const songDetail = useSelector(st => st.songs.songDetail);
-    // console.log(`chck url: ${songDetail.attributes.artwork.url}`);
-
-    console.log(`check detail: ${JSON.stringify(songDetail)}`);
-
-    // if (Object.keys(songDetail).length === 0) {
-    //     history.push('/');
-    // }
 
     let songName = songDetail.attributes ? songDetail.attributes.name : "";
     let artist = songDetail.attributes ? songDetail.attributes.artistName : "";
     let genreNames = songDetail.attributes ? songDetail.attributes.genreNames[0]: "";
-
-    console.log(`genreName: ${genreNames}`);
 
     const token = useSelector(st => st.users.token);
 
@@ -50,12 +40,7 @@ const SongDetail = () => {
             dispatch(isFavBtnClicked(true));
 
             if (!token && Object.keys('addFavErrs').length !== 0) {
-                console.log(`check add favs`);
-                console.log(`genreName add action: ${genreNames}`);
-
                 history.push('/signin');
-                // setFavErr(true)
-                // setfaved(false);
             } else {
                 dispatch(addSongToFavorite(songId, songName, artist, genreNames,username, token));
                 setfaved(true);
@@ -95,7 +80,6 @@ const SongDetail = () => {
             </a>
             <div className="song-detail-info">
                 <p><b>Artist Name:</b> {songDetail.attributes ? songDetail.attributes.artistName: ""}</p>
-                {/* <img src={songDetail.attributes ? makeImageTag(songDetail.attributes.artwork.url) : ''} alt="url" /> */}
                 <p><b>Composer Name</b>: {songDetail.attributes && songDetail.attributes.composerName}</p>
                 <p><b>Album Name:</b> {songDetail.attributes && songDetail.attributes.albumName}</p>
                 <p><b>Release Date:</b> {songDetail.attributes && songDetail.attributes.releaseDate}</p>
