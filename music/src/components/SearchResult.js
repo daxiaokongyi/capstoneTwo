@@ -14,9 +14,15 @@ const SearchResult = () => {
 
     const search = useLocation().search;
     const searchTerm = new URLSearchParams(search).get('term');
+
+    const [loading, setLoading] = useState(true);
+    const [dataResult, setDataResult] = useState([]);
+
+    console.log(`loading: ${loading}`);
+
     console.log(`search item: ${searchTerm}`);
     // const searchTerm = 'Jaychou';
-
+    
     const fetchResult = useSelector(store => store.songs);
     // const songs = useSelector(store => store.songs.songs);
     // const artists = useSelector(store => store.songs.artists);
@@ -33,26 +39,29 @@ const SearchResult = () => {
     const history = useHistory();
 
     const dispatch = useDispatch();
+ 
+    // setLoading(true);
+    // console.log(`loading: ${loading}`);
 
-    const [loading, setLoading] = useState(true);
-    console.log(`loading: ${loading}`)
-
-    // useEffect(() => {
-    //     dispatch(fetchSongsFromAPI(searchTerm || `popular`));
-    //     setLoading(false);
-    //     console.log(`loading: ${loading}`)
-    // }, [dispatch, searchTerm, loading]);
 
     useEffect(() => {
-        async function fetchResults() {
-            await dispatch(fetchSongsFromAPI(searchTerm || `popular`));
-            setLoading(false);
-        }
+        dispatch(fetchSongsFromAPI(searchTerm || `popular`));
+        setLoading(false);
+        // console.log(`loading: ${loading}`)
+    }, [dispatch, searchTerm]);
 
-        if (loading) {
-            fetchResults();
-        }
-    }, [dispatch, searchTerm, loading]);
+    // useEffect(() => {
+    //     async function fetchResults() {
+    //         console.log('hello');
+    //         // setLoading(true);
+    //         await dispatch(fetchSongsFromAPI(searchTerm || `popular`));
+    //         setLoading(false);
+    //     }
+
+    //     if (loading) {
+    //         fetchResults();
+    //     }
+    // }, [dispatch, searchTerm]);
 
     const handleClick = (songId) => {
         history.push(`/song/${songId}`);

@@ -1,8 +1,4 @@
 .search-box {
     display: flex;
-}
-
-.search-box-btn {
-    margin-left: 0.6rem !important;
-    border: none !important;
+    justify-content: space-around;
 }

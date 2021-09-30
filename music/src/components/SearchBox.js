@@ -49,8 +49,9 @@ const SearchBox = () => {
                 placeholder="Search ..."
                 onChange={handleChange}
                 value={searchTerm}
+                style={{"margin-right":"0.8rem"}}
             />
-            <button className="btn btn-primary search-box-btn" type="submit">
+            <button className="btn btn-primary" type="submit">
                 Search
             </button>
         </form>
