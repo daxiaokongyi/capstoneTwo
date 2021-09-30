@@ -137,7 +137,7 @@ router.post("/songDetail/:songId", async function (req, res, next) {
 
 router.get("/artists/:searchArtistItem", async function (req, res, next) {
     try {
-        console.log(`${req.params.searchArtistItem}`);
+        // console.log(`${req.params.searchArtistItem}`);
 
         // const result = await axios.get(`${BASIC_API_URL}?types=artists&term=${req.params.searchArtistItem}`);
         const result = await axios.get(`${BASIC_API_URL}?types=artists&term=${req.params.searchArtistItem}`, {
