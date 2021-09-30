@@ -4,8 +4,10 @@ const jsonschema = require('jsonschema');
 const express = require('express');
 
 const router = express.Router();
-const {ensureAdmin, ensureCorrectUserOrAdmin} = require('../middleware/auth');
-const userNewSchema = require('../schemas/userNew.json');
+const {ensureAdmin, ensureCorrectUser} = require('../middleware/auth');
+// const userNewSchema = require('../schemas/userNew.json');
+const userUpdateSchema = require('../schemas/userUpdate.json');
+
 const {BadRequestError} = require('../expressError');
 const User = require('../models/users');
 const Song = require('../models/songs');
@@ -23,24 +25,25 @@ const {createToken} = require('../helpers/tokens');
  * Authorization required: admin
  **/
 
-router.post("/", ensureAdmin, async function (req, res, next) {
-    try {
-        // check user schema
-        const validator = jsonschema.validate(req.body, userNewSchema);
-        // return error if validator is invalid
-        if (!validator.valid) {
-            const errors = validator.errors.map(e => e.stack);
-            throw new BadRequestError(errors);
-        }
-        // add user if no errors on user new schema
-        const user = await User.signup(req.body);
-        const token = createToken(user);
-        // return response with status of 201 and user and token with json format
-        return res.status(201).json({user, token});
-    } catch (error) {
-        return next(error);
-    }
-});
+// router.post("/", async function (req, res, next) {
+// // router.post("/", ensureAdmin, async function (req, res, next) {
+//     try {
+//         // check user schema
+//         const validator = jsonschema.validate(req.body, userNewSchema);
+//         // return error if validator is invalid
+//         if (!validator.valid) {
+//             const errors = validator.errors.map(e => e.stack);
+//             throw new BadRequestError(errors);
+//         }
+//         // add user if no errors on user new schema
+//         const user = await User.signup(req.body);
+//         const token = createToken(user);
+//         // return response with status of 201 and user and token with json format
+//         return res.status(201).json({user, token});
+//     } catch (error) {
+//         return next(error);
+//     }
+// });
 
 /** GET / => { users: [ {username, firstName, lastName, email }, ... ] }
  *
@@ -49,24 +52,21 @@ router.post("/", ensureAdmin, async function (req, res, next) {
  * Authorization required: admin
  **/
 
-router.get("/", ensureAdmin, async function (req, res, next) {
-    try {
-        const users = await User.findAll();
-        return res.json({user});
-    } catch (error) {
-        return next(error);
-    }
-})
+// router.get("/", async function (req, res, next) {
+// // router.get("/", ensureAdmin, async function (req, res, next) {
+//     try {
+//         const users = await User.findAll();
+//         return res.json({user});
+//     } catch (error) {
+//         return next(error);
+//     }
+// })
 
 /** GET /[username] => { user }
- *
- * Returns { username, firstName, lastName, isAdmin, jobs }
- *   where jobs is { id }
- *
- * Authorization required: admin or same user-as-:username
+ * Authorization required: same user-as-:username
  **/
 
-router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
+router.get("/:username", ensureCorrectUser, async function (req, res, next) {
   try {
     const user = await User.get(req.params.username);
     return res.json({ user });
@@ -77,18 +77,18 @@ router.get("/:username", ensureCorrectUserOrAdmin, async function (req, res, nex
 
 /** PATCH /[username] { user } => { user }
  *
- * Data can include:
- *   { firstName, lastName, password, email }
+ * Data includes:
+ *   { firstName, lastName, email }
  *
- * Returns { username, firstName, lastName, email, isAdmin }
+ * Returns { username, firstName, lastName, email }
  *
- * Authorization required: admin or same-user-as-:username
+ * Authorization required: same-user-as-:username
  **/
 
-router.patch("/:username", ensureCorrectUserOrAdmin, async function (req, res, next) {
+router.patch("/:username", ensureCorrectUser, async function (req, res, next) {
     try {
         console.log(`data: ${JSON.stringify(req.body)}`);
-        const validator = jsonschema.validate(req.body, userNewSchema);
+        const validator = jsonschema.validate(req.body, userUpdateSchema);
         // console.log(`data: ${JSON.stringify(req.body)}`);
 
         if (!validator.valid) {
@@ -103,28 +103,28 @@ router.patch("/:username", ensureCorrectUserOrAdmin, async function (req, res, n
     }
 });
 
-/** DELETE /[username]  =>  { deleted: username }
- *
- * Authorization required: admin or same-user-as-:username
- **/
+// /** DELETE /[username]  =>  { deleted: username }
+//  *
+//  * Authorization required: admin or same-user-as-:username
+//  **/
 
-router.delete("/:username", ensureCorrectUserOrAdmin, async function(req, res, next) {
-    try {
-        await User.remove(req.params.username);
-        return res.json({deleted: req.params.username});
-    } catch (error) {
-        return next(error);
-    }
-});
+// router.delete("/:username", ensureCorrectUser, async function(req, res, next) {
+//     try {
+//         await User.remove(req.params.username);
+//         return res.json({deleted: req.params.username});
+//     } catch (error) {
+//         return next(error);
+//     }
+// });
 
-/** POST /[username]/songs/[id]  { state } => { application }
+/** POST /[username]/songs/[id]  
  *
- * Returns {"favortied": songId}
+ * Returns {"favortied": true or false}
  *
- * Authorization required: admin or same-user-as-:username
+ * Authorization required: same-user-as-:username
  * */
 
-router.post("/:username/songs/:id", ensureCorrectUserOrAdmin, async function(req, res, next) {
+router.post("/:username/songs/:id", ensureCorrectUser, async function(req, res, next) {
     try {
         const songId = +req.params.id;
         const username = req.params.username;
@@ -149,7 +149,14 @@ router.post("/:username/songs/:id", ensureCorrectUserOrAdmin, async function(req
     }
 });
 
-router.delete("/:username/songs/:id", ensureCorrectUserOrAdmin, async function (req, res, next) {
+/** DELETE /[username]/songs/[id]  
+ *
+ * Returns {"deletedFavorited": songId}
+ *
+ * Authorization required: same-user-as-:username
+ * */
+
+router.delete("/:username/songs/:id", ensureCorrectUser, async function (req, res, next) {
     try {
         const songId = +req.params.id;
         const username = req.params.username;

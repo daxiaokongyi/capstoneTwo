@@ -25,9 +25,7 @@
             "default": "",
             "examples": [
                 "password"
-            ],
-            "minLength": 5,
-            "maxLength": 20
+            ]
         },
         "firstName": {
             "$id": "#/properties/firstName",

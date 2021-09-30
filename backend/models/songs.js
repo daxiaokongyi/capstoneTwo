@@ -14,12 +14,13 @@ class Song {
                 [songId],
         );
 
-        console.log(`add into models`);
-        console.log(`songId: ${songId}`);
-        console.log(`song name: ${songName}`);
-        console.log(`song artist name: ${songArtistName}`);
-        console.log(`song genre names: ${genreNames}`);
+        // console.log(`add into models`);
+        // console.log(`songId: ${songId}`);
+        // console.log(`song name: ${songName}`);
+        // console.log(`song artist name: ${songArtistName}`);
+        // console.log(`song genre names: ${genreNames}`);
 
+        // add the selected song into database if it's new
         if (songPreviewCheck.rows.length === 0) {
             await db.query(
                 `INSERT INTO songs
@@ -63,6 +64,7 @@ class Song {
     }
 
     static async checkIfFavorited(songId, username) {
+        // get song id from the database by its apple sone id
         let songIdInDatabase = await db.query(
             `SELECT id
              FROM songs
@@ -73,22 +75,25 @@ class Song {
         // check if this song is in a favorited list
         if (songIdInDatabase.rows.length === 0) {
             return false;
+            // throw new NotFoundError()
         }
 
         songIdInDatabase = songIdInDatabase.rows[0].id;
 
+        // get song id from favorites table by user name
         let songIdInFav = await db.query(
             `SELECT songs_id
              FROM favorites
              WHERE username = $1`,
             [username]
         )
-
+        
+        // get all favorited songs of the current user from the song's database 
         songIdInFav = songIdInFav.rows.map(each => {
             return each.songs_id;
         })
 
-        // check if the current song is user's favorite
+        // check if the current song is one of user's favorite
         return songIdInFav.includes(songIdInDatabase);
     }
 }

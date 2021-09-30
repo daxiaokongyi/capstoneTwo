@@ -10,22 +10,33 @@ const {UnauthorizedError,
 } = require('../expressError');
 const { password } = require('pg/lib/defaults');
 
-
 /** create a class with function for users */
 class User {
     /** authenticate user with username and password
-     * returns an object with keys of username, first_name, last_name, email, and is_admin
+     * returns an object with keys of username, first_name, last_name, email
      * throw unauthorized error if no user found or password is incorrect
      */
     static async authenticate(username, password) {
         // try to see if user can be found
+
+        // const result = await db.query(
+        //     `SELECT username,
+        //             password,
+        //             first_name AS "firstName",
+        //             last_name AS "lastName",
+        //             email,
+        //             is_admin AS "isAdmin"
+        //     FROM users
+        //     WHERE username = $1`,
+        //     [username]
+        // )
+
         const result = await db.query(
             `SELECT username,
                     password,
                     first_name AS "firstName",
                     last_name AS "lastName",
-                    email,
-                    is_admin AS "isAdmin"
+                    email
             FROM users
             WHERE username = $1`,
             [username]
@@ -35,7 +46,6 @@ class User {
         const user = result.rows[0];
         
         // check password if user is found
-
         if (user) {
             // compare hashed password to a new hashed one from input password
             const isValid = await bcrypt.compare(password, user.password);
@@ -52,10 +62,10 @@ class User {
     }
 
     /** Sign up user with data required
-     * return an object with keys of username, first_name, last_name, email, and isAdmin
+     * return an object with keys of username, first_name, last_name, email
      * throw bad request error when username is duplicates
      */
-    static async signup({username, password, firstName, lastName, email, isAdmin}) {
+    static async signup({username, password, firstName, lastName, email}) {
         // check if duplicate is true or not
         const duplicateCheck = await db.query(
             `SELECT username
@@ -73,28 +83,51 @@ class User {
         const hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
         // insert the new user into the database
+
+        // const result = await db.query(
+        //     `INSERT INTO users
+        //         (username,
+        //         password,
+        //         first_name,
+        //         last_name,
+        //         email,
+        //         is_admin)
+        //     VALUES ($1, $2, $3, $4, $5, $6)
+        //     RETURNING 
+        //         username,
+        //         first_name AS "firstName",
+        //         last_name AS "lastName",
+        //         email,
+        //         is_admin AS "isAdmin"`,
+        //     [
+        //         username,
+        //         hashedPassword,
+        //         firstName,
+        //         lastName,
+        //         email,
+        //         isAdmin
+        //     ],
+        // );
+
         const result = await db.query(
             `INSERT INTO users
                 (username,
                 password,
                 first_name,
                 last_name,
-                email,
-                is_admin)
-            VALUES ($1, $2, $3, $4, $5, $6)
+                email)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING 
                 username,
                 first_name AS "firstName",
                 last_name AS "lastName",
-                email,
-                is_admin AS "isAdmin"`,
+                email`,
             [
                 username,
                 hashedPassword,
                 firstName,
                 lastName,
                 email,
-                isAdmin
             ],
         );
 
@@ -107,23 +140,22 @@ class User {
      * returns an array with object elements of users
      */
 
-    static async findAll () {
-        const result = await db.query (
-            `SELECT 
-                username,
-                first_name AS "firstName",
-                last_name AS "lastName",
-                email,
-                is_admin AS "isAdmin"
-            FROM users
-            ORDER BY username`
-        );
+    // static async findAll () {
+    //     const result = await db.query (
+    //         `SELECT 
+    //             username,
+    //             first_name AS "firstName",
+    //             last_name AS "lastName",
+    //             email
+    //         FROM users
+    //         ORDER BY username`
+    //     );
 
-        return result.rows;
-    }
+    //     return result.rows;
+    // }
 
     /** get detail of given username
-    * return {username, first_name, last_name, email, is_admin} 
+    * return {username, first_name, last_name, email} 
     * where songs is the favorite of the given user
     */
 
@@ -133,12 +165,23 @@ class User {
                 username,
                 first_name AS "firstName",  
                 last_name AS "lastName",
-                email,
-                is_admin AS "isAdmin"
+                email
             FROM users
             WHERE username = $1`,
             [username]
         );
+
+        // const userResult = await db.query(
+        //     `SELECT 
+        //         username,
+        //         first_name AS "firstName",  
+        //         last_name AS "lastName",
+        //         email,
+        //         is_admin AS "isAdmin"
+        //     FROM users
+        //     WHERE username = $1`,
+        //     [username]
+        // );
 
         const user = userResult.rows[0];
 
@@ -154,11 +197,11 @@ class User {
         ) 
 
         if (userSongsResult.rows.length !== 0) {
-
+            // get all favorited songs' id 
             const songsId = userSongsResult.rows.map(each => {
                 return parseInt(each.songs_id);
             })
-
+            // get detail for each favorited song 
             const favDetails = await db.query(
                 `SELECT song_id AS "songId",
                         song_name AS "songName",
@@ -167,15 +210,16 @@ class User {
                  FROM songs
                  WHERE id in (${songsId})`
             )
-
+            // apply all favorited songs with details to the user
             user.favoriteSongs = favDetails.rows.map(
                 each => [each.songId, each.songName, each.songArtist, each.songGenreNames]
             )
         } else {
+            // apply empty array to user if no favorited songs
             user.favoriteSongs = [];
         }
 
-        console.log(`current user: ${JSON.stringify(user)}`);
+        // console.log(`current user: ${JSON.stringify(user)}`);
         return user;
     }
 
@@ -196,13 +240,16 @@ class User {
             [username]
         );
 
-        console.log(JSON.stringify(currentUser.rows[0]));
+        // console.log(JSON.stringify(currentUser.rows[0]));
 
-        console.log(`current user's password: ${currentUser.rows[0].password}`);
-        console.log(`input password: ${data.password}`);
+        // console.log(`current user's password: ${currentUser.rows[0].password}`);
+        // console.log(`input password: ${data.password}`);
+        
+        // confirm the input password 
         const validPasword = await bcrypt.compare(data.password, currentUser.rows[0].password);
-        console.log(`check if same: ${validPasword}`);
+        // console.log(`check if same: ${validPasword}`);
 
+        // check if password is correct or not
         if (!validPasword) {
             throw new NotFoundError(`Password is incorrect. Please try again`);
         } else {
@@ -221,11 +268,20 @@ class User {
             {
                 firstName : "first_name",
                 lastName : "last_name",
-                isAdmin : "is_admin",
+                // isAdmin : "is_admin",
             }); 
 
         // const usernameVarIdx = `$${values.length + 1}`;
         const usernameVarIdx = "$" + (values.length + 1);
+
+        // const querySql = `UPDATE users
+        //                     SET ${setCols}
+        //                     WHERE username = ${usernameVarIdx}
+        //                     RETURNING username,
+        //                         first_name AS "firstName",
+        //                         last_name AS "lastName",
+        //                         email,
+        //                         is_admin AS "isAdmin"`;
 
         const querySql = `UPDATE users
                             SET ${setCols}
@@ -233,8 +289,8 @@ class User {
                             RETURNING username,
                                 first_name AS "firstName",
                                 last_name AS "lastName",
-                                email,
-                                is_admin AS "isAdmin"`;
+                                email`;
+
         // update the data in the database
         const result = await db.query(querySql, [...values, username]);
         // return the updated user
@@ -252,7 +308,6 @@ class User {
         ) 
 
         if (userSongsResult.rows.length !== 0) {
-
             const songsId = userSongsResult.rows.map(each => {
                 return parseInt(each.songs_id);
             })
@@ -265,11 +320,12 @@ class User {
                  FROM songs
                  WHERE id in (${songsId})`
             )
-
+            // apply favorited songs to the user
             user.favoriteSongs = favDetails.rows.map(
                 each => [each.songId, each.songName, each.songArtist, each.songGenreNames]
             )
         } else {
+            // apply empty array if no favorited songs are found from the current user
             user.favoriteSongs = [];
         }
 
@@ -278,20 +334,20 @@ class User {
     }
 
     /** Delete given user from database */
-    static async remove(username) {
-        let result = await db.query(
-            `DELETE
-            FROM users
-            WHERE username = $1
-            RETURNING username`,
-            [username],
-        );
+    // static async remove(username) {
+    //     let result = await db.query(
+    //         `DELETE
+    //         FROM users
+    //         WHERE username = $1
+    //         RETURNING username`,
+    //         [username],
+    //     );
 
-        const user = result.rows[0];
+    //     const user = result.rows[0];
 
-        // return not found error if no given username
-        if(!user) throw new NotFoundError(`No user ${username} found`);
-    }
+    //     // return not found error if no given username
+    //     if(!user) throw new NotFoundError(`No user ${username} found`);
+    // }
 
     /** set songs as user's favorite */
 
@@ -316,6 +372,7 @@ class User {
         );
         // check if this song can be found
         const song = songSelected.rows[0];
+        console.log(`check song: ${song}`);
 
         if (!song) throw new NotFoundError(`No song with ID of ${songId} found`);
 

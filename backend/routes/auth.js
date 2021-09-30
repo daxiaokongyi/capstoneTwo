@@ -50,7 +50,8 @@ router.post("/register", async function (req, res, next) {
             const errors = validator.errors.map(e => e.stack);
             throw new BadRequestError(errors);
         }
-        const newUser = await User.signup({...req.body, isAdmin: false});
+        // const newUser = await User.signup({...req.body, isAdmin: false});
+        const newUser = await User.signup({...req.body});
         const token = createToken(newUser);
         return res.status(201).json({token});
     } catch (error) {
