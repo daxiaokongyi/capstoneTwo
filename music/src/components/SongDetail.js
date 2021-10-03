@@ -25,7 +25,7 @@ const SongDetail = () => {
             }
         }
         getSongDetail(songId, username);
-    },[dispatch, songId, username]);
+    },[dispatch, songId, username, history]);
 
     const songDetail = useSelector(st => st.songs.songDetail);
 
@@ -65,7 +65,7 @@ const SongDetail = () => {
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
         console.log(`url: ${url}`);
 
-        return <img src={url} className="song-detail-img"/>
+        return <img src={url} alt="song-detail-img" className="song-detail-img"/>
     }
 
     const handleClick = () => {

@@ -1,13 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import { fetchSongsFromAPI } from '../actions/songs'; 
-import { useDispatch } from 'react-redux';
+import React, {useState} from 'react';
 import { useHistory } from 'react-router-dom';
 import './SearchBox.css';
 
 const SearchBox = () => {
-    const dispatch = useDispatch();
     const history = useHistory();
-
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleChange = evt => {
@@ -17,7 +13,7 @@ const SearchBox = () => {
     const handleSubmit = evt => {
         evt.preventDefault();
         setSearchTerm(searchTerm.trim());
-        history.push(`/search?term=${searchTerm}`);
+        searchTerm === '' ? history.push(`/search?term=singer`) : history.push(`/search?term=${searchTerm}`);
     }
 
     return (
@@ -30,7 +26,7 @@ const SearchBox = () => {
                 placeholder="Search ..."
                 onChange={handleChange}
                 value={searchTerm}
-                style={{"margin-right":"0.8rem"}}
+                style={{"marginRight":"0.8rem"}}
             />
             <button className="btn btn-primary" type="submit">
                 Search

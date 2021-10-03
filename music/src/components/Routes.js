@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Home from './Home';
 import UserDetail from './UserDetail';
 import Signup from './Signup';
@@ -11,6 +11,7 @@ import Songs from './Songs';
 import Albums from './Albums';
 import Playlists from './Playlists';
 import Videos from './Videos';
+import NotFound from './NotFound';
 
 const Routes = () => {
     return (
@@ -21,6 +22,9 @@ const Routes = () => {
                 </Route>
                 <Route exact path="/suggestion">
                     <Suggestion/>
+                </Route>
+                <Route exact path="/notfound">
+                    <NotFound/>
                 </Route>
                 <Route exact path="/signin">
                     <Signin/>
@@ -49,6 +53,7 @@ const Routes = () => {
                 <Route path="/user/:username">
                     <UserDetail/>
                 </Route>
+                <Redirect to="/"/>
             </Switch>
         </div>
     );

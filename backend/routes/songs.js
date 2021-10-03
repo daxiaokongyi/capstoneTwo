@@ -1,5 +1,4 @@
 const { default: axios } = require('axios');
-const { Router } = require('express');
 const express = require('express'); 
 const router = new express.Router();
 const token = require('../getToken');
@@ -93,6 +92,7 @@ router.get("/:searchTerm", async function (req, res, next) {
 
         return res.status(201).json({songs:resultSongs, artists: resultArtists, albums: resultAlbums, playlists: resultPlaylists, musicVideos: resultMusicVideos});
     } catch (error) {
+        console.log(`error： ${JSON.stringify(error)}`);
         return next(error);
     }
 });

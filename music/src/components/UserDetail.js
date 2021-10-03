@@ -12,8 +12,6 @@ const UserDetail = () => {
     const favoritedSongs = useSelector(st => st.users.user.favoriteSongs);
     const editErrors = useSelector(st => st.users.edit_errors);
     const dispatch = useDispatch();
-    const IMAGE_DIMS = 150;
-
     const [formErrors, setFormErrors] = useState([]);
 
     useEffect(function loadUserInfo() {
@@ -105,7 +103,7 @@ const UserDetail = () => {
                     {favoritedSongs && favoritedSongs.length === 0 ? null :
                         <div className="col">
                             <h3>Favorited Songs</h3>
-                            <table class="table">
+                            <table className="table">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>

@@ -1,6 +1,7 @@
 "use strict"
 
 const db = require('../db');
+const {BadRequestError} = require('../expressError');
 
 class Song {
     // Add songs fetched from API to song's database
@@ -13,22 +14,22 @@ class Song {
                 [songId],
         );
 
-        // add the selected song into database if it's new
-        if (songPreviewCheck.rows.length === 0) {
-            await db.query(
-                `INSERT INTO songs
-                (song_id, song_name, song_artist, song_genre_names)
-                VALUES ($1, $2, $3, $4)
-                RETURNING
-                    song_id AS "songId",
-                    song_name AS "songName",
-                    song_artist AS "songArtistName",
-                    song_genre_names AS "songGenreNames"`,
-                [songId, songName, songArtistName, genreNames],
-            );
-        } else {
-            return;
-        }
+        if (songPreviewCheck.rows.length !== 0) throw new BadRequestError('This song had been added to the favorited list of user.'); 
+
+        // add the selected song into database when it's new
+        let result = await db.query(
+            `INSERT INTO songs
+            (song_id, song_name, song_artist, song_genre_names)
+            VALUES ($1, $2, $3, $4)
+            RETURNING
+                song_id AS "songId",
+                song_name AS "songName",
+                song_artist AS "songArtistName",
+                song_genre_names AS "songGenreNames"`,
+            [songId, songName, songArtistName, genreNames],
+        );
+        
+        return result.rows;
     }
 
     static async checkIfFavorited(songId, username) {

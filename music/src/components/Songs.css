@@ -1,5 +1,5 @@
-tr:hover {
-    background-color: rgba(249, 76, 87, 0.1);
+.table-content:hover {
+    background-color: rgba(252, 60, 68, 0.1);
 }
 
 .image {

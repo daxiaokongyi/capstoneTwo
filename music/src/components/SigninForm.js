@@ -44,6 +44,7 @@ const SigninForm = ({save}) => {
     return(
         <div>
             {formErrors.length ? <Alert type='danger' messages={formErrors}/> : null}
+            {(!token && Object.keys(addFavErrs).length !== 0 && favBtnClicked) ? <Alert type='danger' messages={addFavErrs.message}/> : null}
             <form className="mb-4" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="signin-username">user Name: </label>
@@ -62,7 +63,7 @@ const SigninForm = ({save}) => {
                         onChange={handleChange}
                         id="signin-password"
                         name="password"
-                        type="text" 
+                        type="password" 
                         className="form-control"
                         value={formData.password}
                     />            
@@ -74,7 +75,6 @@ const SigninForm = ({save}) => {
                     </p>
                 </div>
             </form>
-            {(!token && Object.keys(addFavErrs).length !== 0 && favBtnClicked) ? <Alert type='danger' messages={addFavErrs.message}/> : null}
         </div>
     )
 }

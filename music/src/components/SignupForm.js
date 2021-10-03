@@ -44,6 +44,7 @@ const SignupForm = ({save}) => {
 
     return(
         <form className="mb-4" onSubmit={handleSubmit}>
+            {formErrors.length !== 0 ? <Alert type='danger' messages={formErrors}/> : null}
             <div className="form-group">
                 <label htmlFor="signup-username">User Name: </label>
                 <input
@@ -94,14 +95,11 @@ const SignupForm = ({save}) => {
                     onChange={handleChange}
                     id="signup-password"
                     name="password"
-                    type="text"
+                    type="password"
                     className="form-control"
                     value={formData.password}
                 />                              
             </div> 
-
-            {formErrors.length !== 0 ? <Alert type='danger' messages={formErrors}/> : null}
-
             <div style={{"margin": "0.3rem auto"}}>
                 <button className="btn btn-primary btn-sm">Sign Up</button> 
                 <p style={{"display":"inline"}}>Already have an account? 

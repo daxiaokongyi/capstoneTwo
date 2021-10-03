@@ -1,12 +1,36 @@
 import axios from 'axios';
-import {FETCH_SONGS, CHECK_IF_FAVORITED, CHECK_FAVORITES_ERRORS, GET_SONG_DETAIL, FAV_BUTTON_CLICKED, GET_ALL_ARTISTS, GET_ALL_SONGS, GET_ALL_ALBUMS, GET_ALL_PLAYLISTS, GET_ALL_VIDEOS} from '../actions/types';
+import {
+    FETCH_SONGS, 
+    CHECK_IF_FAVORITED, 
+    CHECK_FAVORITES_ERRORS, 
+    GET_SONG_DETAIL, 
+    FAV_BUTTON_CLICKED, 
+    GET_ALL_SONGS, 
+    GET_ALL_ALBUMS, 
+    GET_ALL_PLAYLISTS, 
+    GET_ALL_VIDEOS,
+    GET_SONGS_ERRORS,
+    CLEAR_SONGS_ERRORS
+} from '../actions/types';
 const API_URL = "http://localhost:3001";
 
 // get songs based on song's name 
 export function fetchSongsFromAPI(searchTerm) {
     return async function (dispatch) {
-        const result = await axios.get(`${API_URL}/applemusic/songs/${searchTerm}`);
-        return dispatch(getSongsInfo({songs: result.data, searchTerm: `${searchTerm}`}));
+        // const result = await axios.get(`${API_URL}/applemusic/songs/${searchTerm}`);
+        // return dispatch(getSongsInfo({songs: result.data, searchTerm: `${searchTerm}`}));
+        await axios.get(`${API_URL}/applemusic/songs/${searchTerm}`
+            ).then (
+                result => {
+                    return dispatch(getSongsInfo({songs: result.data, searchTerm: `${searchTerm}`}));
+                }
+            ).catch (
+                err => {
+                    // return dispatch(getSongInfoError(`Your search was not found. Please try again`));
+                    console.log(`${JSON.stringify(err.response.data.error.message)}`);
+                    return dispatch(getSongInfoError(err.response.data.error.message));
+                }
+            )
     }
 }
 
@@ -14,6 +38,20 @@ function getSongsInfo (data) {
     return {
         type: FETCH_SONGS,
         data: data
+    }
+}
+
+const getSongInfoError = (errorMessage) => {
+    return {
+        type: GET_SONGS_ERRORS,
+        data: errorMessage
+    }
+}
+
+export function clearFetchSongsErrs() {
+    return {
+        type: CLEAR_SONGS_ERRORS,
+        data: ''
     }
 }
 

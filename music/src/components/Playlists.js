@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { getPlaylists } from '../actions/songs';
+import './Playlists.css';
 
 const Playlists = () => {
     const IMAGE_DIMS = 150;
@@ -30,7 +31,7 @@ const Playlists = () => {
     const showTableBody = (playlistResults) => {
         return playlistResults.map((playlist, key) => (
             <tbody>
-                <tr>
+                <tr className="table-content">
                     <th scope="row">{key + 1}</th>
                     <td>{makeImageTag(playlist.attributes.artwork.url)}</td>
                     <td>{playlist.attributes.name}</td>

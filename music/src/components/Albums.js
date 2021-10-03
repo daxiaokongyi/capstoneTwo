@@ -30,7 +30,7 @@ const Albums = () => {
     const showTableBody = (albumResults) => {
         return albumResults.map((album, key) => (
             <tbody>
-                <tr>
+                <tr className="table-content">
                     <th scope="row">{key + 1}</th>
                     <td>{makeImageTag(album.attributes.artwork.url)}</td>
                     <td>{album.attributes.name}</td>

@@ -1,38 +1,74 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector } from 'react-redux';
-import {useHistory, NavLink, useLocation} from 'react-router-dom';
+import {NavLink, useLocation, useHistory} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import defaultImage from '../common/appleMusicDefault.jpeg';
-import { fetchSongsFromAPI } from '../actions/songs'; 
+import { fetchSongsFromAPI, clearFetchSongsErrs } from '../actions/songs'; 
 import LoadingSpinner from '../common/LoadingSpinner';
 import './SearchResult.css';
+import Alert from './Alert';
 
 const SearchResult = () => {
     const IMAGE_DIMS = 150;
     const IMAGE_W_DIMS = 250;
     const IMAGE_H_DIMS = 150;
 
+    const history = useHistory();
+    const dispatch = useDispatch();
+
+    const [isLoading, setIsLoading] = useState(true);
+    // const [searchWord, setSearchWord] = useState('');
+    
     const search = useLocation().search;
     const searchTerm = new URLSearchParams(search).get('term');
+    // setSearchWord(searchWord);
 
-    const [loading, setLoading] = useState(true);
+    // dispatch(clearFetchSongsErrs());
     const fetchResult = useSelector(store => store.songs);
+    const fetchSongsErrs = useSelector(st => st.songs.getSongsErrors);
+
+    useEffect(() => {
+        setIsLoading(true);
+        // dispatch(fetchSongsFromAPI(searchTerm || `popular`));
+        dispatch(fetchSongsFromAPI(searchTerm));
+        setIsLoading(false);
+    }, [searchTerm]);
+
+    // if (fetchSongsErrs !== 'Request path contains unescaped characters') {
+    if (fetchSongsErrs !== '') { 
+        // console.log('something went wrong!');
+        history.push('/notfound');
+        // return <div>Not Found</div>
+    } else if (fetchResult.songs.length === 0) {
+        return <h3 className="not-found">Your search cannot be found! Please try again!</h3>
+    }
+
+    // console.log(`errors: ${fetchSongsErrs}`);
+
+    // if (fetchSongsErrs !== '') {
+    //     console.log(`errors: ${fetchSongsErrs}`);
+    //     dispatch(clearFetchSongsErrs);
+    //     history.push('/notfound');
+    //     // return (
+    //     //     <div>Not Found! Please try again!</div>
+    //     // )
+    // }
+
+    // console.log(`the result: ${fetchResult}`);  
+    // console.log(`the result: ${JSON.stringify(fetchResult)}`);  
+
     const songs = fetchResult.songs;
     const artists = fetchResult.artists;
     const albums = fetchResult.albums;
     const playlists = fetchResult.playlists;
     const musicVideos = fetchResult.musicVideos;
-    const history = useHistory();
-    const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(fetchSongsFromAPI(searchTerm || `popular`));
-        setLoading(false);
-    }, [dispatch, searchTerm]);
+    // const [getSongErrs, setGetSongErrs] = useState(null);
 
-    const handleClick = (songId) => {
-        history.push(`/song/${songId}`);
-    }
+    // check if any errors happen while searching
+    // const fetchSongsErrs = useSelector(st => st.songs.getSongsErrors);
+
+    // setGetSongErrs(fetchSongsErrs);
 
     const makeImageTag = (url) => {
         // replace w for width and h for height
@@ -53,10 +89,15 @@ const SearchResult = () => {
         return <img src={url} alt="url" className="videoImage"/>
     }
 
-    if (loading) return <LoadingSpinner/>;
+    if (isLoading) {
+        return (
+            <LoadingSpinner/>
+        )
+    }
 
     return (
         <div className="container">
+            {/* {!getSongErrs ?  null : <Alert type='danger' messages={getSongErrs}/>} */}
             {artists.length === 0 ? null : 
                 <div className="row category">
                     <div className="row justify-content-between">
@@ -71,7 +112,7 @@ const SearchResult = () => {
                                     <div className="card-body">
                                         <div>
                                             <a href={`${artist.artistUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">
-                                                {artist.artistImageUrl ? makeArtistImageTag(artist.artistImageUrl) : <img src={defaultImage} alt="default-image" className="artistImage"/>}
+                                                {artist.artistImageUrl ? makeArtistImageTag(artist.artistImageUrl) : <img src={defaultImage} alt="artist" className="artistImage"/>}
                                             </a>
                                             <p className="text">
                                                 <span>{artist.artistName}</span>
