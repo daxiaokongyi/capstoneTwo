@@ -169,13 +169,19 @@ class User {
             WHERE username = $1`,
             [username]
         );
-        
+
+        // check if data is empty
+        if (Object.keys(data).length === 0) throw new BadRequestError('Please input correct password to continue');
+
         // confirm the input password 
-        const validPasword = await bcrypt.compare(data.password, currentUser.rows[0].password);
+        let validPasword;
+        if (data.password) {
+            validPasword = await bcrypt.compare(data.password, currentUser.rows[0].password);
+        }
 
         // check if password is correct or not
         if (!validPasword) {
-            throw new NotFoundError(`Password is incorrect. Please try again`);
+            throw new UnauthorizedError(`Password is incorrect. Please try again`);
         } else {
             data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
         }
@@ -249,8 +255,10 @@ class User {
             WHERE username = $1`, 
             [username]
         );
-        // check if this user can be found
+
         const user = usernameSelected.rows[0];
+
+        // check if this user can be found
         if (!user) throw new NotFoundError(`No username ${username} found`);
 
         // get song based on its song_id
@@ -260,10 +268,22 @@ class User {
             WHERE song_id = $1`,
             [songId]
         );
-        // check if this song can be found
+
         const song = songSelected.rows[0];
 
+        // check if this song can be found with its id
         if (!song) throw new NotFoundError(`No song with ID of ${songId} found`);
+
+        // check if this song is in user's favorited already
+        let isInFavorited = await db.query(
+            `SELECT username
+            FROM favorites
+            WHERE username = $1
+            AND songs_id = $2`,
+            [username, song.id]
+        )
+
+        if (isInFavorited.rows.length !== 0) throw new BadRequestError('This song is already in the favorited list');
 
         // set this song to be user's favorite
         await db.query(
@@ -307,7 +327,7 @@ class User {
              [username, song.id, songId]
         )
 
-        if (!songDeletedFromFav) throw new NotFoundError(`No song with id of ${songId} was found`);
+        if (!songDeletedFromFav) throw new NotFoundError(`No song with ID of ${songId} was found with ${username}`);
 
         // remove this song from songs database
         const songDeletedFromSongs = await db.query(
