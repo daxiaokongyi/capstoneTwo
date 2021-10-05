@@ -25,7 +25,6 @@ describe('POST /auth/token', function() {
             });
         expect(resp.body).toEqual({
             'token':expect.any(String)
-
         });
     });
     test('unauth with non existing user', async function() {

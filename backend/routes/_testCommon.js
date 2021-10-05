@@ -3,6 +3,7 @@
 const { BCRYPT_WORK_FACTOR } = require('../config.js');
 const db = require('../db.js');
 const bcrypt = require('bcrypt');
+const {createToken} = require('../helpers/tokens');
 
 let testSongIds = [];
 
@@ -30,9 +31,9 @@ const commonBeforeEach = async () => {
     await db.query(
         `INSERT INTO 
             users (username, password, first_name, last_name, email)
-        VALUES ('username1', $1, 'first_name1', 'last_name1', 'user1@email.com'),
-            ('username2', $2, 'first_name2', 'last_name2', 'user2@email.com'),
-            ('username3', $3, 'first_name3', 'last_name3', 'user3@email3.com')
+        VALUES ('username1', $1, 'firstname1', 'lastname1', 'user1@email.com'),
+            ('username2', $2, 'firstname2', 'lastname2', 'user2@email.com'),
+            ('username3', $3, 'firstname3', 'lastname3', 'user3@email3.com')
         RETURNING username`, 
         [
             await bcrypt.hash('password1', BCRYPT_WORK_FACTOR),
@@ -62,12 +63,19 @@ const commonAfterAll = async () => {
     await db.end();
 }
 
+const u1Token = createToken({username: 'username1'});
+const u2Token = createToken({username: 'username2'});
+const u3Token = createToken({username: 'username3'});
+
 module.exports = {
     commonBeforeEach,
     commonAfterEach,
     commonBeforeAll,
     commonAfterAll,
-    testSongIds
+    testSongIds,
+    u1Token,
+    u2Token,
+    u3Token
 } 
 
 
