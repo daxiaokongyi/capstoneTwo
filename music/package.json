@@ -4,10 +4,11 @@
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
-    "@testing-library/jest-dom": "^5.14.1",
+    "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^5.1.0",
     "font-awesome": "^4.7.0",
+    "jest-dom": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.12",
     "react": "^17.0.2",
@@ -51,12 +52,16 @@
   "devDependencies": {
     "@babel/preset-env": "^7.15.8",
     "@babel/preset-react": "^7.14.5",
+    "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7"
   },
   "jest": {
     "moduleNameMapper": {
-      "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
-      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
-    }
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/jest-setup.js"
+    ]
   }
 }
