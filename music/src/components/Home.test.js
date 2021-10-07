@@ -1,7 +1,13 @@
 import React from "react";
-import Home from "./Home";
 import {render} from '@testing-library/react';
+import Home from './Home.js';
 
-it('renders without crashing', function() {
-    render(<Home/>);
-});
+describe('render Home component', () => {
+    it('render withour crashig', () => {
+        render(<Home/>);
+    }); 
+    test('return welcome to i-music', () => {
+        const display = render(<Home/>);
+        display.getByText('Welcome To I-Music');
+    })
+})
