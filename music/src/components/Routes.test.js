@@ -4,6 +4,13 @@ import Routes from './Routes';
 import { MemoryRouter } from 'react-router-dom';
 
 describe('routes', () => {
+    it('render without crashing', () => {
+        render(
+            <MemoryRouter>
+                <Routes/>
+            </MemoryRouter>
+        );
+    });
     test('test routes components', () => {
         const {getByText} = render(
             <MemoryRouter>

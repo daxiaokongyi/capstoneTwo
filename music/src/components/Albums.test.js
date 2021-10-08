@@ -10,4 +10,10 @@ describe('Not Found Page', () => {
             <Albums/>
         );
     });
+    test('test the table tag has a classname of table', () => {
+        const {container} = render(<Albums/>);   
+        expect(container.getElementsByClassName('table').length).toBe(1);
+    });
 })
+
+

@@ -8,4 +8,8 @@ describe('render UserDetail component', () => {
             <UserDetail/>
         );
     }); 
+    test('test text of User Name in the document', () => {
+        const {getByText} = render(<UserDetail/>);
+        expect(getByText('User Name:')).toBeInTheDocument();
+    });
 })

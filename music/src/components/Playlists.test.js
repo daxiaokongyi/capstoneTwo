@@ -8,4 +8,8 @@ describe('render Playlists component', () => {
             <Playlists/>
         );
     }); 
+    test('test the table tag has a classname of table', () => {
+        const {container} = render(<Playlists/>);   
+        expect(container.getElementsByClassName('table').length).toBe(1);
+    });
 })

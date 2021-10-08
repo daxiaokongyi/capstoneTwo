@@ -8,4 +8,8 @@ describe('render Videos component', () => {
             <Videos/>
         );
     }); 
+    test('test the table tag has a classname of table', () => {
+        const {container} = render(<Videos/>);   
+        expect(container.getElementsByClassName('table').length).toBe(1);
+    });
 })

@@ -20,6 +20,4 @@ describe('sign up form', () => {
         const result = getByText('Register');
         expect(result).toBeInTheDocument();
     });
-    
-
 })

@@ -11,4 +11,12 @@ describe('render SignupForm component', () => {
             </MemoryRouter>
         );
     }); 
+    test('check if text register in the component', () => {
+        const {getByText} = render(            
+            <MemoryRouter>
+                <SignupForm/>
+            </MemoryRouter>)
+        const result = getByText('Sign Up');
+        expect(result).toBeInTheDocument();
+    });
 })

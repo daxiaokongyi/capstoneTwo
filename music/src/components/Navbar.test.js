@@ -11,4 +11,13 @@ describe('render Navbar component', () => {
             </MemoryRouter>
         );
     }); 
+    test('I-Music on the navbar', () => {
+        const {getByText} = render(
+            <MemoryRouter>
+                <Navbar/>
+            </MemoryRouter>
+        )
+        expect(getByText('I-Music')).toBeInTheDocument();
+    })
+
 })
