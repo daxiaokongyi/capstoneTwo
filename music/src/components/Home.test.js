@@ -1,9 +1,9 @@
 import React from "react";
-import {render} from '@testing-library/react';
+import {render} from '../test-utils';
 import Home from './Home.js';
 
 describe('render Home component', () => {
-    it('render withour crashig', () => {
+    it('render without crashing', () => {
         render(<Home/>);
     }); 
     test('return welcome to i-music', () => {

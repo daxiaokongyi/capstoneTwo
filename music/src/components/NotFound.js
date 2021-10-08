@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 const NotFound = () => {
     const dispatch = useDispatch();
     dispatch(clearFetchSongsErrs());
-    return <h3 className="not-found"> Sorry, your search format cannot be accepted</h3>;
+    return <h3 className="not-found">Sorry, your search format cannot be accepted</h3>;
 }
 
 export default NotFound;
