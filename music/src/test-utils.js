@@ -9,7 +9,7 @@ function render(
   ui,
   {
     preloadedState,
-    store = configureStore({ reducer: rootReducer, preloadedState }),
+    store = configureStore({ reducer: rootReducer, preloadedState: {} }),
     ...renderOptions
   } = {}
 ) {

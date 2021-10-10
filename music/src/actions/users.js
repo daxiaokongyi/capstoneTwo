@@ -181,8 +181,6 @@ const addFavoriteError = (addFavErrs) => {
     }
 }
 
-
-
 // remove a song from user's favorited list
 export const removeSongFromFavorite = (username, songId, token) => {
     return async function (dispatch) {
