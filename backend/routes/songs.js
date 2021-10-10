@@ -8,16 +8,19 @@ const Song = require('../models/songs');
 const BASIC_API_URL = "https://api.music.apple.com/v1/catalog/us/search";
 const BASIC_API_URL_SONG_DETAIL = "https://api.music.apple.com/v1/catalog/us/songs?ids=";
 
-/** GET / Get songes with the category of songs
+/** GET / Get songes with Search Terms
  */
 
 router.get("/:searchTerm", async function (req, res, next) {
     try {
+        console.log(`hi: ${req.params.searchTerm}`);
         const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}&limit=8`, {
             headers: {
                 'Authorization':`Bearer ${token}`
             }
         });
+        console.log(`result: ${result}`);
+
         let resultSongs = result.data.results.songs ? result.data.results.songs.data : [];
         let resultArtists = result.data.results.artists ? result.data.results.artists.data : [];
         let resultAlbums = result.data.results.albums ? result.data.results.albums.data : [];
