@@ -12,6 +12,7 @@ import Albums from './Albums';
 import Playlists from './Playlists';
 import Videos from './Videos';
 import NotFound from './NotFound';
+import Help from './Help';
 
 const Routes = () => {
     return (
@@ -19,6 +20,9 @@ const Routes = () => {
             <Switch>
                 <Route exact path="/">
                     <Home/>
+                </Route>
+                <Route exact path="/help">
+                    <Help/>
                 </Route>
                 <Route exact path="/suggestion">
                     <Suggestion/>

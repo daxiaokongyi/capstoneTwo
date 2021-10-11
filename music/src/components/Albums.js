@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { getAlbums } from '../actions/songs';
+import './Albums.css';
 
 const Albums = () => {
     const IMAGE_DIMS = 150;
@@ -24,7 +25,7 @@ const Albums = () => {
     const makeImageTag = (url) => {
         // replace w for width and h for height
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
-        return <img src={url} alt="url" className="image"/>
+        return <img src={url} alt="url" className="albums-image"/>
     }
 
     const showTableBody = (albumResults) => {

@@ -1,0 +1,13 @@
+.help-container {
+    margin-top: 3rem;
+}
+
+.help-card {
+    margin: 0 !important;
+    width: 100%;
+    height: 100%;
+}
+
+.help-body {
+    padding: 0 !important;
+}
