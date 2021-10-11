@@ -48,7 +48,9 @@
 const nock = require('nock');
 const request = require('supertest');
 
-const resultSearchItem = nock('https://api.music.apple.com')
+describe('axios testing', () => {
+    it('should work for term search', async () => {
+        const scope = nock('https://api.music.apple.com')
                             .get('/v1/catalog/us/search?term=Jay+chou&limit=8')
                             .reply(200, {
                                 results: {
@@ -60,9 +62,8 @@ const resultSearchItem = nock('https://api.music.apple.com')
                                 }
                             });
 
-describe('axios testing', () => {
-    it('should work for term search', async () => {
         const result = await request(app).get(`/applemusic/songs/singers`);
+        scope.done();
         expect(result.statusCode).toEqual(200);
     })
 }); 

@@ -31,6 +31,7 @@ app.use(function (req, res, next) {
 // global error handler used to catch any unhandled errors here
 app.use(function(err, req, res ,next) {
     if (process.env.NODE_ENV !== "test") console.error(err.stack);
+
     let status = err.status || 500;
     let message = err.message;
 
