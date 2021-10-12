@@ -1,12 +1,13 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import SigninForm from './SigninForm';
-import {sendSigninToAPI} from '../actions/users';
+import {sendSigninToAPI, clearSigninErrors} from '../actions/users';
 
 export const TOKEN_STORAGE_ID = 'music-token';
 
 const Signin = () => {
     const dispatch = useDispatch();
+    dispatch(clearSigninErrors());
 
     const signin = ({username, password}) => {
         dispatch(sendSigninToAPI(username, password));

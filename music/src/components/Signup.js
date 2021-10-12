@@ -2,11 +2,12 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import SignupForm from './SignupForm';
-import {sendSignupToAPI} from '../actions/users'; 
+import {sendSignupToAPI, clearSignupErrors} from '../actions/users'; 
 
 const Signup = () => {
     const dispatch = useDispatch();
     const history = useHistory();
+    dispatch(clearSignupErrors());
 
     const signup = ({username, password, firstName, lastName, email}) => {
         try {

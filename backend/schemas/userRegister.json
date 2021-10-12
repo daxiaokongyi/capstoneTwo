@@ -34,18 +34,6 @@
             "minLength": 1,
             "maxLength": 20
         },
-        "password": {
-            "$id": "#/properties/password",
-            "type": "string",
-            "title": "The password schema",
-            "description": "An explanation about the purpose of this instance.",
-            "default": "",
-            "examples": [
-                "password"
-            ],
-            "minLength": 5,
-            "maxLength": 20
-        },
         "firstName": {
             "$id": "#/properties/firstName",
             "type": "string",
@@ -82,6 +70,18 @@
             "minLength": 6,
             "maxLength": 60,
             "format": "email"
+        },
+        "password": {
+            "$id": "#/properties/password",
+            "type": "string",
+            "title": "The password schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "password"
+            ],
+            "minLength": 5,
+            "maxLength": 20
         }
     },
     "additionalProperties": true

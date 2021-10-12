@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {addSongToFavorite} from '../actions/users';
-import {removeSongFromFavorite} from '../actions/users'; 
+import {removeSongFromFavorite, addFavoriteError } from '../actions/users'; 
 import {fetchSongDetail, isFavBtnClicked} from '../actions/songs';
 import { useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
@@ -40,6 +40,7 @@ const SongDetail = () => {
             dispatch(isFavBtnClicked(true));
 
             if (!token && Object.keys('addFavErrs').length !== 0) {
+                dispatch(addFavoriteError('Add a song to favorited list is unauthorized! Please log in first!'))
                 history.push('/signin');
             } else {
                 dispatch(addSongToFavorite(songId, songName, artist, genreNames,username, token));

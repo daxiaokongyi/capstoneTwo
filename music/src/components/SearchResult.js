@@ -27,20 +27,42 @@ const SearchResult = () => {
     const fetchResult = useSelector(store => store.songs);
     const fetchSongsErrs = useSelector(st => st.songs.getSongsErrors);
 
+    // useEffect(() => {
+    //     setIsLoading(true);
+    //     // dispatch(fetchSongsFromAPI(searchTerm || `popular`));
+    //     dispatch(fetchSongsFromAPI(searchTerm));
+    //     setIsLoading(false);
+    // }, [searchTerm]);
+
     useEffect(() => {
         setIsLoading(true);
         // dispatch(fetchSongsFromAPI(searchTerm || `popular`));
         dispatch(fetchSongsFromAPI(searchTerm));
         setIsLoading(false);
+        
+        console.log(`songs: ${fetchResult.songs}`);
+        if (fetchResult.songs.length === 0) {
+            return <h3 className="not-found">Your search cannot be found! Please try again!</h3>
+            // return <h3 className="not-found">Loading ... </h3>
+        }
+
     }, [searchTerm]);
+
+    // // if (fetchSongsErrs !== 'Request path contains unescaped characters') {
+    // if (fetchSongsErrs !== '') { 
+    //     // console.log('something went wrong!');
+    //     history.push('/notfound');
+    //     // return <div>Not Found</div>
+    // } else if (fetchResult.songs.length === 0) {
+    //     return <h3 className="not-found">Your search cannot be found! Please try again!</h3>
+    //     // return <h3 className="not-found">Loading ... </h3>
+    // }
 
     // if (fetchSongsErrs !== 'Request path contains unescaped characters') {
     if (fetchSongsErrs !== '') { 
         // console.log('something went wrong!');
         history.push('/notfound');
         // return <div>Not Found</div>
-    } else if (fetchResult.songs.length === 0) {
-        return <h3 className="not-found">Your search cannot be found! Please try again!</h3>
     }
 
     // console.log(`errors: ${fetchSongsErrs}`);

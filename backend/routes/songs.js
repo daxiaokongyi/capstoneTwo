@@ -21,7 +21,7 @@ router.get("/:searchTerm", async function (req, res, next) {
                 'Authorization':`Bearer ${token}`
             }
         });
-        console.log(`result: ${result}`);
+        // console.log(`result: ${JSON.stringify(result)}`);
 
         let resultSongs = result.data.results.songs ? result.data.results.songs.data : [];
         let resultArtists = result.data.results.artists ? result.data.results.artists.data : [];
@@ -121,6 +121,7 @@ router.post("/songDetail/:songId", async function (req, res, next) {
             }
         })
     } catch (error) {
+        console.log(`error: ${JSON.stringify(error)}`);
         return next(error);
     }
 });

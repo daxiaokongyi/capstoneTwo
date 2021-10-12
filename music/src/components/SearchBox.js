@@ -5,6 +5,7 @@ import './SearchBox.css';
 const SearchBox = () => {
     const history = useHistory();
     const [searchTerm, setSearchTerm] = useState("");
+    const defaultSearchTerm = 'singer';
 
     const handleChange = evt => {
         setSearchTerm(evt.target.value);
@@ -13,7 +14,7 @@ const SearchBox = () => {
     const handleSubmit = evt => {
         evt.preventDefault();
         setSearchTerm(searchTerm.trim());
-        searchTerm === '' ? history.push(`/search?term=singer`) : history.push(`/search?term=${searchTerm}`);
+        searchTerm === '' ? history.push(`/search?term=${defaultSearchTerm}`) : history.push(`/search?term=${searchTerm}`);
     }
 
     return (

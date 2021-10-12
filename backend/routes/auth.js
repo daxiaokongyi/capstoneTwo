@@ -21,6 +21,7 @@ router.post('/token', async function(req, res, next) {
         // throw error message if invalid
         if (!validator.valid) {
             const errs = validator.errors.map(e => e.stack);
+            console.log(`errs: ${errs}`);
             throw new BadRequestError(errs);
         }
         // get username and password from req.body if input valids

@@ -1,5 +1,20 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN, LOG_OUT, GET_CURRENTUSER, EDIT_CURRENTUSER, GET_SIGNUP_ERRORS, GET_SIGNIN_ERRORS, ADD_FAVORITE_SONG, REMOVE_FAVORITE_SONG, ADD_FAVORITED_ERRORS, GET_EDIT_ERRORS} from "./types";
+import { 
+    SIGN_UP, 
+    SIGN_IN, 
+    LOG_OUT, 
+    GET_CURRENTUSER, 
+    EDIT_CURRENTUSER, 
+    GET_SIGNUP_ERRORS, 
+    GET_SIGNIN_ERRORS, 
+    ADD_FAVORITE_SONG, 
+    REMOVE_FAVORITE_SONG, 
+    ADD_FAVORITED_ERRORS, 
+    GET_EDIT_ERRORS,
+    CLEAR_ERRORS
+} from "./types";
+
+import formatErrs from './formatUserErrMessages';
 
 const API_URL = "http://localhost:3001";
 
@@ -18,7 +33,14 @@ export const sendSignupToAPI = (username, password, firstName, lastName, email) 
             }
         ).catch(
             err => {
-                return dispatch(getSignupErrors(err.response.data.error.message));
+                const errors = err.response.data.error.message;
+                console.log(errors);
+                if (!Array.isArray(errors)) {
+                    return dispatch(getSignupErrors(errors));
+                } else {
+                    let formattedErrs = formatErrs(errors);
+                    return dispatch(getSignupErrors(formattedErrs));
+                }
             }
         );
     }
@@ -158,6 +180,7 @@ export const addSongToFavorite =(songId, songName, songArtistName, genreNames, u
             }
         ).catch(
             err => {
+                // console.log(`err: ${err}`);
                 return dispatch(addFavoriteError({
                     message: err.response.data.error.message,
                     status: err.response.data.error.status
@@ -174,7 +197,7 @@ const addFavoriteSong = (checkFavorited) => {
     }
 }
 
-const addFavoriteError = (addFavErrs) => {
+export const addFavoriteError = (addFavErrs) => {
     return {
         type: ADD_FAVORITED_ERRORS,
         data: addFavErrs
@@ -206,3 +229,29 @@ const removeFavoriteSong = (songId) => {
         data: songId
     }
 }
+
+export const clearSigninErrors = () => {
+    return {
+        type: CLEAR_ERRORS,
+        data: {
+            signup_errors: [], 
+            signin_errors: [], 
+            edit_errors: [], 
+            check_favorited_errors: []
+        }
+    }
+}
+
+export const clearSignupErrors = () => {
+    return {
+        type: CLEAR_ERRORS,
+        data: {
+            signup_errors: [], 
+            signin_errors: [], 
+            edit_errors: [], 
+            check_favorited_errors: [], 
+            add_favorited_errors: ''
+        }
+    }
+}
+
