@@ -26,27 +26,30 @@ const SearchResult = () => {
     // dispatch(clearFetchSongsErrs());
     const fetchResult = useSelector(store => store.songs);
     const fetchSongsErrs = useSelector(st => st.songs.getSongsErrors);
+    const notfound = useSelector(st => st.songs.notfound);
 
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     // dispatch(fetchSongsFromAPI(searchTerm || `popular`));
-    //     dispatch(fetchSongsFromAPI(searchTerm));
-    //     setIsLoading(false);
-    // }, [searchTerm]);
+    console.log(`notfound: ${notfound}`);
 
     useEffect(() => {
         setIsLoading(true);
         // dispatch(fetchSongsFromAPI(searchTerm || `popular`));
         dispatch(fetchSongsFromAPI(searchTerm));
         setIsLoading(false);
-        
-        console.log(`songs: ${fetchResult.songs}`);
-        if (fetchResult.songs.length === 0) {
-            return <h3 className="not-found">Your search cannot be found! Please try again!</h3>
-            // return <h3 className="not-found">Loading ... </h3>
-        }
-
     }, [searchTerm]);
+
+    // useEffect(() => {
+    //     setIsLoading(true);
+    //     // dispatch(fetchSongsFromAPI(searchTerm || `popular`));
+    //     dispatch(fetchSongsFromAPI(searchTerm));
+    //     setIsLoading(false);
+        
+    //     console.log(`songs: ${JSON.stringify(fetchResult.songs.length)}`);
+    //     if (fetchResult.songs.length === 0) {
+    //         return <h3 className="not-found">Your search cannot be found! Please try again!</h3>
+    //         // return <h3 className="not-found">Loading ... </h3>
+    //     }
+
+    // }, [searchTerm]);
 
     // // if (fetchSongsErrs !== 'Request path contains unescaped characters') {
     // if (fetchSongsErrs !== '') { 
@@ -59,10 +62,13 @@ const SearchResult = () => {
     // }
 
     // if (fetchSongsErrs !== 'Request path contains unescaped characters') {
-    if (fetchSongsErrs !== '') { 
+    if (fetchSongsErrs === 'Request path contains unescaped characters') { 
         // console.log('something went wrong!');
         history.push('/notfound');
         // return <div>Not Found</div>
+    } else if (notfound && notfound.notfound !== '') {
+        console.log(notfound.notfound);
+        return <h3 className="not-found">Your search cannot be found! Please try again!</h3>
     }
 
     // console.log(`errors: ${fetchSongsErrs}`);

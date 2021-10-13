@@ -1,4 +1,5 @@
 const { default: axios } = require('axios');
+const { json } = require('express');
 const express = require('express'); 
 const router = new express.Router();
 const token = require('../getToken');
@@ -21,13 +22,20 @@ router.get("/:searchTerm", async function (req, res, next) {
                 'Authorization':`Bearer ${token}`
             }
         });
-        // console.log(`result: ${JSON.stringify(result)}`);
+
+        // console.log(`checkresult: ${result}`);
+        // console.log(`checkresult: ${JSON.stringify(result)}`);
 
         let resultSongs = result.data.results.songs ? result.data.results.songs.data : [];
         let resultArtists = result.data.results.artists ? result.data.results.artists.data : [];
         let resultAlbums = result.data.results.albums ? result.data.results.albums.data : [];
         let resultPlaylists = result.data.results.playlists ? result.data.results.playlists.data : [];
         let resultMusicVideos = result.data.results["music-videos"] ? result.data.results["music-videos"].data : [];
+
+        if (resultSongs.length === 0) {
+            console.log('no result one');
+            return res.status(201).json({notfound: 'no result found'});
+        }
 
         if (resultSongs.length !== 0) {
             resultSongs = resultSongs.map(song => ({

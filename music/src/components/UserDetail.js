@@ -201,7 +201,7 @@ const UserDetail = () => {
                         onChange={handleChange}
                         id="edit-password"
                         name="password"
-                        type="text"
+                        type="password"
                         className="form-control"
                         value={formData.password}
                     />                              

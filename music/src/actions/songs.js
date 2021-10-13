@@ -22,6 +22,7 @@ export function fetchSongsFromAPI(searchTerm) {
         await axios.get(`${API_URL}/applemusic/songs/${searchTerm}`
             ).then (
                 result => {
+                    console.log(JSON.stringify(result.data));
                     return dispatch(getSongsInfo({songs: result.data, searchTerm: `${searchTerm}`}));
                 }
             ).catch (

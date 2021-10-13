@@ -28,8 +28,8 @@ export default function rootReducer (state = INITIAL_STATE, action) {
     let {type, data, errs} = action;
     console.log(`type: ${type}`);
     // console.log(`data: ${JSON.stringify(data)}`);
-    console.log(data);
-    console.log(`errs: ${errs}`);
+    // console.log(data);
+    // console.log(`errs: ${errs}`);
 
     switch(type) {
         case SIGN_UP:

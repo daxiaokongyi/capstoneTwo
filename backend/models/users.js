@@ -248,6 +248,9 @@ class User {
     /** set songs as user's favorite */
 
     static async setFavorite(username, songId) {
+        console.log(`username: ${username}`);
+        console.log(`songId: ${songId}`);
+
         // get user based on the username given
         const usernameSelected = await db.query(
             `SELECT username
@@ -275,6 +278,9 @@ class User {
         if (!song) throw new NotFoundError(`No song with ID of ${songId} found`);
 
         // check if this song is in user's favorited already
+        console.log(`${username}`);
+        console.log(`${song.id}`);
+
         let isInFavorited = await db.query(
             `SELECT username
             FROM favorites
