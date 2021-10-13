@@ -20,7 +20,7 @@ const Help = () => {
                                         Sign in - Once user signed up an account, user can sign in using username and password.
                                     </li>
                                     <li>
-                                        Sign out - allows users to log out of their account
+                                        Sign out - Allow users to log out of their account
                                     </li>
                                 </ul>
                             </p>

@@ -16,6 +16,7 @@
     height: 12rem;
     padding: 0.1rem;
     margin: 0.5rem 0.5rem;
+    box-shadow: 0.15rem 0.15rem #c2cad7; 
 }
 
 .image {

@@ -13,15 +13,18 @@ const UserDetail = () => {
     const editErrors = useSelector(st => st.users.edit_errors);
     const dispatch = useDispatch();
     const [formErrors, setFormErrors] = useState([]);
+    const history = useHistory();
 
     useEffect(function loadUserInfo() {
         const getUser = async () => {
             if (editErrors.length !== 0) {
                 setFormErrors(editErrors);
-            } else {
+            } else if (token !== null) {
                 let {username} = jwt.decode(token);
                 dispatch(getCurrentUser(username, token));
                 setFormErrors(editErrors);
+            } else {
+                history.push('/signin');
             }
         }
         getUser();
@@ -47,7 +50,6 @@ const UserDetail = () => {
         email: user.email 
     });
 
-    const history = useHistory();
     const [editable, setEditable] = useState(false);
 
     // handlers for non-editable template

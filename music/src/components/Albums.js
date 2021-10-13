@@ -25,7 +25,8 @@ const Albums = () => {
     const makeImageTag = (url) => {
         // replace w for width and h for height
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
-        return <img src={url} alt="url" className="albums-image"/>
+        // return <img src={url} alt="url" className="albums-image"/>
+        return <img src={url} alt="url" className="image"/>
     }
 
     const showTableBody = (albumResults) => {

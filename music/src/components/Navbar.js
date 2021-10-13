@@ -31,7 +31,7 @@ const Navbar = () => {
               Hello {`${user.username}'s`}!
             </NavLink>
           </li>
-          <li className="naw-item">
+          <li className="nav-item">
             <NavLink className="nav-link" to="/" onClick={signOut}>
               Log Out
             </NavLink>

@@ -200,7 +200,8 @@ const SearchResult = () => {
                     <div className="d-flex flex-wrap">
                         {albums.map(album => (
                             <div key={album.albumId}>
-                                <div className="card" style={{width : "18rem"}}>
+                                <div className="card">
+                                {/* <div className="card" style={{width : "18rem"}}> */}
                                     <div className="card-body">
                                         <div className="card-text">
                                             <a href={`${album.albumUrl}`} style= {{textDecoration : "none"}} target="_blank" rel="noreferrer">                                        
@@ -231,10 +232,12 @@ const SearchResult = () => {
                     <div className="d-flex flex-wrap">
                         {playlists.map(playlist => (
                             <div>
-                                <div className="card" style={{width : "18rem"}}>
+                                <div className="card">
+                                {/* <div className="card" style={{width : "18rem"}}> */}
                                     <div className="card-body">
                                         <div className="card-text">
-                                            <a href={`${playlist.playlistUrl}`} style= {{textDecoration : "none", }} target="_blank" rel="noreferrer">                                        {makeImageTag(playlist.playlistImageUrl)}
+                                            <a href={`${playlist.playlistUrl}`} style= {{textDecoration : "none", }} target="_blank"   rel="noreferrer">                                        
+                                                {makeImageTag(playlist.playlistImageUrl)}
                                             </a>
                                             <p className="text"><span>{playlist.playlistName}</span></p>
                                         </div>
