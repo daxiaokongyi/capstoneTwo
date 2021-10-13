@@ -7,8 +7,6 @@ const Albums = () => {
     const IMAGE_DIMS = 150;
     const dispatch = useDispatch();
     const searchTerm = useSelector(st => st.songs.searchTerm);
-
-    // const search
     const albumResults = useSelector(st => st.songs.allAlbums);
 
     useEffect(() => {

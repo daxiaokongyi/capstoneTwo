@@ -13,6 +13,7 @@ const formatErrs = (errMessages) => {
         } else if (error.includes('instance.password')) {
             return 'Password does not meet minimum length of 5'
         }
+        return '';
     })
     return formattedErrs;
 }

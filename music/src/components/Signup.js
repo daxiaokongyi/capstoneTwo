@@ -14,7 +14,6 @@ const Signup = () => {
             dispatch(sendSignupToAPI(username, password, firstName,lastName, email));
             return {success: true};
         } catch (errors) {
-            console.error(`Sign up failed, ${errors.response}`);
             return {success: false, errors};
         }
     }

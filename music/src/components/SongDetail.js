@@ -40,7 +40,7 @@ const SongDetail = () => {
             dispatch(isFavBtnClicked(true));
 
             if (!token && Object.keys('addFavErrs').length !== 0) {
-                dispatch(addFavoriteError('Add a song to favorited list is unauthorized! Please log in first!'))
+                dispatch(addFavoriteError('Adding a song to favorite list is unauthorized! Please log in first!'))
                 history.push('/signin');
             } else {
                 dispatch(addSongToFavorite(songId, songName, artist, genreNames,username, token));
@@ -64,8 +64,6 @@ const SongDetail = () => {
     const makeImageTag = (url) => {    
         // replace w for width and h for height
         url = url.replace(/\{(w|h)\}/g, IMAGE_DIMS); 
-        console.log(`url: ${url}`);
-
         return <img src={url} alt="song-detail-img" className="song-detail-img"/>
     }
 
@@ -91,7 +89,7 @@ const SongDetail = () => {
                     ? <button className="btn btn-primary" onClick={() => handleRemove(username, songId, token)}>Undo the favorite</button>
                     : <button className="btn btn-primary" onClick={() => handleAdd(songId, songName, artist, genreNames, username, token)}>Add to Favorite</button>
                 }
-                <button className="btn btn-primary" onClick={handleClick}>Back To User's Page</button>
+                {username ? <button className="btn btn-primary" onClick={handleClick}>Back To User's Page</button> : null}
             </div>
         </div>    
     )

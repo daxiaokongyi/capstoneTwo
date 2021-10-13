@@ -1,5 +1,4 @@
 const { default: axios } = require('axios');
-const { json } = require('express');
 const express = require('express'); 
 const router = new express.Router();
 const token = require('../getToken');
@@ -14,17 +13,11 @@ const BASIC_API_URL_SONG_DETAIL = "https://api.music.apple.com/v1/catalog/us/son
 
 router.get("/:searchTerm", async function (req, res, next) {
     try {
-        console.log(`hi: ${req.params.searchTerm}`);
-        console.log(`token: ${token}`);
-
         const result = await axios.get(`${BASIC_API_URL}?term=${req.params.searchTerm}&limit=8`, {
             headers: {
                 'Authorization':`Bearer ${token}`
             }
         });
-
-        // console.log(`checkresult: ${result}`);
-        // console.log(`checkresult: ${JSON.stringify(result)}`);
 
         let resultSongs = result.data.results.songs ? result.data.results.songs.data : [];
         let resultArtists = result.data.results.artists ? result.data.results.artists.data : [];
@@ -33,7 +26,6 @@ router.get("/:searchTerm", async function (req, res, next) {
         let resultMusicVideos = result.data.results["music-videos"] ? result.data.results["music-videos"].data : [];
 
         if (resultSongs.length === 0) {
-            console.log('no result one');
             return res.status(201).json({notfound: 'no result found'});
         }
 
@@ -105,7 +97,6 @@ router.get("/:searchTerm", async function (req, res, next) {
 
         return res.status(201).json({songs:resultSongs, artists: resultArtists, albums: resultAlbums, playlists: resultPlaylists, musicVideos: resultMusicVideos});
     } catch (error) {
-        console.log(`error： ${JSON.stringify(error)}`);
         return next(error);
     }
 });
@@ -129,7 +120,6 @@ router.post("/songDetail/:songId", async function (req, res, next) {
             }
         })
     } catch (error) {
-        console.log(`error: ${JSON.stringify(error)}`);
         return next(error);
     }
 });

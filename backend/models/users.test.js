@@ -110,7 +110,6 @@ describe('update user detail', function(){
         try {
             await User.update('username1', {});
         } catch (error) {
-            console.log(error);
             expect(error instanceof BadRequestError).toBeTruthy();
         }        
     });
@@ -122,7 +121,6 @@ describe('set favorite song to a user', function() {
         let isFavorited = await Song.checkIfFavorited(1000000002, 'username1');
         expect (isFavorited).toEqual(true);
     });    
-
     test('bad request that setting a song to the same user more than one time', async function() {
         try {
             await User.setFavorite('username2', 1000000002);
@@ -130,7 +128,6 @@ describe('set favorite song to a user', function() {
             expect(error instanceof BadRequestError).toBeTruthy();
         }
     });
-
     test('bad request if no user is found', async function() {
         try {
             await User.setFavorite('nousername', 1000000001);

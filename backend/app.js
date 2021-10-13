@@ -20,7 +20,6 @@ app.use("/users", usersRoutes);
 app.use("/applemusic/songs", songsRoutes);
 
 const { NotFoundError } = require('./expressError');
-const { stat } = require('fs');
 
 // handler for 404
 app.use(function (req, res, next) {

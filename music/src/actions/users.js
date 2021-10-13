@@ -34,7 +34,6 @@ export const sendSignupToAPI = (username, password, firstName, lastName, email) 
         ).catch(
             err => {
                 const errors = err.response.data.error.message;
-                console.log(errors);
                 if (!Array.isArray(errors)) {
                     return dispatch(getSignupErrors(errors));
                 } else {
@@ -46,6 +45,7 @@ export const sendSignupToAPI = (username, password, firstName, lastName, email) 
     }
 }
 
+// sign up a user 
 const signup = (userData) => {
     return {
         type: SIGN_UP,
@@ -53,6 +53,7 @@ const signup = (userData) => {
     }
 }
 
+// get errors of signing up
 const getSignupErrors = (errorMessage) => {
     return {
         type: GET_SIGNUP_ERRORS, 
@@ -164,6 +165,7 @@ const getEditErrors = (errorMessage) => {
     }
 }
 
+// add a song as favorite
 export const addSongToFavorite =(songId, songName, songArtistName, genreNames, username, token) => {
     return async function (dispatch) {
         await axios.post(`${API_URL}/users/${username}/songs/${songId}`, {
@@ -180,7 +182,6 @@ export const addSongToFavorite =(songId, songName, songArtistName, genreNames, u
             }
         ).catch(
             err => {
-                // console.log(`err: ${err}`);
                 return dispatch(addFavoriteError({
                     message: err.response.data.error.message,
                     status: err.response.data.error.status
@@ -230,6 +231,7 @@ const removeFavoriteSong = (songId) => {
     }
 }
 
+// clean sign in errors
 export const clearSigninErrors = () => {
     return {
         type: CLEAR_ERRORS,
@@ -242,6 +244,7 @@ export const clearSigninErrors = () => {
     }
 }
 
+// clean sign up errors
 export const clearSignupErrors = () => {
     return {
         type: CLEAR_ERRORS,

@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 const Suggestion = () => {
     const history = useHistory();
     const genreRecommendArray = useSelector(st => st.users.user.favoriteSongs);     
-
     let genreNameSelected = genreRecommendArray && genreRecommendArray.length !== 0 ? genreRecommendArray[genreRecommendArray.length - 1][3] : 'singer';
 
     // check if the current genren name includes forward slash, /
@@ -21,7 +20,7 @@ const Suggestion = () => {
         if (genreNameSelected) {
             getSuggestionSongs(genreNameSelected);
         }
-    },[genreNameSelected]);
+    },[genreNameSelected, history]);
 
     return(
         <LoadingSpinner/>

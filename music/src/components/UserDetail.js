@@ -28,7 +28,7 @@ const UserDetail = () => {
             }
         }
         getUser();
-    }, [token, dispatch, editErrors]);
+    }, [token, dispatch, editErrors, history]);
 
     const save = (username, updatedUser) => {
         dispatch(sendEditToAPI(username, updatedUser, token));
@@ -72,7 +72,7 @@ const UserDetail = () => {
         if (favoritedSongs) {
             return (
                 favoritedSongs.map((each, index) => (
-                    <tr>
+                    <tr key={each}>
                         <th scope="row">{index + 1}</th>
                         <td><NavLink to={`/song/${each[0]}`}>{each[1]}</NavLink></td>
                         <td>{each[2]}</td>

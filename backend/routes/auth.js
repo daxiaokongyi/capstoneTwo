@@ -21,14 +21,12 @@ router.post('/token', async function(req, res, next) {
         // throw error message if invalid
         if (!validator.valid) {
             const errs = validator.errors.map(e => e.stack);
-            console.log(`errs: ${errs}`);
             throw new BadRequestError(errs);
         }
         // get username and password from req.body if input valids
         const {username, password} = req.body;
         // return user info from database
         const user = await User.authenticate(username, password);
-
         const token = createToken(user);
         // return token with a format of json
         return res.json({token});

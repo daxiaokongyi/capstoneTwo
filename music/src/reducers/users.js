@@ -26,10 +26,6 @@ const INITIAL_STATE =  {
 
 export default function rootReducer (state = INITIAL_STATE, action) {
     let {type, data, errs} = action;
-    console.log(`type: ${type}`);
-    // console.log(`data: ${JSON.stringify(data)}`);
-    // console.log(data);
-    // console.log(`errs: ${errs}`);
 
     switch(type) {
         case SIGN_UP:
@@ -44,7 +40,6 @@ export default function rootReducer (state = INITIAL_STATE, action) {
                 signup_errors: [], 
                 edit_errors:[], 
                 favorite_songs: [],     
-                // add_favorited_errors: {message: 'Unauthorized, Please log in first', status: 401
                 add_favorited_errors: ''
             };
         case GET_CURRENTUSER:

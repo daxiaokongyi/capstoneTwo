@@ -10,10 +10,6 @@ const SigninForm = ({save}) => {
     const addFavErrs = useSelector(st => st.users.add_favorited_errors);
     const favBtnClicked = useSelector(st => st.songs.isFavBtnClicked);
 
-    console.log(`add fav erros: ${addFavErrs}`);
-    console.log(`fav btn clicked: ${JSON.stringify(favBtnClicked)}`);
-    console.log(`sign in errors: ${signinErrors}`);
-
     const INITIAL_USERDATA = {
         username: "",
         password: ""
@@ -21,7 +17,6 @@ const SigninForm = ({save}) => {
 
     const [formData, setFormData] = useState(INITIAL_USERDATA);
     const [formErrors, setFormErrors] = useState([]);
-
     const history = useHistory();
 
     useEffect(() => {
@@ -48,7 +43,6 @@ const SigninForm = ({save}) => {
     return(
         <div>
             {formErrors.length ? <Alert type='danger' messages={formErrors}/> : null}
-            {/* {(!token && Object.keys(addFavErrs).length !== 0 && favBtnClicked) ? <Alert type='danger' messages={addFavErrs.message}/> : null} */}
             {(!token && addFavErrs !== '' && favBtnClicked) ? <Alert type='danger' messages={addFavErrs}/> : null}
             <form className="mb-4" onSubmit={handleSubmit}>
                 <div className="form-group">

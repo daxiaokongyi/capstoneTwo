@@ -3,100 +3,41 @@ import {useSelector } from 'react-redux';
 import {NavLink, useLocation, useHistory} from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import defaultImage from '../common/appleMusicDefault.jpeg';
-import { fetchSongsFromAPI, clearFetchSongsErrs } from '../actions/songs'; 
+import { fetchSongsFromAPI } from '../actions/songs'; 
 import LoadingSpinner from '../common/LoadingSpinner';
 import './SearchResult.css';
-import Alert from './Alert';
 
 const SearchResult = () => {
     const IMAGE_DIMS = 150;
     const IMAGE_W_DIMS = 250;
     const IMAGE_H_DIMS = 150;
-
     const history = useHistory();
     const dispatch = useDispatch();
-
     const [isLoading, setIsLoading] = useState(true);
-    // const [searchWord, setSearchWord] = useState('');
-    
     const search = useLocation().search;
     const searchTerm = new URLSearchParams(search).get('term');
-    // setSearchWord(searchWord);
-
-    // dispatch(clearFetchSongsErrs());
     const fetchResult = useSelector(store => store.songs);
     const fetchSongsErrs = useSelector(st => st.songs.getSongsErrors);
     const notfound = useSelector(st => st.songs.notfound);
 
-    console.log(`notfound: ${notfound}`);
-
     useEffect(() => {
         setIsLoading(true);
-        // dispatch(fetchSongsFromAPI(searchTerm || `popular`));
         dispatch(fetchSongsFromAPI(searchTerm));
         setIsLoading(false);
-    }, [searchTerm]);
+    }, [searchTerm, dispatch]);
 
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     // dispatch(fetchSongsFromAPI(searchTerm || `popular`));
-    //     dispatch(fetchSongsFromAPI(searchTerm));
-    //     setIsLoading(false);
-        
-    //     console.log(`songs: ${JSON.stringify(fetchResult.songs.length)}`);
-    //     if (fetchResult.songs.length === 0) {
-    //         return <h3 className="not-found">Your search cannot be found! Please try again!</h3>
-    //         // return <h3 className="not-found">Loading ... </h3>
-    //     }
-
-    // }, [searchTerm]);
-
-    // // if (fetchSongsErrs !== 'Request path contains unescaped characters') {
-    // if (fetchSongsErrs !== '') { 
-    //     // console.log('something went wrong!');
-    //     history.push('/notfound');
-    //     // return <div>Not Found</div>
-    // } else if (fetchResult.songs.length === 0) {
-    //     return <h3 className="not-found">Your search cannot be found! Please try again!</h3>
-    //     // return <h3 className="not-found">Loading ... </h3>
-    // }
-
-    // if (fetchSongsErrs !== 'Request path contains unescaped characters') {
+    // handle result if input format is wrong or not found 
     if (fetchSongsErrs === 'Request path contains unescaped characters') { 
-        // console.log('something went wrong!');
         history.push('/notfound');
-        // return <div>Not Found</div>
     } else if (notfound && notfound.notfound !== '') {
-        console.log(notfound.notfound);
         return <h3 className="not-found">Your search cannot be found! Please try again!</h3>
     }
-
-    // console.log(`errors: ${fetchSongsErrs}`);
-
-    // if (fetchSongsErrs !== '') {
-    //     console.log(`errors: ${fetchSongsErrs}`);
-    //     dispatch(clearFetchSongsErrs);
-    //     history.push('/notfound');
-    //     // return (
-    //     //     <div>Not Found! Please try again!</div>
-    //     // )
-    // }
-
-    // console.log(`the result: ${fetchResult}`);  
-    // console.log(`the result: ${JSON.stringify(fetchResult)}`);  
 
     const songs = fetchResult.songs;
     const artists = fetchResult.artists;
     const albums = fetchResult.albums;
     const playlists = fetchResult.playlists;
     const musicVideos = fetchResult.musicVideos;
-
-    // const [getSongErrs, setGetSongErrs] = useState(null);
-
-    // check if any errors happen while searching
-    // const fetchSongsErrs = useSelector(st => st.songs.getSongsErrors);
-
-    // setGetSongErrs(fetchSongsErrs);
 
     const makeImageTag = (url) => {
         // replace w for width and h for height
@@ -125,7 +66,6 @@ const SearchResult = () => {
 
     return (
         <div className="container">
-            {/* {!getSongErrs ?  null : <Alert type='danger' messages={getSongErrs}/>} */}
             {artists.length === 0 ? null : 
                 <div className="row category">
                     <div className="row justify-content-between">
@@ -231,7 +171,7 @@ const SearchResult = () => {
                     </div>
                     <div className="d-flex flex-wrap">
                         {playlists.map(playlist => (
-                            <div>
+                            <div key={playlist.playlistName}>
                                 <div className="card">
                                 {/* <div className="card" style={{width : "18rem"}}> */}
                                     <div className="card-body">

@@ -6,12 +6,12 @@ const Help = () => {
         <div className='container help-container'>
             <div className='row'>
                 <div className='col'>
-                    <div class="card help-card">
-                        <div class="card-header">
-                            <i class="fas fa-user-plus"></i> <b>Account Setting</b>
+                    <div className="card help-card">
+                        <div className="card-header">
+                            <i className="fas fa-user-plus"></i> <b>Account Setting</b>
                         </div>
-                        <div class="card-body help-body">
-                            <p class="card-text">
+                        <div className="card-body help-body">
+                            <div className="card-text">
                                 <ul>
                                     <li>
                                         Sign up - Allow user to create an account. It requires username, last name, email, and passoword. 
@@ -23,33 +23,33 @@ const Help = () => {
                                         Sign out - Allow users to log out of their account
                                     </li>
                                 </ul>
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div className='col'>
-                    <div class="card help-card">
-                        <div class="card-header">
-                            <i class="fas fa-search"></i> <b>Search</b>
+                    <div className="card help-card">
+                        <div className="card-header">
+                            <i className="fas fa-search"></i> <b>Search</b>
                         </div>
-                        <div class="card-body help-body">
-                            <p class="card-text">
+                        <div className="card-body help-body">
+                            <div className="card-text">
                                 <ul>
                                     <li>
                                         Search function allows user to retrieve information about albums, songs, artists, playlists, and music videos provided by Apple Music API.
                                     </li>
                                 </ul>
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div className='col'>
-                    <div class="card help-card">
-                        <div class="card-header">
-                            <i class="far fa-address-card"></i> <b>User Profile</b>
+                    <div className="card help-card">
+                        <div className="card-header">
+                            <i className="far fa-address-card"></i> <b>User Profile</b>
                         </div>
-                        <div class="card-body help-body">
-                            <p class="card-text">
+                        <div className="card-body help-body">
+                            <div className="card-text">
                                 <ul>
                                     <li>
                                         User profile shows the detailed information of a user, including username, first name, last name, and email.
@@ -61,23 +61,23 @@ const Help = () => {
                                         Also user is able to add a song to his/her favorite list.
                                     </li>
                                 </ul>
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div className='col'>
-                    <div class="card help-card">
-                        <div class="card-header">
-                            <i class="far fa-thumbs-up"></i> <b>You May Like</b>
+                    <div className="card help-card">
+                        <div className="card-header">
+                            <i className="far fa-thumbs-up"></i> <b>You May Like</b>
                         </div>
-                        <div class="card-body help-body">
-                            <p class="card-text">
+                        <div className="card-body help-body">
+                            <div className="card-text">
                                 <ul>
                                     <li>
                                         After a registered user add a song to his/her favorite list, application will provide information about albums, songs, artists, playlists, and music videos based on user's preferred category by clicking I-Music.
                                     </li>
                                 </ul>
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,6 @@ const INITIAL_STATE = {
     allPlaylists: [],
     allVideos: [],
     getSongsErrors: '',
-    // notfound: {}
 }
 
 export default function songsReducer(state=INITIAL_STATE, action) {
@@ -24,8 +23,6 @@ export default function songsReducer(state=INITIAL_STATE, action) {
 
     switch (type) {
         case FETCH_SONGS:
-            console.log(JSON.stringify(data.songs));
-            console.log(Object.keys(data.songs).includes('notfound'));
             if(!Object.keys(data.songs).includes('notfound')) {
                 return {...state, ...data.songs, searchTerm: data.searchTerm, notfound: ''}
             } else {
@@ -54,7 +51,6 @@ export default function songsReducer(state=INITIAL_STATE, action) {
         case CLEAR_SONGS_ERRORS:
             return {...state, getSongsErrors: ''}
         default:
-            // return {...state, isFavBtnClicked: data}
             return state
     }
 }
