@@ -9,12 +9,12 @@ describe('render SongDetail component', () => {
 
         );
     }); 
-    test('Check if button of back to homepage exists and has correct class name', () => {
+    test('Check if button of Add to Favorite exists and has correct class name', () => {
         const {getByText} = render(
             <MemoryRouter>
                 <SongDetail/>
             </MemoryRouter>
         );
-        expect(getByText('Back To User\'s Page')).toHaveClass('btn-primary');
+        expect(getByText('Add to Favorite')).toHaveClass('btn-primary');
     });
 })
